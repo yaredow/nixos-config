@@ -1,6 +1,52 @@
-------------------
----- MONITORS ----
-------------------
+-- Settings via hl.config
+hl.config({
+    general = {
+        gaps_in             = 5,
+        gaps_out            = 10,
+        border_size         = 2,
+        ["col.active_border"]   = "0xff33ccff",
+        ["col.inactive_border"] = "0xff595959",
+        layout              = "dwindle",
+    },
+    decoration = {
+        rounding = 10,
+        blur = {
+            enabled = true,
+            size    = 3,
+            passes  = 1,
+        },
+        shadow = {
+            enabled = false,
+        },
+    },
+    animations = {
+        enabled = true,
+        bezier = {
+            myBezier = { 0.05, 0.9, 0.1, 1.05 },
+        },
+        animation = {
+            { "windows",     1, 7, "myBezier" },
+            { "windowsOut",  1, 7, "default",  "popin 80%" },
+            { "border",      1, 10, "default" },
+            { "borderangle", 1, 8, "default" },
+            { "fade",        1, 7, "default" },
+            { "workspaces",  1, 6, "default" },
+        },
+    },
+    dwindle = {
+        preserve_split = true,
+    },
+    input = {
+        kb_layout    = "us",
+        follow_mouse = 1,
+        sensitivity  = 0,
+        touchpad = {
+            natural_scroll = true,
+        },
+    },
+})
+
+-- Monitor
 hl.monitor({
     output   = "",
     mode     = "preferred",
@@ -8,99 +54,24 @@ hl.monitor({
     scale    = "1",
 })
 
----------------------
----- MY PROGRAMS ----
----------------------
+-- Autostart
+hl.on("hyprland.start", function()
+    hl.exec_cmd("nm-applet --indicator")
+end)
+
+-- Environment
+hl.env("XCURSOR_SIZE", "24")
+
+-- Programs
 local terminal = "kitty"
 local menu     = "fuzzel"
 local browser  = "firefox"
 
--------------------
----- AUTOSTART ----
--------------------
-hl.exec_once("nm-applet --indicator")
-
----------------------
----- ENVIRONMENT ----
----------------------
-hl.env({
-    XCURSOR_SIZE = "24",
-})
-
--------------------
----- INPUT --------
--------------------
-hl.input({
-    kb_layout    = "us",
-    follow_mouse = 1,
-    sensitivity  = 0,
-    touchpad = {
-        natural_scroll = true,
-    },
-})
-
--------------------
----- GENERAL ------
--------------------
-hl.general({
-    gaps_in             = 5,
-    gaps_out            = 10,
-    border_size         = 2,
-    ["col.active_border"]   = "rgba(33ccffee) rgba(00ff99ee) 45deg",
-    ["col.inactive_border"] = "rgba(595959aa)",
-    layout              = "dwindle",
-})
-
-----------------------
----- DECORATION ------
-----------------------
-hl.decoration({
-    rounding = 10,
-    blur = {
-        enabled = true,
-        size    = 3,
-        passes  = 1,
-    },
-    shadow = {
-        enabled = false,
-    },
-})
-
--------------------
----- ANIMATIONS ---
--------------------
-hl.animations({
-    enabled = true,
-    bezier = {
-        myBezier = { 0.05, 0.9, 0.1, 1.05 },
-    },
-    animation = {
-        { "windows",     1, 7, "myBezier" },
-        { "windowsOut",  1, 7, "default",  "popin 80%" },
-        { "border",      1, 10, "default" },
-        { "borderangle", 1, 8, "default" },
-        { "fade",        1, 7, "default" },
-        { "workspaces",  1, 6, "default" },
-    },
-})
-
--------------------
----- DWINDLE ------
--------------------
-hl.dwindle({
-    preserve_split = true,
-})
-
--------------------
----- KEYBINDS -----
--------------------
 local mainMod = "SUPER"
 
--- Terminal (Kitty) on SUPER + Q and SUPER + Return
+-- Keybindings
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
-
--- App Launcher (Fuzzel) on SUPER + Space
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 
 -- Window management
