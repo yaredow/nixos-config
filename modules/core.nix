@@ -13,14 +13,16 @@
 
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
 
   # Fish shell (system-level registration in /etc/shells)
   programs.fish.enable = true;
 
-  # User account
+  # User account (initial password to prevent lockout on bare metal)
   users.users.yada = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
+    initialPassword = "yada";
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" ];
     shell = pkgs.fish;
   };
 
@@ -32,4 +34,7 @@
       PermitRootLogin = "no";
     };
   };
+
+  # Firmware and microcode
+  hardware.enableAllFirmware = true;
 }

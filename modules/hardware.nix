@@ -1,5 +1,14 @@
 { pkgs, ... }:
 {
+  # Graphics & Hardware Acceleration (Intel Iris Xe)
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vpl-gpu-rt
+    ];
+  };
+
   # Audio — Pipewire
   services.pipewire = {
     enable = true;
