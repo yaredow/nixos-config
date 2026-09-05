@@ -44,6 +44,18 @@
     };
   };
 
+  services.keyd = {
+  	enable = true;
+	keyboards.default = {
+		ids = ["*"];
+		settings = {
+			main = {
+				capslock = "overload(control, esc)";
+			};
+		};
+	};
+  };
+
   # Firmware and microcode
   hardware.enableAllFirmware = true;
 }

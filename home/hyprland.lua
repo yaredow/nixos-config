@@ -48,10 +48,10 @@ hl.config({
 
 -- Monitor
 hl.monitor({
-    output   = "",
+    output   = "eDP-1",
     mode     = "preferred",
     position = "auto",
-    scale    = "1",
+    scale    = "2",
 })
 
 -- Autostart
