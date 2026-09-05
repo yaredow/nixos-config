@@ -7,10 +7,15 @@
     xwayland.enable = true;
   };
 
-  # Display manager
-  services.displayManager.sddm = {
+  # Display manager (greetd + tuigreet)
+  services.greetd = {
     enable = true;
-    wayland.enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --sessions ${pkgs.hyprland}/share/wayland-sessions";
+        user = "greeter";
+      };
+    };
   };
 
   # Polkit authentication agent (needed for GUI sudo prompts)
