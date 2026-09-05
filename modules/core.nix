@@ -1,7 +1,8 @@
 { pkgs, ... }:
 {
-  # Bootloader
+  # Bootloader (systemd-boot with generation limit)
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Locale & Timezone
@@ -14,6 +15,14 @@
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
+
+  # Automatic Garbage Collection & Store Optimization
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
+  nix.settings.auto-optimise-store = true;
 
   # Fish shell (system-level registration in /etc/shells)
   programs.fish.enable = true;

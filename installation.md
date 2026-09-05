@@ -34,9 +34,9 @@ parted /dev/nvme0n1 -- mkpart ESP fat32 1MiB 1024MiB
 parted /dev/nvme0n1 -- set 1 esp on
 parted /dev/nvme0n1 -- mkpart root ext4 1024MiB 100%
 
-# 2. Format partitions with labels
+# 2. Format partitions with labels (vital for seamless booting)
 mkfs.fat -F 32 -n boot /dev/nvme0n1p1
-mkfs.ext4 -L nixos /dev/nvme0n1p2
+mkfs.ext4 -F -L nixos /dev/nvme0n1p2
 
 # 3. Mount target partitions
 mount /dev/disk/by-label/nixos /mnt
@@ -49,16 +49,11 @@ mount /dev/disk/by-label/boot /mnt/boot
 ## Step 3: Clone Configuration & Scan Hardware
 
 ```bash
-# 1. Generate laptop hardware configuration
-nixos-generate-config --root /mnt
-cp /mnt/etc/nixos/hardware-configuration.nix /tmp/laptop-hardware.nix
-
-# 2. Clean out default files and clone your repo
-rm -rf /mnt/etc/nixos/*
+# 1. Clone your repo directly into /mnt/etc/nixos
 git clone https://github.com/yaredow/nixos-config.git /mnt/etc/nixos
 
-# 3. Copy your real hardware scan into the laptop host folder
-cp /tmp/laptop-hardware.nix /mnt/etc/nixos/hosts/laptop/hardware-configuration.nix
+# 2. Generate hardware scan directly into the laptop host folder
+nixos-generate-config --root /mnt --dir /mnt/etc/nixos/hosts/laptop
 ```
 
 ---
@@ -67,6 +62,7 @@ cp /tmp/laptop-hardware.nix /mnt/etc/nixos/hosts/laptop/hardware-configuration.n
 
 ```bash
 cd /mnt/etc/nixos
+git config --global --add safe.directory /mnt/etc/nixos
 git add .
 
 # Run installation with the #laptop flake target
@@ -83,7 +79,7 @@ nixos-install --flake .#laptop
 reboot
 ```
 * Unplug the USB drive.
-* SDDM login screen will appear.
+* You will be greeted by the minimal **tuigreet** login screen!
 * **Username**: `yada`
 * **Default Password**: `yada` (Change it with `passwd` after login)
 
