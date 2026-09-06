@@ -1,142 +1,148 @@
 { pkgs, ... }:
 {
+  # XDG desktop portal configuration
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config = {
+      common = {
+        default = [ "gtk" ];
+      };
+      hyprland = {
+        default = [ "hyprland" "gtk" ];
+      };
+    };
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     package = null; # Handled by NixOS system module (modules/desktop.nix)
-    configType = "hyprlang";
+    configType = "lua";
 
-    settings = {
-      # Monitors
-      monitor = [
-        "eDP-1, preferred, auto, 2"
-        ", preferred, auto, 1"
-      ];
+    extraConfig = ''
+      -- General, decoration, and input settings
+      hl.config({
+          general = {
+              gaps_in = 5,
+              gaps_out = 10,
+              border_size = 2,
+              ["col.active_border"] = "0xff33ccff",
+              ["col.inactive_border"] = "0xff595959",
+              layout = "dwindle",
+          },
+          decoration = {
+              rounding = 10,
+              blur = {
+                  enabled = true,
+                  size = 3,
+                  passes = 1,
+              },
+              shadow = {
+                  enabled = false,
+              },
+          },
+          animations = {
+              enabled = true,
+          },
+          dwindle = {
+              preserve_split = true,
+          },
+          input = {
+              kb_layout = "us",
+              follow_mouse = 1,
+              sensitivity = 0,
+              touchpad = {
+                  natural_scroll = true,
+              },
+          },
+      })
 
-      # Variables & Programs
-      "$mod" = "SUPER";
-      "$terminal" = "kitty";
-      "$menu" = "fuzzel";
-      "$browser" = "firefox";
+      -- Monitors
+      hl.monitor({
+          output = "eDP-1",
+          mode = "preferred",
+          position = "auto",
+          scale = "2",
+      })
+      hl.monitor({
+          output = "",
+          mode = "preferred",
+          position = "auto",
+          scale = "1",
+      })
 
-      # Autostart
-      exec-once = [
-        "nm-applet --indicator"
-      ];
+      -- Autostart
+      hl.on("hyprland.start", function()
+          hl.exec_cmd("nm-applet --indicator")
+      end)
 
-      # Environment
-      env = [
-        "XCURSOR_SIZE,24"
-      ];
+      -- Environment
+      hl.env("XCURSOR_SIZE", "24")
 
-      # General
-      general = {
-        gaps_in = 5;
-        gaps_out = 10;
-        border_size = 2;
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = "rgba(595959aa)";
-        layout = "dwindle";
-      };
+      -- Custom Curves & Animations (Official Hyprland Lua API)
+      hl.curve("myBezier", {
+          type = "bezier",
+          points = { { 0.05, 0.9 }, { 0.1, 1.05 } },
+      })
 
-      dwindle = {
-        preserve_split = true;
-      };
+      hl.animation({ leaf = "windows", enabled = true, speed = 7, bezier = "myBezier" })
+      hl.animation({ leaf = "windowsOut", enabled = true, speed = 7, bezier = "default", style = "popin 80%" })
+      hl.animation({ leaf = "border", enabled = true, speed = 10, bezier = "default" })
+      hl.animation({ leaf = "borderangle", enabled = true, speed = 8, bezier = "default" })
+      hl.animation({ leaf = "fade", enabled = true, speed = 7, bezier = "default" })
+      hl.animation({ leaf = "workspaces", enabled = true, speed = 6, bezier = "default" })
 
-      # Decoration
-      decoration = {
-        rounding = 10;
-        blur = {
-          enabled = true;
-          size = 3;
-          passes = 1;
-        };
-        shadow = {
-          enabled = false;
-        };
-      };
+      -- Keybindings
+      local terminal = "kitty"
+      local menu = "fuzzel"
+      local browser = "firefox"
+      local mainMod = "SUPER"
 
-      # Animations (Fixed)
-      animations = {
-        enabled = true;
-        bezier = [
-          "myBezier, 0.05, 0.9, 0.1, 1.05"
-        ];
-        animation = [
-          "windows, 1, 7, myBezier"
-          "windowsOut, 1, 7, default, popin 80%"
-          "border, 1, 10, default"
-          "borderangle, 1, 8, default"
-          "fade, 1, 7, default"
-          "workspaces, 1, 6, default"
-        ];
-      };
+      hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
+      hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
+      hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
+      hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(browser))
 
-      # Input
-      input = {
-        kb_layout = "us";
-        follow_mouse = 1;
-        sensitivity = 0;
-        touchpad = {
-          natural_scroll = true;
-        };
-      };
+      hl.bind(mainMod .. " + C", hl.dsp.window.close())
+      hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+      hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 
-      # Keybindings
-      bind = [
-        "$mod, Q, exec, $terminal"
-        "$mod, Return, exec, $terminal"
-        "$mod, Space, exec, $menu"
-        "$mod, E, exec, $browser"
+      -- Focus movement
+      hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
+      hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
+      hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "up" }))
+      hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "down" }))
+      hl.bind(mainMod .. " + h", hl.dsp.focus({ direction = "left" }))
+      hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
+      hl.bind(mainMod .. " + k", hl.dsp.focus({ direction = "up" }))
+      hl.bind(mainMod .. " + j", hl.dsp.focus({ direction = "down" }))
 
-        "$mod, C, killactive"
-        "$mod, V, togglefloating"
-        "$mod, F, fullscreen"
+      -- Workspaces 1-10
+      for i = 1, 10 do
+          local key = i % 10
+          hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
+          hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+      end
 
-        # Focus movement
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-        "$mod, h, movefocus, l"
-        "$mod, l, movefocus, r"
-        "$mod, k, movefocus, u"
-        "$mod, j, movefocus, d"
+      -- Mouse Dragging
+      hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+      hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
-        # Screenshot
-        ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
-      ]
-      ++ (
-        # Workspaces 1-10 keybindings
-        builtins.concatLists (builtins.genList (i:
-          let
-            ws = i + 1;
-            key = toString (if ws == 10 then 0 else ws);
-          in [
-            "$mod, ${key}, workspace, ${toString ws}"
-            "$mod SHIFT, ${key}, movetoworkspace, ${toString ws}"
-          ]
-        ) 10)
-      );
+      -- Fn Keys (Audio & Brightness)
+      hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
+      hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true, repeating = true })
+      hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, repeating = true })
+      hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true })
+      hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set 5%+"), { locked = true, repeating = true })
+      hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"), { locked = true, repeating = true })
 
-      bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-      ];
+      -- Media keys
+      hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+      hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
+      hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
-      bindel = [
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
-      ];
-
-      bindl = [
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPrev, exec, playerctl previous"
-      ];
-    };
+      -- Screenshot
+      hl.bind("Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | wl-copy"))
+    '';
   };
 }
