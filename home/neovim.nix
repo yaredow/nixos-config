@@ -31,6 +31,10 @@
       nil # Nix Language Server
       nixfmt # Official Nix formatter
     ];
+
+    # Prevent Home Manager from writing an individual ~/.config/nvim/init.lua,
+    # since we manage the entire directory via xdg.configFile."nvim"
+    sideloadInitLua = true;
   };
 
   # Deploy the modular Neovim configuration as an out-of-store symlink.
