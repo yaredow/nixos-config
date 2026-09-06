@@ -125,14 +125,10 @@ in
         };
 
         backlight = {
-          format = "{icon}";
-          format-icons = [
-            "󰃞"
-            "󰃟"
-            "󰃠"
-          ];
+          format = "";
           on-scroll-up = "brightnessctl set 5%+";
           on-scroll-down = "brightnessctl set 5%-";
+          tooltip-format = "Brightness: {percent}%";
         };
 
         network = {
@@ -228,6 +224,8 @@ in
         font-family: "${theme.fonts.mono}", "JetBrainsMono Nerd Font", monospace;
         font-size: 13px;
         min-height: 0;
+        box-shadow: none;
+        text-shadow: none;
       }
 
       window#waybar {
@@ -252,6 +250,10 @@ in
       }
 
       #workspaces button {
+        box-shadow: none;
+        text-shadow: none;
+        background-image: none;
+        border: none;
         padding: 0 6px;
         color: ${theme.colors.text};
         background: transparent;
@@ -261,17 +263,29 @@ in
       }
 
       #workspaces button.empty {
-        color: ${theme.colors.overlay};
-        opacity: 0.45;
+        box-shadow: none;
+        text-shadow: none;
+        background-image: none;
+        border: none;
+        color: ${theme.colors.subtext};
+        opacity: 0.65;
       }
 
       #workspaces button.active {
+        box-shadow: none;
+        text-shadow: none;
+        background-image: none;
+        border: none;
         color: ${theme.colors.accent};
         opacity: 1;
         font-weight: bold;
       }
 
       #workspaces button:hover {
+        box-shadow: none;
+        text-shadow: none;
+        background-image: none;
+        border: none;
         opacity: 1;
         color: ${theme.colors.accent};
         background: alpha(${theme.colors.surface0}, 0.6);
@@ -336,34 +350,28 @@ in
       #network:hover,
       #bluetooth:hover,
       #cpu:hover,
-      #battery:hover,
+      #battery:hover {
+        background: alpha(${theme.colors.surface0}, 0.6);
+      }
+
       #custom-power:hover {
+        color: ${theme.colors.red};
         background: alpha(${theme.colors.surface0}, 0.6);
       }
 
       #pulseaudio.muted {
         color: ${theme.colors.overlay};
+        opacity: 0.5;
       }
 
       #network.disconnected {
-        color: ${theme.colors.red};
+        color: ${theme.colors.overlay};
+        opacity: 0.5;
       }
 
       #bluetooth.disabled {
         color: ${theme.colors.overlay};
-      }
-
-      #bluetooth.connected {
-        color: ${theme.colors.blue};
-      }
-
-      #cpu {
-        color: ${theme.colors.cyan};
-      }
-
-      #battery.charging,
-      #battery.plugged {
-        color: ${theme.colors.cyan};
+        opacity: 0.5;
       }
 
       #battery.warning:not(.charging) {
@@ -375,7 +383,6 @@ in
       }
 
       #custom-power {
-        color: ${theme.colors.red};
         padding-right: 10px;
       }
 
