@@ -16,13 +16,59 @@
   # Kitty terminal
   programs.kitty = {
     enable = true;
+    themeFile = "tokyo_night_night";
+
     settings = {
+      # Font & text
       font_family = "CaskaydiaCove Nerd Font";
       font_size = 10;
-      background_opacity = "0.90";
-      window_padding_width = 10;
+      disable_ligatures = "cursor";
+
+      # Window geometry & appearance
+      hide_window_decorations = "yes";
+      window_padding_width = 8;
+      remember_window_size = false;
+      initial_window_width = 800;
+      initial_window_height = 550;
       confirm_os_window_close = 0;
+
+      # Transparency & dimming
+      background_opacity = "0.98";
+      inactive_text_alpha = "0.8";
+
+      # Tab bar
+      tab_bar_style = "powerline";
+      tab_powerline_style = "slanted";
+
+      # Layouts
+      enabled_layouts = "Tall, Fat, Grid, *";
+
+      # Scrollback & rendering performance
+      scrollback_lines = 10000;
+      sync_to_monitor = true;
+
+      # Mouse & behavior
+      allow_remote_control = true;
+      mouse_hide_wait = "-3.0";
+      strip_trailing_spaces = "smart";
       enable_audio_bell = false;
+    };
+
+    keybindings = {
+      # Navigation across split windows
+      "ctrl+alt+h" = "neighboring_window left";
+      "ctrl+alt+j" = "neighboring_window down";
+      "ctrl+alt+k" = "neighboring_window up";
+      "ctrl+alt+l" = "neighboring_window right";
+
+      # Window splits
+      "ctrl+shift+enter" = "launch --location=vsplit";
+
+      # Font resizing
+      "kitty_mod+plus" = "change_font_size all +2.0";
+      "kitty_mod+minus" = "change_font_size all -2.0";
+      "kitty_mod+0" = "change_font_size all 0";
     };
   };
 }
+
