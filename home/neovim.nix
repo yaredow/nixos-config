@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   programs.neovim = {
     enable = true;
@@ -33,6 +33,8 @@
     ];
   };
 
-  # Deploy the modular Neovim configuration to ~/.config/nvim
-  xdg.configFile."nvim".source = ./nvim;
+  # Deploy the modular Neovim configuration as an out-of-store symlink.
+  # This makes ~/.config/nvim point directly to ~/nixos-config/home/nvim,
+  # keeping lazy-lock.json writable and allowing live edits without rebuilding.
+  xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/home/nvim";
 }

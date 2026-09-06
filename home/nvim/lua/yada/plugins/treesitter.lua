@@ -16,6 +16,7 @@ return {
       'luadoc',
       'markdown',
       'markdown_inline',
+      'nix',
       'query',
       'sql',
       'tsx',

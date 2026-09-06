@@ -17,6 +17,7 @@ return {
       },
     },
     formatters_by_ft = {
+      nix = { 'nixfmt' },
       go = { 'goimports', 'gofumpt' },
       javascript = { 'prettier' },
       javascriptreact = { 'prettier' },

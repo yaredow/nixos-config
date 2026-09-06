@@ -32,6 +32,15 @@ local servers = {
       javascript = { inlayHints = { parameterTypes = { enabled = true } } },
     },
   },
+  nil_ls = {
+    settings = {
+      ['nil'] = {
+        formatting = {
+          command = { 'nixfmt' },
+        },
+      },
+    },
+  },
   stylua = {},
   qmlls = { cmd = { '/usr/lib/qt6/bin/qmlls' } },
 
