@@ -15,7 +15,6 @@
   home.packages = with pkgs; [
     git
     fastfetch
-    btop
     bat
     ripgrep
     fd
@@ -34,6 +33,14 @@
     nautilus
     file-roller
   ];
+
+  programs.btop = {
+    enable = true;
+    settings = {
+      color_theme = "tokyo-night";
+      theme_background = false;
+    };
+  };
 
   fonts.fontconfig.enable = true;
 

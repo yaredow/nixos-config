@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, theme, ... }:
 {
   # Fish shell
   programs.fish = {
@@ -113,10 +113,10 @@
     };
   };
 
-  # FZF (fuzzy finder with Fish shell integration: Ctrl+R history, Ctrl+T file, Alt+C cd)
   programs.fzf = {
     enable = true;
     enableFishIntegration = true;
+    historyWidget.fish.command = "";
   };
 
   # Eza (modern ls with git and icons)
@@ -138,18 +138,18 @@
       right_format = "$cmd_duration $time";
 
       palettes.tokyonight_night = {
-        fg = "#c0caf5";
-        bg = "#1a1b26";
-        blue = "#7aa2f7";
-        red = "#f7768e";
-        green = "#9ece6a";
-        yellow = "#e0af68";
-        purple = "#bb9af7";
-        teal = "#7dcfff";
+        fg = theme.colors.text;
+        bg = theme.colors.base;
+        blue = theme.colors.accent;
+        red = theme.colors.red;
+        green = theme.colors.green;
+        yellow = theme.colors.yellow;
+        purple = theme.colors.purple;
+        teal = theme.colors.cyan;
       };
 
       directory = {
-        style = "bold #7aa2f7";
+        style = "bold ${theme.colors.accent}";
         truncation_length = 5;
         truncate_to_repo = true;
         substitutions = {
@@ -165,13 +165,13 @@
 
       git_branch = {
         symbol = " ";
-        style = "bold #bb9af7";
+        style = "bold ${theme.colors.purple}";
         truncation_length = 15;
         format = "[$symbol$branch(:$remote_branch)]($style) ";
       };
 
       git_status = {
-        style = "#e0af68";
+        style = "${theme.colors.yellow}";
         stashed = " \${count} ";
         ahead = "󰞙 \${count} ";
         behind = "󰞒 \${count} ";
@@ -195,64 +195,64 @@
       };
 
       character = {
-        success_symbol = " [󰁔](bold #7aa2f7) ";
-        error_symbol = " [  ](bold #f7768e) ";
+        success_symbol = " [󰁔](bold ${theme.colors.accent}) ";
+        error_symbol = " [  ](bold ${theme.colors.red}) ";
       };
 
       cmd_duration = {
         min_time = 2000;
-        style = "italic #e0af68";
+        style = "italic ${theme.colors.yellow}";
         format = "took [$duration]($style)";
       };
 
       time = {
         disabled = false;
         time_format = "%R";
-        style = "dimmed #565f89";
+        style = "dimmed ${theme.colors.overlay}";
         format = "[$time]($style)";
       };
 
       nodejs = {
         symbol = "• 󰎙 ";
         format = "[$symbol]($style)";
-        style = "bold #7aa2f7";
+        style = "bold ${theme.colors.accent}";
       };
 
       golang = {
         symbol = "•  ";
         format = "[$symbol]($style)";
-        style = "bold #7dcfff";
+        style = "bold ${theme.colors.cyan}";
       };
 
       rust = {
         symbol = "• 󱘗 ";
         format = "[$symbol]($style)";
-        style = "bold #ff9e64";
+        style = "bold ${theme.colors.orange}";
       };
 
       python = {
         symbol = "• 󱔎 ";
         format = "[$symbol]($style)";
-        style = "bold #e0af68";
+        style = "bold ${theme.colors.yellow}";
       };
 
       lua = {
         symbol = "•  ";
         format = "[$symbol]($style)";
-        style = "bold #7aa2f7";
+        style = "bold ${theme.colors.accent}";
       };
 
       docker_context = {
         symbol = "•  ";
         format = "[$symbol]($style)";
         only_with_files = true;
-        style = "bold #7dcfff";
+        style = "bold ${theme.colors.cyan}";
       };
 
       nix_shell = {
         symbol = "•  ";
         format = "[$symbol$state]($style) ";
-        style = "bold #7aa2f7";
+        style = "bold ${theme.colors.accent}";
       };
 
       os = {
@@ -269,7 +269,7 @@
     themeFile = "tokyo_night_night";
 
     settings = {
-      font_family = "CaskaydiaCove Nerd Font";
+      font_family = theme.fonts.mono;
       font_size = 10;
       disable_ligatures = "cursor";
 
@@ -280,17 +280,17 @@
       initial_window_height = 550;
       confirm_os_window_close = 0;
 
-      # Transparency & dimming
       background_opacity = "0.98";
       inactive_text_alpha = "0.8";
+
+      active_border_color = theme.colors.accent;
+      inactive_border_color = theme.colors.surface2;
 
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
 
-      # Layouts
       enabled_layouts = "Tall, Fat, Grid, *";
 
-      # Scrollback & rendering performance
       scrollback_lines = 10000;
       sync_to_monitor = true;
 
@@ -311,6 +311,32 @@
       "kitty_mod+plus" = "change_font_size all +2.0";
       "kitty_mod+minus" = "change_font_size all -2.0";
       "kitty_mod+0" = "change_font_size all 0";
+    };
+  };
+
+  # Atuin shell history
+  programs.atuin = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      enter_accept = true;
+      theme.name = "tokyo-night";
+    };
+    themes."tokyo-night" = {
+      theme = {
+        name = "tokyo-night";
+        parent = "default";
+      };
+      colors = {
+        AlertInfo = theme.colors.cyan;
+        AlertWarn = theme.colors.yellow;
+        AlertError = theme.colors.red;
+        Annotation = theme.colors.surface2;
+        Base = theme.colors.subtext;
+        Guidance = theme.colors.orange;
+        Important = theme.colors.accent;
+        Title = theme.colors.purple;
+      };
     };
   };
 }
