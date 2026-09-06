@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, theme, ... }:
 {
   # XDG desktop portal configuration
   xdg.portal = {
@@ -23,11 +23,11 @@
     configType = "lua";
 
     extraConfig = ''
-      -- TokyoNight theme colors
+      -- TokyoNight theme colors (from centralized theme)
       local theme = {
-          active1 = "rgba(7aa2f7ee)",
-          active2 = "rgba(bb9af7ee)",
-          inactive = "rgba(565f89aa)",
+          active1 = "rgba(${theme.helpers.strip theme.colors.accent}ee)",
+          active2 = "rgba(${theme.helpers.strip theme.colors.purple}ee)",
+          inactive = "rgba(${theme.helpers.strip theme.colors.overlay}aa)",
       }
 
       -----------------------

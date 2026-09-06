@@ -36,6 +36,9 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
+            home-manager.extraSpecialArgs = {
+              theme = import ./theme;
+            };
             home-manager.users.yada = import ./home;
           }
         ];

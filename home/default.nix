@@ -5,6 +5,7 @@
     ./hyprland.nix
     ./neovim.nix
     ./fuzzel.nix
+    ./gtk.nix
   ];
 
   home.username = "yada";

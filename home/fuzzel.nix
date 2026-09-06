@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, theme, ... }:
 {
   programs.fuzzel = {
     enable = true;
     settings = {
       main = {
-        font = "CaskaydiaCove Nerd Font:size=11";
+        font = "${theme.fonts.mono}:size=${toString theme.fonts.size}";
         prompt = "\"❯ \"";
         icon-theme = "Adwaita";
         terminal = "kitty";
@@ -20,17 +20,17 @@
       };
 
       colors = {
-        background = "1a1b26dd";
-        text = "c0caf5ff";
-        prompt = "7aa2f7ff";
-        placeholder = "565f89ff";
-        input = "c0caf5ff";
-        match = "7aa2f7ff";
-        selection = "3b4261ee";
-        selection-text = "c0caf5ff";
-        selection-match = "7dcfffff";
-        border = "7aa2f7ff";
-        counter = "565f89ff";
+        background = theme.helpers.alpha theme.colors.base "dd";
+        text = theme.helpers.alpha theme.colors.text "ff";
+        prompt = theme.helpers.alpha theme.colors.accent "ff";
+        placeholder = theme.helpers.alpha theme.colors.overlay "ff";
+        input = theme.helpers.alpha theme.colors.text "ff";
+        match = theme.helpers.alpha theme.colors.accent "ff";
+        selection = theme.helpers.alpha theme.colors.selection "ee";
+        selection-text = theme.helpers.alpha theme.colors.text "ff";
+        selection-match = theme.helpers.alpha theme.colors.cyan "ff";
+        border = theme.helpers.alpha theme.colors.accent "ff";
+        counter = theme.helpers.alpha theme.colors.overlay "ff";
       };
 
       border = {
