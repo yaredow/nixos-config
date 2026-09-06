@@ -45,5 +45,5 @@ rec {
     size = 11;
   };
 
-  wallpaper = ./wallpaper.jpg;
+  wallpaper = ./oma-nix.jpg;
 }

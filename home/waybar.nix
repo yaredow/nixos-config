@@ -242,7 +242,7 @@ in
       }
 
       window#waybar {
-        background: alpha(${theme.colors.crust}, 0.85);
+        background: ${theme.colors.crust};
         border-bottom: 1px solid alpha(${theme.colors.surface2}, 0.35);
         color: ${theme.colors.text};
       }
