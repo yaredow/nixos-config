@@ -32,6 +32,7 @@
     settings = {
       add_newline = false;
       palette = "tokyonight_night";
+      right_format = "$cmd_duration $time";
 
       palettes.tokyonight_night = {
         fg = "#c0caf5";
@@ -44,30 +45,118 @@
         teal = "#7dcfff";
       };
 
+      # Smart directory styling with breadcrumbs & git repo truncation
       directory = {
-        home_symbol = "󰋞 ";
-        read_only = " 󰌾";
-        truncation_length = 3;
-        truncation_symbol = "…/";
+        style = "bold #7aa2f7";
+        truncation_length = 5;
+        truncate_to_repo = true;
+        substitutions = {
+          "~" = "  ";
+          "/" = "  ";
+          "Documents" = " 󰧮 ";
+          "Downloads" = "  ";
+          "Music" = "  ";
+          "Pictures" = "  ";
+          "Sources" = "  ";
+        };
       };
 
+      # Detailed Git branch
       git_branch = {
-        symbol = " ";
-        style = "bold purple";
+        symbol = " ";
+        style = "bold #bb9af7";
+        truncation_length = 15;
+        format = "[$symbol$branch(:$remote_branch)]($style) ";
       };
 
+      # Comprehensive Git status with badges & exact counts
       git_status = {
-        style = "bold yellow";
+        style = "#e0af68";
+        stashed = " \${count} ";
+        ahead = "󰞙 \${count} ";
+        behind = "󰞒 \${count} ";
+        diverged = "󰵉 \${ahead_count} \${behind_count} ";
+        conflicted = " \${count} ";
+        deleted = " \${count} ";
+        renamed = " \${count} ";
+        modified = " \${count} ";
+        staged = " \${count} ";
+        untracked = "󱅘 \${count} ";
       };
 
+      git_state = {
+        rebase = "rebasing";
+        merge = "merging";
+        revert = "reverting";
+        cherry_pick = " picking";
+        bisect = "bisecting";
+        am = "am'ing";
+        am_or_rebase = "am/rebase";
+      };
+
+      # Sleek chevron on success, visual alert flags on error
       character = {
-        success_symbol = "[❯](bold green)";
-        error_symbol = "[❯](bold red)";
+        success_symbol = " [󰁔](bold #7aa2f7) ";
+        error_symbol = " [  ](bold #f7768e) ";
+      };
+
+      # Execution duration (only for commands taking > 2 seconds)
+      cmd_duration = {
+        min_time = 2000;
+        style = "italic #e0af68";
+        format = "took [$duration]($style)";
+      };
+
+      # Clean muted clock on the right
+      time = {
+        disabled = false;
+        time_format = "%R";
+        style = "dimmed #565f89";
+        format = "[$time]($style)";
+      };
+
+      # Minimalist bullet-prefixed language indicators
+      nodejs = {
+        symbol = "• 󰎙 ";
+        format = "[$symbol]($style)";
+        style = "bold #7aa2f7";
+      };
+
+      golang = {
+        symbol = "•  ";
+        format = "[$symbol]($style)";
+        style = "bold #7dcfff";
+      };
+
+      rust = {
+        symbol = "• 󱘗 ";
+        format = "[$symbol]($style)";
+        style = "bold #ff9e64";
+      };
+
+      python = {
+        symbol = "• 󱔎 ";
+        format = "[$symbol]($style)";
+        style = "bold #e0af68";
+      };
+
+      lua = {
+        symbol = "•  ";
+        format = "[$symbol]($style)";
+        style = "bold #7aa2f7";
+      };
+
+      docker_context = {
+        symbol = "•  ";
+        format = "[$symbol]($style)";
+        only_with_files = true;
+        style = "bold #7dcfff";
       };
 
       nix_shell = {
-        symbol = " ";
-        format = "via [$symbol$state]($style) ";
+        symbol = "•  ";
+        format = "[$symbol$state]($style) ";
+        style = "bold #7aa2f7";
       };
 
       os = {
