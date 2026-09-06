@@ -44,4 +44,6 @@ rec {
     mono = "CaskaydiaCove Nerd Font";
     size = 11;
   };
+
+  wallpaper = ./wallpaper.jpg;
 }

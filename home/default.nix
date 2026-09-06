@@ -9,6 +9,7 @@
     ./waybar.nix
     ./osd.nix
     ./notifications.nix
+    ./hyprpaper.nix
   ];
 
   home.username = "yada";
