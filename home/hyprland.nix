@@ -1,6 +1,5 @@
 { pkgs, theme, ... }:
 {
-  # XDG desktop portal configuration
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
@@ -19,7 +18,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = null; # Handled by NixOS system module (modules/desktop.nix)
+    package = null;
     configType = "lua";
 
     extraConfig = ''

@@ -9,8 +9,40 @@
   time.timeZone = "Africa/Addis_Ababa";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    wifi.backend = "iwd";
+  };
+
+  networking.wireless.iwd = {
+    enable = true;
+    settings = {
+      General = {
+        EnableNetworkConfiguration = false;
+      };
+      Network = {
+        EnableIPv6 = true;
+      };
+    };
+  };
+
+  services.dbus.packages = [
+    (pkgs.writeTextDir "share/dbus-1/system.d/99-iwd-agent.conf" ''
+      <!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+      <busconfig>
+        <policy group="wheel">
+          <allow send_destination="net.connman.iwd"/>
+          <allow send_interface="net.connman.iwd.Agent"/>
+          <allow send_interface="net.connman.iwd.SignalLevelAgent"/>
+        </policy>
+        <policy group="networkmanager">
+          <allow send_destination="net.connman.iwd"/>
+          <allow send_interface="net.connman.iwd.Agent"/>
+          <allow send_interface="net.connman.iwd.SignalLevelAgent"/>
+        </policy>
+      </busconfig>
+    '')
+  ];
 
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

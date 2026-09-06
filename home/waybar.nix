@@ -145,7 +145,7 @@ in
           tooltip-format-wifi = "{essid} ({signalStrength}%)\nIP: {ipaddr}\nGW: {gwaddr}";
           tooltip-format-ethernet = "{ifname}\nIP: {ipaddr}";
           tooltip-format-disconnected = "Disconnected";
-          on-click = "kitty --title impala -e impala";
+          on-click = "${pkgs.kitty}/bin/kitty --title impala -e ${pkgs.impala}/bin/impala";
         };
 
         bluetooth = {
@@ -156,7 +156,7 @@ in
           tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
           tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
           tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
-          on-click = "kitty --title bluetui -e bluetui";
+          on-click = "${pkgs.kitty}/bin/kitty --title bluetui -e ${pkgs.bluetui}/bin/bluetui";
           on-click-right = "rfkill toggle bluetooth";
         };
 
@@ -164,7 +164,7 @@ in
           format = "󰍛";
           tooltip = true;
           tooltip-format = "CPU: {usage}%";
-          on-click = "kitty --title btop -e btop";
+          on-click = "${pkgs.kitty}/bin/kitty --title btop -e ${pkgs.btop}/bin/btop";
         };
 
         battery = {
