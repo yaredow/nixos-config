@@ -19,6 +19,7 @@
     fd
     wget
     unzip
+    qbittorrent
 
     fuzzel
     grim
@@ -31,4 +32,13 @@
   ];
 
   fonts.fontconfig.enable = true;
+
+  home.pointerCursor = {
+    enable = true;
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
+    x11.enable = true;
+  };
 }

@@ -87,6 +87,11 @@
               },
           },
 
+          cursor = {
+              hide_on_key_press = true,
+              warp_on_change_workspace = 1,
+          },
+
           animations = {
               enabled = true,
           },
@@ -116,10 +121,13 @@
       -- Autostart
       hl.on("hyprland.start", function()
           hl.exec_cmd("nm-applet --indicator")
+          hl.exec_cmd("hyprctl setcursor Adwaita 24")
       end)
 
       -- Environment variables
+      hl.env("XCURSOR_THEME", "Adwaita")
       hl.env("XCURSOR_SIZE", "24")
+      hl.env("HYPRCURSOR_THEME", "Adwaita")
       hl.env("HYPRCURSOR_SIZE", "24")
       hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
       hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
