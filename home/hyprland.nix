@@ -23,7 +23,6 @@
     configType = "lua";
 
     extraConfig = ''
-      -- TokyoNight theme colors (from centralized theme)
       local theme = {
           active1 = "rgba(${theme.helpers.strip theme.colors.accent}ee)",
           active2 = "rgba(${theme.helpers.strip theme.colors.purple}ee)",
@@ -273,9 +272,6 @@
           center = true,
       })
 
-      ---------------------------------
-      ---- LAYER RULES (BLUR/FROST) ----
-      ---------------------------------
       hl.layer_rule({
           name = "fuzzel-blur",
           match = { namespace = "fuzzel" },
