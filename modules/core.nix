@@ -31,6 +31,9 @@
   # Fish shell (system-level registration in /etc/shells)
   programs.fish.enable = true;
 
+  # Run unpatched dynamic binaries on NixOS (for Mason, Treesitter, etc.)
+  programs.nix-ld.enable = true;
+
   # User account (initial password to prevent lockout on bare metal)
   users.users.yada = {
     isNormalUser = true;

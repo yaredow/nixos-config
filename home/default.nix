@@ -3,6 +3,7 @@
   imports = [
     ./terminal.nix
     ./hyprland.nix
+    ./neovim.nix
   ];
 
   home.username = "yada";
@@ -16,7 +17,6 @@
     bat
     ripgrep
     fd
-    neovim
     wget
     unzip
 
