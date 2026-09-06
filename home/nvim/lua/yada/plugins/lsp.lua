@@ -148,7 +148,15 @@ return {
     local ensure_installed = vim.tbl_values(mason_names)
     vim.list_extend(ensure_installed, { 'eslint_d', 'golangci-lint', 'prettier' }) -- used by nvim-lint and conform.nvim
 
-    require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+    -- Filter out tools that are already available in PATH (e.g. provided by Nix)
+    local to_install = {}
+    for _, tool in ipairs(ensure_installed) do
+      if vim.fn.executable(tool) ~= 1 then
+        table.insert(to_install, tool)
+      end
+    end
+
+    require('mason-tool-installer').setup { ensure_installed = to_install }
 
     for name, server in pairs(servers) do
       if name == 'gopls' and vim.fn.executable 'go' ~= 1 then goto continue end

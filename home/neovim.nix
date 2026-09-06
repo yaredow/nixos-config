@@ -20,6 +20,10 @@
       wget
       curl
 
+      # Runtime environments
+      nodejs # Provides node and npm for Mason & JS/TS tooling
+      go     # Provides go compiler for Mason & Go tooling
+
       # Language Servers & Formatters
       lua-language-server
       stylua
@@ -27,6 +31,7 @@
       golangci-lint
       typescript-language-server
       prettierd
+      prettier
       eslint_d
       nil # Nix Language Server
       nixfmt # Official Nix formatter
