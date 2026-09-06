@@ -272,9 +272,30 @@
           center = true,
       })
 
+      hl.window_rule({
+          name = "float-bluetui",
+          match = { title = "^bluetui$" },
+          float = true,
+          center = true,
+      })
+
+      hl.window_rule({
+          name = "float-impala",
+          match = { title = "^impala$" },
+          float = true,
+          center = true,
+      })
+
       hl.layer_rule({
           name = "fuzzel-blur",
           match = { namespace = "fuzzel" },
+          blur = true,
+          ignore_alpha = 0.5,
+      })
+
+      hl.layer_rule({
+          name = "waybar-blur",
+          match = { namespace = "waybar" },
           blur = true,
           ignore_alpha = 0.5,
       })

@@ -6,6 +6,7 @@
     ./neovim.nix
     ./fuzzel.nix
     ./gtk.nix
+    ./waybar.nix
   ];
 
   home.username = "yada";
@@ -29,6 +30,7 @@
     impala
     yazi
     mpv
+    yt-dlp
     nautilus
     file-roller
   ];
