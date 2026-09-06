@@ -8,34 +8,26 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    antigravity-nix = {
+      url = "github:jacopone/antigravity-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }: {
+  outputs = { self, nixpkgs, home-manager, antigravity-nix, ... }: {
     nixosConfigurations = {
 
-      # Host 1: Virtual Machine
-      nixos = nixpkgs.lib.nixosSystem {
+      loki = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./hosts/nixos
-          ./modules/core.nix
-          ./modules/hardware.nix
-          ./modules/desktop.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.yada = import ./home;
+	  {
+          nixpkgs.overlays = [
+            antigravity-nix.overlays.default
+          ];
           }
-        ];
-      };
 
-      # Host 2: Physical Laptop
-      laptop = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/laptop
+          ./hosts/loki
           ./modules/core.nix
           ./modules/hardware.nix
           ./modules/desktop.nix

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, inputs, ... }:
 {
   # Bootloader (systemd-boot with generation limit)
   boot.loader.systemd-boot.enable = true;
@@ -15,6 +15,10 @@
   # Nix settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
+
+  environment.systemPackages = with pkgs; [
+  	antigravity-cli
+  ];
 
   # Automatic Garbage Collection & Store Optimization
   nix.gc = {

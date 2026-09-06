@@ -9,7 +9,7 @@
     shellAliases = {
       ll = "ls -la";
       v = "nvim";
-      rebuild = "sudo nixos-rebuild switch --flake ~/nixos-config";
+      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos";
     };
   };
 
@@ -18,7 +18,7 @@
     enable = true;
     settings = {
       font_family = "CaskaydiaCove Nerd Font";
-      font_size = 11;
+      font_size = 10;
       background_opacity = "0.90";
       window_padding_width = 10;
       confirm_os_window_close = 0;

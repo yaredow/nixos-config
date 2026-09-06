@@ -2,6 +2,7 @@
 {
   imports = [
     ./terminal.nix
+    ./hyprland.nix
   ];
 
   home.username = "yada";
@@ -23,10 +24,8 @@
     grim
     slurp
     wl-clipboard
+    networkmanagerapplet
   ];
-
-  xdg.configFile."hypr/hyprland.lua".source = ./hyprland.lua;
-  xdg.configFile."hypr/hyprland.conf".source = ./hyprland.conf;
 
   fonts.fontconfig.enable = true;
 }
