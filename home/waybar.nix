@@ -28,11 +28,11 @@ in
         ];
 
         modules-center = [
+          "idle_inhibitor"
           "clock"
         ];
 
         modules-right = [
-          "idle_inhibitor"
           "pulseaudio"
           "backlight"
           "network"
@@ -53,7 +53,7 @@ in
           format = "{icon}";
           format-icons = {
             active = "󱓻";
-            default = "{name}";
+            "10" = "0";
           };
           persistent-workspaces = {
             "*" = 5;
@@ -77,9 +77,20 @@ in
           tooltip = true;
         };
 
+        idle_inhibitor = {
+          format = "{icon}";
+          format-icons = {
+            activated = "󰅶";
+            deactivated = "󰅶";
+          };
+          tooltip = true;
+          tooltip-format-activated = "Keep awake (on)";
+          tooltip-format-deactivated = "Keep awake (off)";
+        };
+
         clock = {
-          format = "{:%a %d %b  %H:%M}";
-          format-alt = "{:%Y-%m-%d  %H:%M:%S}";
+          format = "{:%A %H:%M}";
+          format-alt = "{:%A %H:%M:%S}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
           calendar = {
             mode = "month";
@@ -96,20 +107,9 @@ in
           };
         };
 
-        idle_inhibitor = {
-          format = "{icon}";
-          format-icons = {
-            activated = "󰅶";
-            deactivated = "󰅶";
-          };
-          tooltip = true;
-          tooltip-format-activated = "Keep awake (on)";
-          tooltip-format-deactivated = "Keep awake (off)";
-        };
-
         pulseaudio = {
-          format = "{icon} {volume}%";
-          format-muted = " {volume}%";
+          format = "{icon}";
+          format-muted = "";
           format-icons = {
             headphone = "󰋋";
             default = [
@@ -125,7 +125,7 @@ in
         };
 
         backlight = {
-          format = "{icon} {percent}%";
+          format = "{icon}";
           format-icons = [
             "󰃞"
             "󰃟"
@@ -136,8 +136,8 @@ in
         };
 
         network = {
-          format-wifi = "{icon} {signalStrength}%";
-          format-ethernet = "󰈀 {ipaddr}";
+          format-wifi = "{icon}";
+          format-ethernet = "󰈀";
           format-disconnected = "󰤮";
           format-icons = [
             "󰤯"
@@ -155,8 +155,8 @@ in
         bluetooth = {
           format = "󰂯";
           format-disabled = "󰂲";
-          format-connected = "󰂱 {device_alias}";
-          format-connected-battery = "󰂱 {device_alias} ({device_battery_percentage}%)";
+          format-connected = "󰂱";
+          format-connected-battery = "󰂱";
           tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
           tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
           tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
@@ -165,8 +165,9 @@ in
         };
 
         cpu = {
-          format = "󰍛 {usage}%";
+          format = "󰍛";
           tooltip = true;
+          tooltip-format = "CPU: {usage}%";
           on-click = "kitty --title btop -e btop";
         };
 
@@ -175,9 +176,9 @@ in
             warning = 20;
             critical = 10;
           };
-          format = "{icon} {capacity}%";
-          format-charging = "{icon} {capacity}%";
-          format-plugged = "󰂅 {capacity}%";
+          format = "{icon}";
+          format-charging = "{icon}";
+          format-plugged = "󰂅";
           format-icons = {
             default = [
               "󰁺"
@@ -204,7 +205,7 @@ in
               "󰂅"
             ];
           };
-          tooltip-format = "{timeTo} · Health: {health}%";
+          tooltip-format = "{capacity}% · {timeTo} · Health: {health}%";
         };
 
         tray = {
@@ -225,7 +226,7 @@ in
         border: none;
         border-radius: 0;
         font-family: "${theme.fonts.mono}", "JetBrainsMono Nerd Font", monospace;
-        font-size: 12px;
+        font-size: 13px;
         min-height: 0;
       }
 
@@ -282,15 +283,39 @@ in
         color: ${theme.colors.purple};
         background: alpha(${theme.colors.lighter}, 0.4);
         border-radius: 4px;
+        font-size: 12px;
+      }
+
+      #idle_inhibitor {
+        padding: 0 6px;
+        margin: 0 2px;
+        color: ${theme.colors.overlay};
+        opacity: 0.5;
+        border-radius: 4px;
+        transition: all 0.15s ease-in-out;
+      }
+
+      #idle_inhibitor.activated {
+        color: ${theme.colors.accent};
+        opacity: 1;
+      }
+
+      #idle_inhibitor:hover {
+        background: alpha(${theme.colors.surface0}, 0.6);
       }
 
       #clock {
         font-weight: 600;
         padding: 0 8px;
         color: ${theme.colors.text};
+        border-radius: 4px;
+        font-size: 12px;
       }
 
-      #idle_inhibitor,
+      #clock:hover {
+        background: alpha(${theme.colors.surface0}, 0.6);
+      }
+
       #pulseaudio,
       #backlight,
       #network,
@@ -299,14 +324,13 @@ in
       #battery,
       #tray,
       #custom-power {
-        padding: 0 7px;
+        padding: 0 8px;
         margin: 0 1px;
         color: ${theme.colors.text};
         border-radius: 4px;
         transition: all 0.15s ease-in-out;
       }
 
-      #idle_inhibitor:hover,
       #pulseaudio:hover,
       #backlight:hover,
       #network:hover,
@@ -315,16 +339,6 @@ in
       #battery:hover,
       #custom-power:hover {
         background: alpha(${theme.colors.surface0}, 0.6);
-      }
-
-      #idle_inhibitor {
-        color: ${theme.colors.overlay};
-        opacity: 0.5;
-      }
-
-      #idle_inhibitor.activated {
-        color: ${theme.colors.accent};
-        opacity: 1;
       }
 
       #pulseaudio.muted {
