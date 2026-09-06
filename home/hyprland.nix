@@ -272,6 +272,16 @@
           float = true,
           center = true,
       })
+
+      ---------------------------------
+      ---- LAYER RULES (BLUR/FROST) ----
+      ---------------------------------
+      hl.layer_rule({
+          name = "fuzzel-blur",
+          match = { namespace = "fuzzel" },
+          blur = true,
+          ignore_alpha = 0.5,
+      })
     '';
   };
 }

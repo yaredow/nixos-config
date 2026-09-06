@@ -4,6 +4,7 @@
     ./terminal.nix
     ./hyprland.nix
     ./neovim.nix
+    ./fuzzel.nix
   ];
 
   home.username = "yada";
@@ -21,7 +22,7 @@
     unzip
     qbittorrent
 
-    fuzzel
+    zoxide
     grim
     slurp
     wl-clipboard
