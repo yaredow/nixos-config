@@ -177,6 +177,8 @@
       hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
       hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
       hl.bind(secondMod .. " + F", hl.dsp.exec_cmd(fileManager))
+      hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("${pkgs.swaynotificationcenter}/bin/swaync-client -t -sw"))
+      hl.bind(secondMod .. " + N", hl.dsp.exec_cmd("${pkgs.swaynotificationcenter}/bin/swaync-client -d -sw"))
 
       -- Window operations
       hl.bind(mainMod .. " + Q", hl.dsp.window.close())
@@ -226,13 +228,14 @@
       hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
       hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
-      -- Fn Keys (Audio & Brightness)
-      hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
-      hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true, repeating = true })
-      hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, repeating = true })
-      hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true })
-      hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set 5%+"), { locked = true, repeating = true })
-      hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"), { locked = true, repeating = true })
+      -- Fn Keys (Audio & Brightness via SwayOSD)
+      hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("${pkgs.swayosd}/bin/swayosd-client --output-volume raise"), { locked = true, repeating = true })
+      hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("${pkgs.swayosd}/bin/swayosd-client --output-volume lower"), { locked = true, repeating = true })
+      hl.bind("XF86AudioMute", hl.dsp.exec_cmd("${pkgs.swayosd}/bin/swayosd-client --output-volume mute-toggle"), { locked = true, repeating = true })
+      hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("${pkgs.swayosd}/bin/swayosd-client --input-volume mute-toggle"), { locked = true, repeating = true })
+      hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("${pkgs.swayosd}/bin/swayosd-client --brightness raise"), { locked = true, repeating = true })
+      hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("${pkgs.swayosd}/bin/swayosd-client --brightness lower"), { locked = true, repeating = true })
+      hl.bind("Caps_Lock", hl.dsp.exec_cmd("${pkgs.swayosd}/bin/swayosd-client --caps-lock"), { locked = true })
 
       -- Media keys
       hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
@@ -295,6 +298,27 @@
       hl.layer_rule({
           name = "waybar-blur",
           match = { namespace = "waybar" },
+          blur = true,
+          ignore_alpha = 0.5,
+      })
+
+      hl.layer_rule({
+          name = "swayosd-blur",
+          match = { namespace = "swayosd" },
+          blur = true,
+          ignore_alpha = 0.5,
+      })
+
+      hl.layer_rule({
+          name = "swaync-cc-blur",
+          match = { namespace = "swaync-control-center" },
+          blur = true,
+          ignore_alpha = 0.5,
+      })
+
+      hl.layer_rule({
+          name = "swaync-noti-blur",
+          match = { namespace = "swaync-notification-window" },
           blur = true,
           ignore_alpha = 0.5,
       })

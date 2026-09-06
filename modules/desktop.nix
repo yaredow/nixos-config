@@ -46,6 +46,7 @@
 
   services.gvfs.enable = true;
   services.tumbler.enable = true;
+  services.udev.packages = [ pkgs.swayosd ];
 
   # Fonts
   fonts.packages = with pkgs; [

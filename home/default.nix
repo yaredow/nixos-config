@@ -7,6 +7,8 @@
     ./fuzzel.nix
     ./gtk.nix
     ./waybar.nix
+    ./osd.nix
+    ./notifications.nix
   ];
 
   home.username = "yada";

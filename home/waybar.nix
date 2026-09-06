@@ -38,6 +38,7 @@ in
           "bluetooth"
           "cpu"
           "battery"
+          "custom/notification"
           "tray"
           "custom/power"
         ];
@@ -196,6 +197,26 @@ in
           tooltip-format = "{capacity}% · {timeTo} · Health: {health}%";
         };
 
+        "custom/notification" = {
+          tooltip = false;
+          format = "{icon}";
+          format-icons = {
+            notification = "󱅫";
+            none = "󰂚";
+            dnd-notification = "󰂛";
+            dnd-none = "󰂛";
+            inhibited-notification = "󱅫";
+            inhibited-none = "󰂚";
+            dnd-inhibited-notification = "󰂛";
+            dnd-inhibited-none = "󰂛";
+          };
+          return-type = "json";
+          exec = "${pkgs.swaynotificationcenter}/bin/swaync-client -swb";
+          on-click = "${pkgs.swaynotificationcenter}/bin/swaync-client -t -sw";
+          on-click-right = "${pkgs.swaynotificationcenter}/bin/swaync-client -d -sw";
+          escape = true;
+        };
+
         tray = {
           icon-size = 16;
           spacing = 8;
@@ -327,6 +348,7 @@ in
       #bluetooth,
       #cpu,
       #battery,
+      #custom-notification,
       #tray,
       #custom-power {
         padding: 0 8px;
@@ -340,8 +362,18 @@ in
       #network:hover,
       #bluetooth:hover,
       #cpu:hover,
-      #battery:hover {
+      #battery:hover,
+      #custom-notification:hover {
         background: alpha(${theme.colors.surface0}, 0.6);
+      }
+
+      #custom-notification.notification {
+        color: ${theme.colors.accent};
+      }
+
+      #custom-notification.dnd {
+        color: ${theme.colors.overlay};
+        opacity: 0.5;
       }
 
       #custom-power:hover {
