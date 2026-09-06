@@ -171,20 +171,20 @@
       local terminal = "kitty"
       local menu = "fuzzel"
       local browser = "firefox"
+      local fileManager = "nautilus --new-window"
 
       -- App shortcuts
       hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
       hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
       hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
       hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
-      hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(browser))
+      hl.bind(secondMod .. " + F", hl.dsp.exec_cmd(fileManager))
 
       -- Window operations
       hl.bind(mainMod .. " + Q", hl.dsp.window.close())
       hl.bind(mainMod .. " + C", hl.dsp.window.close())
       hl.bind(secondMod .. " + T", hl.dsp.window.float({ action = "toggle" }))
       hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-      hl.bind(secondMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized" }))
       hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 
       -- Focus movement

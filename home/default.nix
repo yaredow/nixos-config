@@ -29,6 +29,8 @@
     impala
     yazi
     mpv
+    nautilus
+    file-roller
   ];
 
   fonts.fontconfig.enable = true;

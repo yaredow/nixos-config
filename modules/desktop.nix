@@ -44,6 +44,10 @@
   # Firefox
   programs.firefox.enable = true;
 
+  # Virtual filesystem & thumbnails (essential for Nautilus Trash, USB automounting, and file previews)
+  services.gvfs.enable = true;
+  services.tumbler.enable = true;
+
   # Fonts
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
