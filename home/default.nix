@@ -26,6 +26,8 @@
     wl-clipboard
     bluetui
     impala
+    yazi
+    mpv
   ];
 
   fonts.fontconfig.enable = true;

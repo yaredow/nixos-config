@@ -17,7 +17,8 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-  	antigravity-cli
+    antigravity-cli
+    fzf
   ];
 
   # Automatic Garbage Collection & Store Optimization
