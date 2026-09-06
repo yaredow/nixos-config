@@ -24,7 +24,8 @@
     grim
     slurp
     wl-clipboard
-    networkmanagerapplet
+    bluetui
+    impala
   ];
 
   fonts.fontconfig.enable = true;
