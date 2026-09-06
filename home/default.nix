@@ -22,7 +22,6 @@
     unzip
     qbittorrent
 
-    zoxide
     grim
     slurp
     wl-clipboard

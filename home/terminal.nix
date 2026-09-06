@@ -126,6 +126,12 @@
     git = true;
   };
 
+  # Zoxide (smarter cd command with z and zi)
+  programs.zoxide = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
   # Starship cross-shell prompt
   programs.starship = {
     enable = true;
