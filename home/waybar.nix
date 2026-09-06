@@ -34,7 +34,6 @@ in
 
         modules-right = [
           "pulseaudio"
-          "backlight"
           "network"
           "bluetooth"
           "cpu"
@@ -122,13 +121,6 @@ in
           on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
           on-click-right = "${pkgs.pavucontrol}/bin/pavucontrol";
           tooltip-format = "{desc} · {volume}%";
-        };
-
-        backlight = {
-          format = "";
-          on-scroll-up = "brightnessctl set 5%+";
-          on-scroll-down = "brightnessctl set 5%-";
-          tooltip-format = "Brightness: {percent}%";
         };
 
         network = {
@@ -331,7 +323,6 @@ in
       }
 
       #pulseaudio,
-      #backlight,
       #network,
       #bluetooth,
       #cpu,
@@ -346,7 +337,6 @@ in
       }
 
       #pulseaudio:hover,
-      #backlight:hover,
       #network:hover,
       #bluetooth:hover,
       #cpu:hover,
