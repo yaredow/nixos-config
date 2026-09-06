@@ -321,6 +321,8 @@
     settings = {
       enter_accept = true;
       theme.name = "tokyo-night";
+      show_numeric_shortcuts = false;
+      keymap_mode = "vim-insert";
     };
     themes."tokyo-night" = {
       theme = {
