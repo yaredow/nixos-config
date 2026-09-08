@@ -18,16 +18,44 @@
   outputs = { self, nixpkgs, home-manager, antigravity-nix, ... }: {
     nixosConfigurations = {
 
+      # Host 1: Physical Laptop
       loki = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-	  {
-          nixpkgs.overlays = [
-            antigravity-nix.overlays.default
-          ];
+          {
+            nixpkgs.overlays = [
+              antigravity-nix.overlays.default
+            ];
           }
 
           ./hosts/loki
+          ./modules/core.nix
+          ./modules/hardware.nix
+          ./modules/desktop.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.extraSpecialArgs = {
+              theme = import ./theme;
+            };
+            home-manager.users.yada = import ./home;
+          }
+        ];
+      };
+
+      # Host 2: Virtual Machine (virt-manager / QEMU)
+      vm = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          {
+            nixpkgs.overlays = [
+              antigravity-nix.overlays.default
+            ];
+          }
+
+          ./hosts/vm
           ./modules/core.nix
           ./modules/hardware.nix
           ./modules/desktop.nix
