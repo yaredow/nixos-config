@@ -10,7 +10,7 @@
       # Editors & system
       v = "nvim";
       c = "clear";
-      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos";
+      rebuild = "sudo nixos-rebuild switch --flake /home/yada/nixos-config";
 
       # Git
       gs = "git status";
