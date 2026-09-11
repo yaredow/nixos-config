@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demystifying Nix &amp; NixOS: From Arch to Nix Architect</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nix.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+  <style>
+    :root {
+      --bg: #1a1b26;
+      --bg-surface: #24283b;
+      --border: #414868;
+      --text: #c0caf5;
+      --text-muted: #7aa2f7;
+      --heading: #7dcfff;
+      --accent: #bb9af7;
+      --code-bg: #1f2335;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+    .layout {
+      display: flex;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      gap: 40px;
+    }
+    aside.toc {
+      position: sticky;
+      top: 20px;
+      width: 300px;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      flex-shrink: 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      font-size: 14px;
+    }
+    aside.toc h3 {
+      margin-top: 0;
+      color: var(--accent);
+      font-size: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    aside.toc a {
+      display: block;
+      color: var(--text);
+      text-decoration: none;
+      padding: 6px 8px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      transition: background 0.15s ease;
+    }
+    aside.toc a:hover {
+      background: rgba(122, 162, 247, 0.15);
+      color: var(--text-muted);
+    }
+    main.content {
+      flex: 1;
+      max-width: 900px;
+      min-width: 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 40px 50px;
+    }
+    h1, h2, h3, h4 {
+      color: var(--heading);
+      font-weight: 700;
+      scroll-margin-top: 20px;
+    }
+    h1 { font-size: 2.2rem; border-bottom: 2px solid var(--border); padding-bottom: 12px; }
+    h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 2.5rem; }
+    h3 { font-size: 1.3rem; margin-top: 2rem; color: var(--accent); }
+    a { color: #7aa2f7; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    pre {
+      background: var(--code-bg) !important;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 0.9em;
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    pre code {
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+    blockquote {
+      margin: 20px 0;
+      padding: 14px 20px;
+      border-left: 4px solid var(--accent);
+      background: rgba(187, 154, 247, 0.08);
+      border-radius: 0 6px 6px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14.5px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background: rgba(122, 162, 247, 0.12);
+      color: var(--heading);
+    }
+    tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    input[type="checkbox"] {
+      margin-right: 8px;
+      accent-color: var(--accent);
+      transform: scale(1.1);
+    }
+    ul { padding-left: 24px; }
+    li { margin-bottom: 6px; }
+    @media (max-width: 1000px) {
+      .layout { flex-direction: column; padding: 10px; }
+      aside.toc { width: 100%; position: static; max-height: 300px; }
+      main.content { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <h3>Quick Jump</h3>
+      <a href="#orientation-why-copy-pasting-failed-you">Orientation</a>
+      <a href="#master-glossary">Master Glossary</a>
+      <a href="#the-intensive-self-study-pacing-plan">Pacing Plan</a>
+      <a href="#stage-1-mental-model--the-arch-vs-nix-paradigm-shift">Stage 1: Mental Model</a>
+      <a href="#stage-2-plain-nix-as-a-tool-before-touching-an-os">Stage 2: Plain Nix Tooling</a>
+      <a href="#stage-3-the-nix-language--nix-repl">Stage 3: Nix Language</a>
+      <a href="#stage-4-derivations-and-the-nix-store-internals">Stage 4: Derivations &amp; Store</a>
+      <a href="#stage-5-nixpkgs-architecture-callpackage-and-overlays">Stage 5: Nixpkgs &amp; Overlays</a>
+      <a href="#stage-6-nixos--the-module-system--system-lifecycle">Stage 6: NixOS Modules</a>
+      <a href="#stage-7-flakes--hermetic-inputs-outputs-and-locks">Stage 7: Flakes</a>
+      <a href="#stage-8-home-manager--declarative-user-environments">Stage 8: Home Manager</a>
+      <a href="#stage-9-advanced-topics--custom-derivations-secrets--ifd">Stage 9: Advanced Topics</a>
+      <a href="#where-beginners-get-stuck-real-pitfalls--troubleshooting">Pitfalls &amp; Debugging</a>
+      <a href="#primary-sources--curated-reference-library">Primary Sources</a>
+    </aside>
+    <main class="content" id="app">Loading guide...</main>
+  </div>
+
+  <script id="raw-markdown" type="text/markdown"># Demystifying Nix &amp; NixOS: From Arch Power User to Nix Architect
+
+&gt; A complete, first-principles curriculum for Arch Linux and Omarchy veterans who want to stop copy-pasting configurations and truly master the Nix language, store, derivations, modules, and flakes.
+
+---
+
+## Table of Contents
+
+1. [Orientation: Why Copy-Pasting Failed You](#orientation-why-copy-pasting-failed-you)
+2. [Master Glossary](#master-glossary)
+3. [The Intensive Self-Study Pacing Plan](#the-intensive-self-study-pacing-plan)
+4. [Stage 1: Mental Model — The Arch vs. Nix Paradigm Shift](#stage-1-mental-model--the-arch-vs-nix-paradigm-shift)
+5. [Stage 2: Plain Nix as a Tool (Before Touching an OS)](#stage-2-plain-nix-as-a-tool-before-touching-an-os)
+6. [Stage 3: The Nix Language &amp; `nix repl`](#stage-3-the-nix-language--nix-repl)
+7. [Stage 4: Derivations and the Nix Store Internals](#stage-4-derivations-and-the-nix-store-internals)
+8. [Stage 5: Nixpkgs Architecture, `callPackage`, and Overlays](#stage-5-nixpkgs-architecture-callpackage-and-overlays)
+9. [Stage 6: NixOS — The Module System &amp; System Lifecycle](#stage-6-nixos--the-module-system--system-lifecycle)
+10. [Stage 7: Flakes — Hermetic Inputs, Outputs, and Locks](#stage-7-flakes--hermetic-inputs-outputs-and-locks)
+11. [Stage 8: Home Manager — Declarative User Environments](#stage-8-home-manager--declarative-user-environments)
+12. [Stage 9: Advanced Topics — Custom Derivations, Secrets &amp; IFD](#stage-9-advanced-topics--custom-derivations-secrets--ifd)
+13. [Where Beginners Get Stuck: Real Pitfalls &amp; Troubleshooting](#where-beginners-get-stuck-real-pitfalls--troubleshooting)
+14. [Primary Sources &amp; Curated Reference Library](#primary-sources--curated-reference-library)
+
+---
+
+## Orientation: Why Copy-Pasting Failed You
+
+If you come from Arch Linux or Omarchy, you understand Linux systems at an intimate mechanical level:
+- You know what `systemd` units look like and where they live (`/etc/systemd/system/`).
+- You understand how `pacman` unpacks `.pkg.tar.zst` archives into root (`/`), modifying files in `/usr/bin`, `/usr/lib`, and `/etc`.
+- You know how the dynamic linker (`ld-linux.so`) searches `/usr/lib` for `.so` files using `DT_RUNPATH` or `/etc/ld.so.conf`.
+- You hand-craft dotfiles in `~/.config/hypr/hyprland.conf`, `~/.config/waybar/config.jsonc`, and link them using GNU Stow or shell scripts.
+
+When you first tried NixOS, you likely followed the common beginner path: you cloned someone&#x27;s monolithic GitHub repo containing a `flake.nix`, Home Manager, and Hyprland, tweaked a few names, ran `nixos-rebuild switch`, and miraculously had a functioning desktop in two days.
+
+Then something went wrong:
+- An option changed between NixOS versions (`The option ... does not exist`).
+- An error printed: `infinite recursion encountered`.
+- A file you edited wasn&#x27;t picked up by the build because it wasn&#x27;t staged in Git.
+- A package failed with `attribute &#x27;foo&#x27; missing`.
+
+In Arch, you would read the PKGBUILD, check the Arch Wiki, look at `/var/log/pacman.log`, or run `strace`. But in Nix, the system was an impenetrable black box of nested curly braces, function calls, and store paths. Reverse-engineering a complex configuration without knowing the underlying functional language or the Nix store is like trying to debug a complex React application with zero knowledge of JavaScript. You burned out and went back to Arch because Arch is **imperatively transparent**: what you type is what gets written to disk.
+
+This guide exists to give you the **functional transparency** of Nix. Once you understand the Nix store, the evaluation model, the derivation graph, and the module system, Nix stops feeling like mysterious arcane magic and starts feeling like the most predictable, reliable, and powerful Unix tool you have ever used.
+
+---
+
+## Master Glossary
+
+Nix documentation is notorious for using terms that sound like ordinary English but have rigorous technical definitions. Keep this glossary handy.
+
+| Term | Precise Definition |
+| :--- | :--- |
+| **Store Path** | An immutable directory or file inside `/nix/store/` prefixed with a 32-character base32 cryptographic hash of all its inputs (e.g. `/nix/store/5x8...-hello-2.12.1`). |
+| **Derivation (`.drv`)** | A low-level specification file generated during Nix expression evaluation that tells the Nix build daemon *exactly* how to build an artifact (inputs, environment variables, builder executable, and command-line arguments). Think of it as a cryptographically locked, compiled `PKGBUILD`. |
+| **Closure** | The mathematical transitive closure of a store path: the path itself plus every single store path it directly or indirectly references at runtime. If path A links to library B, which links to libc C, the closure of A is `{A, B, C}`. |
+| **Nix Expression** | A snippet or file written in the Nix expression language that evaluates to a value (a string, an attribute set, a function, or a derivation). |
+| **Attribute Set** | A key-value collection of pairs in the Nix language, written as `{ key = value; }`. Analogous to a dictionary in Python, a hash map in Rust, or an object in JavaScript. |
+| **Flake** | A filesystem directory containing a `flake.nix` file and a `flake.lock` file that defines inputs and outputs hermetically without relying on ambient state or environment variables. |
+| **Profile** | A symlink pointing to a specific generation of installed packages, usually located under `/nix/var/nix/profiles/` or `~/.nix-profile`. |
+| **Generation** | A numbered, immutable snapshot of an installed profile or NixOS system state. Switching configurations creates a new generation; rolling back simply points the profile symlink back to a previous generation number. |
+| **Channel** | The legacy, stateful mechanism for distributing Nix expressions. Channels are mutable URLs updated via `nix-channel --update`. Flakes supersede channels by locking input revisions in `flake.lock`. |
+| **Overlay** | A function that extends or modifies the Nixpkgs package collection. It takes two arguments (`final` and `prev`) and returns an attribute set of altered or new packages using fixed-point evaluation. |
+| **Module** | A Nix file within the NixOS or Home Manager system that declares configurable parameters (`options`) and assigns settings (`config`). Modules are merged together by an evaluation engine. |
+| **IFD (Import From Derivation)** | A pattern where a Nix expression evaluates a derivation, builds it during the *evaluation phase*, and then `import`s the resulting file back into Nix. It pauses evaluation to run builds, which breaks parallelism and binary caching on CI. |
+| **Purity / Hermeticity** | A property where a build or evaluation depends strictly and exclusively on declared inputs, with zero access to the internet, ambient environment variables (`$HOME`, `$PATH`), or uncommitted files. |
+| **Garbage Collection (GC)** | The process (`nix-collect-garbage`) of deleting store paths that are not reachable from any registered &quot;GC Root&quot; (symlinks in `/nix/var/nix/gcroots/` pointing to active profiles and generations). |
+
+---
+
+## The Intensive Self-Study Pacing Plan
+
+Designed for a full-time study schedule (4–6 hours daily). Check off milestones as you achieve practical mastery, not just passive reading.
+
+### Week 1: Mental Model, Standalone Nix &amp; The Language
+- [ ] **Stage 1**: Internalize the Arch vs. Nix paradigm shift. Understand the FHS illusion.
+- [ ] **Stage 2**: Install standalone Nix (via Determinate installer or multi-user script) on a non-NixOS machine or VM.
+- [ ] **Stage 2**: Master ad-hoc shells with `nix-shell -p` and `nix shell`.
+- [ ] **Stage 2**: Understand GC roots, clean the store with `nix-collect-garbage -d`, and inspect `/nix/store`.
+- [ ] **Stage 3**: Launch `nix repl` and master all primitives (strings, multiline strings, paths).
+- [ ] **Stage 3**: Practice attribute sets, `let ... in`, `rec`, and identify the dangers of `with`.
+- [ ] **Stage 3**: Understand higher-order functions, currying, and attribute pattern matching (`{ a, b ? default, ... }`).
+- [ ] **Stage 3**: Verify Nix laziness with deliberate un-evaluated runtime errors.
+
+### Week 2: Derivations, The Store &amp; Nixpkgs Internals
+- [ ] **Stage 4**: Write a raw derivation using built-in `derivation { ... }`.
+- [ ] **Stage 4**: Inspect an instanciated `.drv` file with `nix derivation show`.
+- [ ] **Stage 4**: Write a derivation using `stdenv.mkDerivation` and understand the standard build phases.
+- [ ] **Stage 4**: Compute and inspect runtime closures with `nix path-info -rsh` and `nix-store -q --tree`.
+- [ ] **Stage 5**: Explore the Nixpkgs monorepo hierarchy (`pkgs/by-name` vs `pkgs/top-level`).
+- [ ] **Stage 5**: Understand `callPackage` dependency injection.
+- [ ] **Stage 5**: Master `.override` (function inputs) vs `.overrideAttrs` (derivation attributes).
+- [ ] **Stage 5**: Write an overlay using `final: prev:` to patch or modify an existing package.
+
+### Week 3: NixOS Architecture &amp; Flakes
+- [ ] **Stage 6**: Understand the NixOS module system (`imports`, `options`, `config`).
+- [ ] **Stage 6**: Differentiate between `mkOption`, `mkEnableOption`, `mkIf`, and `mkDefault`.
+- [ ] **Stage 6**: Trace what happens during `nixos-rebuild switch`: from evaluation to activation script to systemd.
+- [ ] **Stage 6**: Inspect system generations in `/nix/var/nix/profiles/system` and perform rollbacks.
+- [ ] **Stage 7**: Demystify `flake.nix` schema: `inputs`, `outputs`, and the role of `flake.lock`.
+- [ ] **Stage 7**: Learn how `inputs.nixpkgs.follows` prevents dependency duplication.
+- [ ] **Stage 7**: Convert a legacy channel-based system or standalone project into a pure Flake.
+
+### Week 4: Home Manager, Advanced Topics &amp; Capstone
+- [ ] **Stage 8**: Set up Home Manager (differentiate standalone CLI vs. NixOS module).
+- [ ] **Stage 8**: Map manual Omarchy dotfiles (`~/.config/hypr`, `waybar`, `kitty`) to Home Manager options.
+- [ ] **Stage 8**: Manage arbitrary config files with `xdg.configFile` and `home.file`.
+- [ ] **Stage 9**: Package a custom software application (CLI or script) using `writeShellApplication`.
+- [ ] **Stage 9**: Set up secrets management with `sops-nix` or `agenix` (understanding why `/nix/store` is world-readable).
+- [ ] **Stage 9**: Understand what IFD is, why it hurts performance, and how to avoid it.
+- [ ] **Capstone**: Build your own clean, modular, multi-host NixOS + Home Manager config from scratch.
+
+---
+
+## Stage 1: Mental Model — The Arch vs. Nix Paradigm Shift
+
+### Why This Matters
+In Arch Linux, system administration is **imperative state mutation**. You start with a blank disk, run `pacstrap`, and progressively mutate the filesystem by running commands (`pacman -S`, `systemctl enable`, `useradd`, `nano /etc/fstab`). Over months and years, your Arch install becomes a unique, artisanal snowflake. If your laptop falls into a river, replicating that exact state requires either a bit-for-bit disk image restore or hours of remembering every package, AUR dependency, config tweak, and systemd override you ever applied.
+
+In Nix, system administration is **pure functional evaluation**. Your entire operating system is the deterministic return value of a mathematical function:
+
+$$\text{System} = f(\text{Configuration}, \text{Source Code}, \text{Dependencies})$$
+
+Given identical inputs, the function returns the identical byte-for-byte system closure. There is no global mutable state, no shared `/usr/lib` where a package upgrade can break an unrelated program, and no state drift between machines.
+
+```
+ARCH LINUX (Imperative State Mutation)
+[Blank Disk] ──pacstrap──&gt; [/usr, /etc] ──pacman -Syu──&gt; [Altered /usr, /etc] ──aur/build──&gt; [Fragile State]
+                                                                                                  │ (conflict!)
+                                                                                                  ▼
+                                                                                           Broken Dependency!
+
+NIX / NIXOS (Pure Functional Evaluation)
+{ Source, Config, Deps } ──eval/build──&gt; /nix/store/a8f9...-system ──symlink──&gt; /run/current-system
+                                                    │
+                                                    ▼
+                                           (Previous generation untouched! Rollback is instant.)
+```
+
+### The FHS Illusion vs. The Immutable Store
+
+On standard Linux distributions complying with the Filesystem Hierarchy Standard (FHS):
+- Executables live in `/bin`, `/usr/bin`, or `/usr/local/bin`.
+- Shared dynamic libraries live in `/lib` or `/usr/lib`.
+- Configs live in `/etc`.
+
+When dynamic executables launch on Arch, the ELF interpreter (`/lib64/ld-linux-x86-64.so.2`) looks up needed shared libraries (like `libssl.so.3`) in global paths. If Package A needs OpenSSL 1.1 and Package B needs OpenSSL 3.0, Arch must either maintain separate compatibility packages (`openssl-1.1`) or force all software to migrate simultaneously.
+
+**Nix throws out the FHS entirely:**
+1. `/bin`, `/lib`, and `/usr` do not exist as storage locations (NixOS provides only `/bin/sh` pointing to bash and `/usr/bin/env` for script compatibility).
+2. Every piece of software, library, image asset, and config file lives in its own directory under `/nix/store/`.
+3. The directory name is formatted as:
+   ```
+   /nix/store/&lt;hash&gt;-&lt;name&gt;-&lt;version&gt;
+   ```
+   The hash is derived from *everything* that went into building that component: source code hashes, compiler flags, exact dependencies, and build scripts.
+4. Executables compiled by Nix have hardcoded store paths embedded directly into their ELF `RPATH` / `RUNPATH` headers and interpreter fields.
+
+Let&#x27;s verify this on a real Nix system:
+```bash
+# Pick any binary in your system and inspect its dynamic linker path
+patchelf --print-interpreter $(which cat)
+# Output: /nix/store/...-glibc-2.39-xx/lib/ld-linux-x86-64.so.2
+
+# Inspect the libraries it links against:
+patchelf --print-rpath $(which cat)
+# Output: /nix/store/...-glibc-2.39-xx/lib
+```
+
+Because of this:
+- Ten different versions of Python, GLIBC, or OpenSSL can coexist simultaneously on disk without interfering with each other.
+- Installing a tool for a quick experiment cannot break your desktop environment.
+- Uninstalling a tool never leaves orphaned libraries or broken configuration fragments.
+
+### Comparison Table: Arch/Omarchy vs. Nix/NixOS
+
+| Dimension | Arch Linux / Omarchy | Nix / NixOS |
+| :--- | :--- | :--- |
+| **Package Manager** | `pacman` (imperative, modifies `/usr`) | `nix` (pure, writes to `/nix/store`) |
+| **Third-Party / Custom Packages** | AUR (`PKGBUILD` built via `makepkg` / `paru`) | Nixpkgs derivations, Flake inputs, Overlays |
+| **System Configuration** | Scattered in `/etc/` (`fstab`, `locale.gen`, `sudoers`) | Unified in `configuration.nix` / modules |
+| **User Dotfiles** | Hand-crafted in `~/.config/`, managed with Stow / Git | Handled declaratively via Home Manager |
+| **Service Management** | `systemctl enable --now &lt;service&gt;` | `services.&lt;name&gt;.enable = true;` in configuration |
+| **Updates** | `pacman -Syu` (rolling, mutates running system in-place) | Update `flake.lock` $\to$ `nixos-rebuild switch` |
+| **Rollback Strategy** | Btrfs/Snapper snapshots or manual package cache downgrade | Native generations: select previous boot entry or `--rollback` |
+| **Orphan Cleanup** | `pacman -Rns $(pacman -Qtdq)` | `nix-collect-garbage -d` |
+| **Sandboxing** | Builds run with host permissions | Builds run in isolated networkless chroot namespaces |
+
+### Real Commands to Run
+```bash
+# Inspect your Nix store directory count and disk footprint
+ls -ld /nix/store
+df -h /nix/store
+
+# Check the active system generation link
+ls -l /run/current-system
+```
+
+### Primary Sources
+- [Nix Pills: Why You Should Give It a Try](https://nixos.org/guides/nix-pills/01-why-you-should-give-it-a-try)
+- [Nix.dev: What is Nix?](https://nix.dev)
+- [Zero to Nix: Fundamental Concepts](https://zero-to-nix.com)
+
+### Hands-on Exercise (Stage 1)
+Run `ldd $(which git)` on your current machine. Notice how every single library points to a unique `/nix/store/&lt;hash&gt;-...` directory rather than `/usr/lib/`. Trace where one of those libraries points.
+
+---
+
+## Stage 2: Plain Nix as a Tool (Before Touching an OS)
+
+### Why This Matters
+One of the biggest mistakes beginners make is trying to learn Nix, NixOS, Flakes, Home Manager, and Hyprland all at the same time. When the screen stays black on boot, you don&#x27;t know if the issue is a Linux kernel parameter, a Wayland compositing bug, a Home Manager option error, or a Nix syntax mistake.
+
+The secret to mastering Nix is to **learn the package manager standalone first**. Plain Nix runs on top of Arch Linux, Fedora, Ubuntu, Debian, and macOS. When you treat Nix as an isolated, superpowered CLI tool, the mental model clicks quickly.
+
+### Standalone Installation
+On an Arch machine, the recommended installation method is the Determinate Systems installer (which configures the Nix daemon, systemd units, and enables Flakes by default):
+
+```bash
+# Recommended installer on standard Linux distributions:
+curl --proto &#x27;=https&#x27; --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
+
+### The Three Ways to Run Software with Nix
+
+Coming from Arch, your habit is `pacman -S &lt;tool&gt;`, run it, and let it sit in your `/usr/bin` forever. Nix introduces three distinct levels of ephemeral and persistent usage:
+
+#### 1. Temporary Interactive Command: `nix-shell -p` (or `nix shell`)
+Need `jq`, `htop`, or `ripgrep` for 30 seconds to parse a log file? Do not install it globally:
+
+```bash
+# Classic command:
+nix-shell -p ripgrep jq
+
+# Modern Flakes command:
+nix shell nixpkgs#ripgrep nixpkgs#jq
+```
+Inside the shell, `rg` and `jq` are on your `$PATH`. As soon as you type `exit`, they disappear from your `$PATH`. Nothing was added to any global state.
+
+#### 2. Ad-hoc Execution: `nix run`
+Execute a binary directly without even entering a subshell:
+```bash
+nix run nixpkgs#cowsay -- &quot;Nix is purely functional&quot;
+```
+
+#### 3. Development Shells: `nix develop`
+In Arch, if you work on a C project requiring `cmake`, `clang`, `boost`, and `libuv`, you `pacman -S` all of them. If another project needs an older version of `boost`, you have a conflict.
+
+With Nix, you define a `shell.nix` in the project root:
+```nix
+{ pkgs ? import &lt;nixpkgs&gt; {} }:
+
+pkgs.mkShell {
+  buildInputs = [
+    pkgs.clang
+    pkgs.cmake
+    pkgs.boost
+  ];
+  
+  shellHook = &#x27;&#x27;
+    echo &quot;Welcome to the C++ development environment!&quot;
+    export CC=clang
+  &#x27;&#x27;;
+}
+```
+Run:
+```bash
+nix-shell
+# or with flakes: nix develop
+```
+All compilers, flags, and header files are instantly loaded. When you leave the directory, your host environment remains pristine.
+
+### User Profiles: `nix profile`
+If you do want software permanently available in your user `$PATH`:
+```bash
+# Install a package into your user profile:
+nix profile install nixpkgs#neovim
+
+# List installed packages:
+nix profile list
+
+# Upgrade installed packages:
+nix profile upgrade &#x27;.*&#x27;
+
+# Remove a package:
+nix profile remove &lt;index-or-name&gt;
+```
+
+### Garbage Collection &amp; The Store
+When you exit `nix-shell`, the downloaded files still reside in `/nix/store` so that launching it again is instantaneous. How do you free up disk space?
+
+Nix uses **Garbage Collection Roots (GC Roots)**. A GC root is simply a symlink stored inside `/nix/var/nix/gcroots/` that points to a store path you want to keep. Active user profiles and NixOS system generations are registered as GC roots.
+
+```bash
+# Delete all store paths that are not referenced by ANY generation or profile:
+nix-collect-garbage
+
+# Delete old generations of profiles and collect garbage (the &quot;free up disk&quot; command):
+nix-collect-garbage -d
+
+# Deduplicate identical files across different packages using hard links:
+nix store optimise
+```
+
+### Primary Sources
+- [Nix Manual: nix-shell](https://nixos.org/manual/nix/stable/command-ref/nix-shell.html)
+- [Nix Manual: nix-collect-garbage](https://nixos.org/manual/nix/stable/command-ref/nix-collect-garbage.html)
+- [Zero to Nix: Development Environments](https://zero-to-nix.com/concepts/dev-env)
+- [Nix Pills: Developing with nix-shell](https://nixos.org/guides/nix-pills/10-developing-with-nix-shell)
+
+### Hands-on Project (Stage 2)
+On any machine with Nix installed:
+1. Open a temporary shell containing `python311` and `curl`:
+   ```bash
+   nix-shell -p python311 curl
+   ```
+2. Verify in that shell that Python 3.11 is running.
+3. Exit the shell. Verify `python311` is no longer on your `$PATH`.
+4. Run `nix-collect-garbage` and see how Nix purges unreferenced store paths.
+
+---
+
+## Stage 3: The Nix Language &amp; `nix repl`
+
+### Why This Matters
+Nix is **not** a markup format like YAML, TOML, or JSON. Nix is a **pure, dynamically typed, lazily evaluated, functional domain-specific programming language**.
+
+If you try to read Nix configurations as if they were configuration dictionaries (like an Ansible playbook or an Arch Hyprland config), you will stumble over basic syntax. Once you understand that Nix is a programming language consisting entirely of **expressions that evaluate to values**, reading a 500-line Nix file becomes straightforward.
+
+Start the interactive evaluation REPL right now:
+```bash
+nix repl
+```
+
+### 1. Primitive Types
+Type these expressions into `nix repl`:
+
+```nix
+# Integers and Floats
+42
+3.14
+
+# Booleans and Null
+true
+false
+null
+
+# Strings (enclosed in double quotes)
+&quot;Hello Arch Linux&quot;
+
+# String Interpolation using ${...}
+name = &quot;Arch&quot;
+&quot;Hello ${name}&quot;  # Evaluates to &quot;Hello Arch&quot;
+
+# Multiline Strings (Indented strings using two single quotes: &#x27;&#x27; ... &#x27;&#x27;)
+# Indented strings automatically strip common leading whitespace!
+desc = &#x27;&#x27;
+  This is a multiline string.
+  It preserves newlines and handles
+  double quotes &quot;without escaping&quot;.
+&#x27;&#x27;
+
+# Paths: Paths are FIRST-CLASS types in Nix!
+# If a path is written without quotes, Nix checks that the file exists:
+./flake.nix      # Evaluates to a path type
+/etc/nixos       # Absolute path
+```
+
+&gt; [!IMPORTANT]
+&gt; **Path Coercion and The Store**: When a path is interpolated into a string (`&quot;${./wallpaper.png}&quot;`), Nix copies that file into `/nix/store/` and evaluates to the resulting store path string! This is how local assets (wallpapers, shell scripts, dotfile templates) are securely introduced into the immutable store.
+
+### 2. Lists and Attribute Sets
+
+#### Lists
+Lists are separated by **whitespace**, not commas:
+```nix
+nix-repl&gt; [ 1 2 &quot;three&quot; true ]
+[ 1 2 &quot;three&quot; true ]
+
+# Lists are heterogeneous (can hold any mixture of types)
+```
+
+#### Attribute Sets (Dictionaries / Key-Value Maps)
+Attribute sets are enclosed in `{ ... }` and each statement ends with a semicolon `;`:
+```nix
+nix-repl&gt; user = { name = &quot;yada&quot;; shell = &quot;fish&quot;; editor = &quot;nvim&quot;; }
+nix-repl&gt; user.name
+&quot;yada&quot;
+
+# Nested attribute sets:
+nix-repl&gt; system = { networking.hostName = &quot;loki&quot;; }
+# Is 100% identical to:
+nix-repl&gt; system = { networking = { hostName = &quot;loki&quot;; }; }
+```
+
+#### Accessing Attributes with Fallbacks (`or`)
+```nix
+nix-repl&gt; user = { name = &quot;yada&quot;; }
+nix-repl&gt; user.editor or &quot;nano&quot;
+&quot;nano&quot;
+```
+
+### 3. Core Keywords: `let ... in`, `rec`, and `with`
+
+#### `let ... in` (Local Bindings)
+Defines variables scoped strictly to the expression following `in`:
+```nix
+let
+  pkgName = &quot;hyprland&quot;;
+  version = &quot;0.40.0&quot;;
+in
+  &quot;${pkgName}-${version}&quot;
+# Evaluates to: &quot;hyprland-0.40.0&quot;
+```
+
+#### `rec` (Recursive Attribute Sets)
+Normal attribute sets cannot reference their own keys during definition. Adding `rec` allows attributes to refer to sibling attributes:
+```nix
+# This FAILS in normal attrsets:
+# { a = 1; b = a + 1; }  -&gt; error: undefined variable &#x27;a&#x27;
+
+# With rec:
+rec {
+  a = 1;
+  b = a + 1;
+}
+# Evaluates to: { a = 1; b = 2; }
+```
+
+#### `with` (Scope Injection — And Why to Avoid It)
+`with &lt;set&gt;;` brings all attributes of `&lt;set&gt;` into local lexical scope:
+```nix
+let
+  tools = { git = &quot;2.44&quot;; gh = &quot;2.40&quot;; };
+in
+with tools; [ git gh ]
+# Evaluates to: [ &quot;2.44&quot; &quot;2.40&quot; ]
+```
+&gt; [!WARNING]
+&gt; While `with pkgs;` is common in legacy tutorials, it is considered bad practice in modern Nix because it hides where symbols come from and can silently shadow variables. We cover this in detail in the [Pitfalls](#where-beginners-get-stuck-real-pitfalls--troubleshooting) section.
+
+### 4. Functions: The Core of Nix
+In Nix, **every function takes exactly one argument**. Functions are written as:
+```
+argument: body
+```
+
+Test this in `nix repl`:
+```nix
+nix-repl&gt; double = x: x * 2
+nix-repl&gt; double 21
+42
+
+# Multi-argument functions use currying (functions returning functions):
+nix-repl&gt; add = x: y: x + y
+nix-repl&gt; add 10 5
+15
+```
+
+#### Pattern Matching on Attribute Sets
+Because functions take a single argument, Nix functions that need multiple named parameters take an **attribute set** and destructure it:
+
+```nix
+nix-repl&gt; greet = { name, greeting }: &quot;${greeting}, ${name}!&quot;
+nix-repl&gt; greet { name = &quot;yada&quot;; greeting = &quot;Hello&quot;; }
+&quot;Hello, yada!&quot;
+
+# Default values using &#x27;?&#x27;
+nix-repl&gt; greetUser = { name, greeting ? &quot;Welcome&quot; }: &quot;${greeting}, ${name}!&quot;
+nix-repl&gt; greetUser { name = &quot;yada&quot;; }
+&quot;Welcome, yada!&quot;
+
+# Accepting extra unknown attributes using &#x27;...&#x27;
+nix-repl&gt; relaxed = { name, ... }: &quot;User is ${name}&quot;
+nix-repl&gt; relaxed { name = &quot;yada&quot;; extra = &quot;ignored&quot;; }
+&quot;User is yada&quot;
+
+# Binding the whole attribute set to a variable using &#x27;@&#x27;
+nix-repl&gt; full = { name, ... }@args: &quot;Name: ${name}, Total args: ${toString (builtins.length (builtins.attrNames args))}&quot;
+nix-repl&gt; full { name = &quot;yada&quot;; extra = 123; }
+&quot;Name: yada, Total args: 2&quot;
+```
+
+### 5. Laziness: The Engine of Efficiency
+Nix is **lazily evaluated**: an expression is evaluated *only when its value is actually needed*.
+
+Look at this example in `nix repl`:
+```nix
+nix-repl&gt; set = { a = 10; b = builtins.abort &quot;Explosion!&quot;; }
+# Notice: No error! The expression evaluated successfully.
+
+nix-repl&gt; set.a
+10
+# Still no error!
+
+nix-repl&gt; set.b
+# error: evaluation aborted with the following message: &#x27;Explosion!&#x27;
+```
+Because Nix only evaluates what is needed, Nixpkgs can define 100,000+ packages in a single giant attribute set. When you request `pkgs.ripgrep`, Nix does not evaluate or build the other 99,999 packages!
+
+### Primary Sources
+- [Nix.dev: Nix Language Tutorial](https://nix.dev/tutorials/nix-language)
+- [Nix Manual: Nix Expression Language](https://nixos.org/manual/nix/stable/language/)
+- [Nix Pills: Basics of Language](https://nixos.org/guides/nix-pills/04-basics-of-language)
+- [Nix Pills: Functions and Imports](https://nixos.org/guides/nix-pills/05-functions-and-imports)
+
+### Hands-on Exercises (Stage 3)
+Launch `nix repl` and solve these without looking at answers:
+1. Write a function `makeHost` that takes `{ hostname, ip, ram ? 16 }` and returns an attribute set with a formatted description string.
+2. Given `let list = [ &quot;hyprland&quot; &quot;waybar&quot; &quot;kitty&quot; ]; in ...`, write an expression using `builtins.map` to prefix every entry with `omarchy-`.
+3. Verify laziness: create an attribute set containing an infinite loop or a deliberate syntax error in one unused key, and access a different valid key.
+
+---
+
+## Stage 4: Derivations and the Nix Store Internals
+
+### Why This Matters
+In Arch Linux, a package is built by `makepkg` executing a bash script (`PKGBUILD`) that runs `prepare()`, `build()`, and `package()`, dropping files into `$pkgdir`. There is no enforcement of hermeticity: if you have `gcc` and `clang` installed on your Arch host, the build might silently link against `clang` even if it wasn&#x27;t listed in `makedepends`.
+
+In Nix, the fundamental unit of build is a **Derivation**. A derivation is not a bash script; it is a serialized directed acyclic graph (DAG) node that defines the universe of the build in complete isolation.
+
+### The Anatomy of a Derivation
+When you write Nix code to create a package, Nix evaluates it into an intermediate `.drv` file on disk under `/nix/store/&lt;hash&gt;-&lt;name&gt;.drv`.
+
+Let&#x27;s look at the raw built-in function `derivation`:
+```nix
+# In nix repl:
+d = derivation {
+  name = &quot;my-minimal-package&quot;;
+  system = &quot;x86_64-linux&quot;;
+  builder = &quot;/bin/sh&quot;;
+  args = [ &quot;-c&quot; &quot;echo &#x27;Hello Nix&#x27; &gt; $out&quot; ];
+}
+```
+When evaluated, `d` produces a `.drv` file. When *built*, Nix creates a hermetic sandbox:
+1. It mounts an isolated `/tmp`.
+2. It sets environment variables (including `$out`, which points to `/nix/store/&lt;hash&gt;-my-minimal-package`).
+3. Network access is disabled (unshare network namespace).
+4. The builder command runs.
+5. Whatever the command writes to `$out` becomes the permanent, immutable contents of the store path.
+
+### The Standard Environment: `stdenv.mkDerivation`
+Nobody writes raw `derivation` calls manually. Nixpkgs provides `stdenv.mkDerivation`, a wrapper that implements standard build phases mimicking standard Autotools/Unix conventions:
+
+```nix
+{ lib, stdenv, fetchFromGitHub }:
+
+stdenv.mkDerivation rec {
+  pname = &quot;mytool&quot;;
+  version = &quot;1.0.0&quot;;
+
+  src = fetchFromGitHub {
+    owner = &quot;example&quot;;
+    repo = &quot;mytool&quot;;
+    rev = &quot;v${version}&quot;;
+    hash = &quot;sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;;
+  };
+
+  buildInputs = [ ]; # Runtime libraries
+  nativeBuildInputs = [ ]; # Build-time tools (compilers, cmake, pkg-config)
+
+  # Standard phases executed automatically in order:
+  # 1. unpackPhase (extracts src archive)
+  # 2. patchPhase (applies patches)
+  # 3. configurePhase (runs ./configure or cmake)
+  # 4. buildPhase (runs make or ninja)
+  # 5. checkPhase (runs make test)
+  # 6. installPhase (runs make install DESTDIR=$out)
+  # 7. fixupPhase (runs patchelf to fix RPATH, strips binaries, compresses manpages)
+}
+```
+
+### Inspecting Real Derivations with the CLI
+Let&#x27;s see what a derivation looks like on your actual machine:
+
+```bash
+# Instantiate the derivation for GNU Hello (creates the .drv without building it):
+nix derivation show nixpkgs#hello
+
+# View the full dependency graph / references of an installed package:
+nix-store -q --references $(which bash)
+
+# View the complete runtime closure size of an application:
+nix path-info -rsh nixpkgs#hyprland
+```
+
+### Build-time Closure vs. Runtime Closure
+This distinction is crucial for packaging:
+- **Build-time closure**: Everything needed to *compile* the software (GCC, headers, automake, source tarballs, test frameworks).
+- **Runtime closure**: Everything needed to *run* the compiled binary (dynamic libraries, runtime assets).
+
+Nix determines the runtime closure automatically! After `installPhase` finishes, the `fixupPhase` scans the compiled binaries and text files for references to any `/nix/store/&lt;hash&gt;` paths that were present during the build. If a hash appears in the binary (such as in the `RPATH`), that dependency is marked as part of the runtime closure. If a hash does not appear anywhere (like `gcc`), it is discarded from the runtime closure.
+
+```
+BUILD-TIME INPUTS: [ gcc, cmake, glibc, zlib, src.tar.gz ]
+                         │ (Compilation in Sandbox)
+                         ▼
+PRODUCED BINARY:   $out/bin/mytool (patchelf writes RPATH: /nix/store/...-glibc, /nix/store/...-zlib)
+                         │ (Store Hash Scanner)
+                         ▼
+RUNTIME CLOSURE:   [ $out, glibc, zlib ]   &lt;-- gcc and cmake are NOT retained!
+```
+
+### Primary Sources
+- [Nix Pills: Our First Derivation](https://nixos.org/guides/nix-pills/06-our-first-derivation)
+- [Nix Pills: Generic Builders](https://nixos.org/guides/nix-pills/08-generic-builders)
+- [Nix Manual: Derivations](https://nixos.org/manual/nix/stable/language/derivations.html)
+
+### Hands-on Project (Stage 4)
+Create a file named `simple.nix`:
+```nix
+let
+  pkgs = import &lt;nixpkgs&gt; {};
+in
+pkgs.stdenv.mkDerivation {
+  name = &quot;omarchy-greeting&quot;;
+  src = builtins.toFile &quot;greeting.txt&quot; &quot;From Omarchy to NixOS!&quot;;
+  dontUnpack = true;
+  installPhase = &#x27;&#x27;
+    mkdir -p $out/bin
+    echo &quot;#!${pkgs.bash}/bin/bash&quot; &gt; $out/bin/omarchy-greet
+    echo &quot;cat $src&quot; &gt;&gt; $out/bin/omarchy-greet
+    chmod +x $out/bin/omarchy-greet
+  &#x27;&#x27;;
+}
+```
+Build it and run it:
+```bash
+nix-build simple.nix
+./result/bin/omarchy-greet
+# Inspect the resulting store path:
+ls -la result
+```
+
+---
+
+## Stage 5: Nixpkgs Architecture, `callPackage`, and Overlays
+
+### Why This Matters
+Nixpkgs is not just a repository of package recipes; it is an interconnected functional library. When you want to change a compile-time flag in Arch, you either modify the PKGBUILD and run `makepkg -si`, or use the ABS (Arch Build System). In Nix, you can modify any package, swap out its dependencies, or inject patches dynamically using **overrides** and **overlays**, without maintaining a separate fork of the package repo.
+
+### The Nixpkgs Repository Structure
+Nixpkgs is organized into two primary sections:
+- `pkgs/by-name/`: Modern packages organized alphabetically (e.g. `pkgs/by-name/ri/ripgrep/package.nix`).
+- `pkgs/top-level/all-packages.nix`: The master attribute set linking package definitions together.
+
+### The `callPackage` Pattern: Automated Dependency Injection
+Every package file in Nixpkgs is written as a function that declares its dependencies as arguments:
+
+```nix
+# File: package.nix
+{ lib, stdenv, fetchFromGitHub, openssl, zlib }:
+
+stdenv.mkDerivation {
+  pname = &quot;sample&quot;;
+  version = &quot;1.0.0&quot;;
+  # ...
+  buildInputs = [ openssl zlib ];
+}
+```
+Notice what is missing: there is no `import &lt;nixpkgs&gt; {}` inside this file!
+How do `stdenv`, `openssl`, and `zlib` get passed to this function?
+
+Via `pkgs.callPackage`:
+```nix
+# In all-packages.nix or your own code:
+myPackage = pkgs.callPackage ./package.nix { };
+```
+`callPackage` inspects the argument names of the function (`lib`, `stdenv`, `openssl`, `zlib`), looks up matching names in the surrounding `pkgs` attribute set, and passes them automatically! If you want to supply a custom or different version of a library, you pass it in the second argument:
+```nix
+myPackageCustom = pkgs.callPackage ./package.nix { openssl = pkgs.openssl_1_1; };
+```
+
+### Overriding Packages: `.override` vs `.overrideAttrs`
+
+Nix gives you two distinct ways to tweak an existing package:
+
+#### 1. `pkg.override`: Modify the Inputs to `callPackage`
+Use this when you want to toggle flags exposed by the package&#x27;s function arguments:
+```nix
+# In Arch, changing git&#x27;s libsecret support requires rebuilding from AUR.
+# In Nix:
+customGit = pkgs.git.override {
+  withLibsecret = true;
+  guiSupport = false;
+};
+```
+
+#### 2. `pkg.overrideAttrs`: Modify the Derivation Itself
+Use this when you need to change derivation parameters (source code, patches, `buildInputs`, `postInstall` phase):
+```nix
+patchedHello = pkgs.hello.overrideAttrs (oldAttrs: {
+  patches = (oldAttrs.patches or []) ++ [
+    ./fix-greeting.patch
+  ];
+  postInstall = (oldAttrs.postInstall or &quot;&quot;) + &#x27;&#x27;
+    echo &quot;Custom post-install hook&quot;
+  &#x27;&#x27;;
+});
+```
+
+### Overlays: Global Package Modification
+An **overlay** allows you to inject your modifications into Nixpkgs globally so that every other package that depends on that package receives your modified version.
+
+An overlay is a function taking two arguments:
+- `final`: The complete, fully resolved package set containing all overlays. Use `final` when referencing dependencies.
+- `prev`: The original package set before this overlay was applied. Use `prev` to access the original package you are modifying.
+
+```nix
+# An overlay that patches rofi and adds a custom tool:
+myOverlay = final: prev: {
+  # 1. Add a brand new package
+  my-script = final.callPackage ./pkgs/my-script.nix { };
+
+  # 2. Modify an existing package
+  rofi-wayland = prev.rofi-wayland.override {
+    plugins = [ final.rofi-emoji ];
+  };
+};
+```
+
+### Searching Nixpkgs Like a Pro
+Don&#x27;t browse randomly on GitHub. Use the official search tools:
+- Web Search: [search.nixos.org/packages](https://search.nixos.org/packages)
+- Function Lookup: [noogle.dev](https://noogle.dev) (Search Nixpkgs standard library functions by name or signature)
+- Command Line Indexer: `nix-index` and `nix-locate`:
+  ```bash
+  # Search which package contains a specific binary or header file:
+  nix run nixpkgs#nix-index --
+  nix-locate bin/hyprctl
+  ```
+
+### Primary Sources
+- [Nix Pills: The CallPackage Design Pattern](https://nixos.org/guides/nix-pills/13-callpackage-design-pattern)
+- [Nix Pills: Overriding Design Pattern](https://nixos.org/guides/nix-pills/14-override-design-pattern)
+- [Nix.dev: Overlays Guide](https://nix.dev/manual/nix/stable/)
+- [Search Nixpkgs](https://search.nixos.org/packages)
+
+### Hands-on Project (Stage 5)
+1. Launch `nix repl &#x27;&lt;nixpkgs&gt;&#x27;`.
+2. Inspect `pkgs.hello`.
+3. Use `overrideAttrs` to change its version string:
+   ```nix
+   h = pkgs.hello.overrideAttrs (old: { pname = &quot;omarchy-hello&quot;; })
+   h.name
+   ```
+4. Build your overridden hello package:
+   ```nix
+   :b h
+   ```
+   Check the `/nix/store` path returned!
+
+---
+
+## Stage 6: NixOS — The Module System &amp; System Lifecycle
+
+### Why This Matters
+In Arch, system configuration means knowing where every config file lives:
+- Display manager in `/etc/sddm.conf`
+- Locale in `/etc/locale.gen`
+- Audio in `/etc/pipewire/pipewire.conf`
+- Network in `/etc/NetworkManager/NetworkManager.conf`
+
+In NixOS, you do not touch `/etc`. You declare options in **Modules**. The NixOS module system evaluates all your modules, validates types, merges conflicting options, compiles systemd units and configuration files, links them into a single system derivation, and activates them atomically.
+
+### Anatomy of a NixOS Module
+Every NixOS module is a function that receives an attribute set and returns an attribute set:
+
+```nix
+{ config, lib, pkgs, ... }:
+
+let
+  cfg = config.services.mybackup;
+in
+{
+  # 1. OPTION DECLARATIONS (What can the user configure?)
+  options.services.mybackup = {
+    enable = lib.mkEnableOption &quot;automated backup service&quot;;
+    
+    interval = lib.mkOption {
+      type = lib.types.str;
+      default = &quot;daily&quot;;
+      description = &quot;Systemd timer interval expression.&quot;;
+    };
+    
+    targetDir = lib.mkOption {
+      type = lib.types.path;
+      default = /var/backups;
+      description = &quot;Destination directory for backups.&quot;;
+    };
+  };
+
+  # 2. CONFIG DEFINITION (What does this module actually implement?)
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = [ pkgs.rsync ];
+
+    systemd.services.mybackup = {
+      description = &quot;Backup service&quot;;
+      serviceConfig = {
+        Type = &quot;oneshot&quot;;
+        ExecStart = &quot;${pkgs.rsync}/bin/rsync -av /home/ ${cfg.targetDir}/&quot;;
+      };
+    };
+
+    systemd.timers.mybackup = {
+      wantedBy = [ &quot;timers.target&quot; ];
+      timerConfig = {
+        OnCalendar = cfg.interval;
+        Persistent = true;
+      };
+    };
+  };
+}
+```
+
+### Key Module System Functions
+- `lib.mkIf condition { ... }`: Only applies the enclosed configuration if `condition` is `true`.
+- `lib.mkDefault value`: Sets a default value with low priority, allowing other modules to override it easily.
+- `lib.mkForce value`: Overrides any other value, regardless of priorities.
+- `lib.mkOption { type = ...; default = ...; }`: Declares a strongly-typed setting with documentation.
+
+### What Actually Happens During `nixos-rebuild switch`?
+
+When you run `sudo nixos-rebuild switch`, here is the exact chronological sequence:
+
+```
+1. EVALUATION
+   Imports all modules -&gt; Resolves imports -&gt; Typechecks all options -&gt; Merges configs
+
+2. DERIVATION GENERATION
+   Creates top-level derivation: /nix/store/...-nixos-system-loki-24.05
+
+3. BUILD PHASE
+   Compiles kernel, drivers, systemd units, packages -&gt; Writes files into /nix/store
+
+4. GENERATION CREATION
+   Points /nix/var/nix/profiles/system to new store path (Generation N+1)
+
+5. ACTIVATION SCRIPT
+   Runs /nix/store/.../bin/switch-to-configuration switch:
+   - Updates /etc files (creates atomic symlinks to store paths)
+   - Reloads systemd daemon (systemctl daemon-reload)
+   - Diffing systemd units: restarts changed units, starts new units, stops removed units
+
+6. BOOTLOADER UPDATE
+   Generates new bootloader entries for systemd-boot / GRUB
+```
+
+If the build or evaluation fails at step 1, 2, or 3, **nothing on your machine is touched**. Your running system continues unaffected. If a newly installed driver crashes the kernel on step 5, simply reboot, select the previous generation in the bootloader menu, and you are back in your working environment instantly.
+
+### Primary Sources
+- [Nix.dev: NixOS Module System Tutorial](https://nix.dev/tutorials/module-system/)
+- [NixOS Manual: Configuration Syntax](https://nixos.org/manual/nixos/stable/#sec-configuration-syntax)
+- [Search NixOS Options](https://search.nixos.org/options)
+
+### Hands-on Project (Stage 6)
+Inspect the exact shell script that executes during system activation on your machine:
+```bash
+# View the activation script of your current running NixOS system:
+cat /run/current-system/activate | head -n 50
+```
+Notice how it handles `/etc`, users, and systemd units.
+
+---
+
+## Stage 7: Flakes — Hermetic Inputs, Outputs, and Locks
+
+### Why This Matters
+Prior to Flakes, Nix relied on **Channels**. A channel was a mutable URL pointing to a branch of Nixpkgs. If you rebuilt your system on Monday, and your friend rebuilt the identical `configuration.nix` on Friday, you could end up with different package versions because the channel updated upstream in the meantime. Furthermore, Nix expressions could impurely read ambient environment variables or files anywhere on disk.
+
+**Flakes solve this completely:**
+1. **Hermeticity**: Flakes cannot access files outside the Git repository or undeclared network resources.
+2. **Pinned Inputs**: Every dependency is locked down to an exact Git commit in `flake.lock`.
+3. **Standardized Schema**: Every Flake exposes inputs and outputs following a consistent structure.
+
+### Anatomy of a `flake.nix`
+Open your own `flake.nix` in your workspace (`/home/yada/nixos-config/flake.nix`) and compare it to this annotated reference:
+
+```nix
+{
+  description = &quot;System Configuration Flake&quot;;
+
+  # 1. INPUTS: External dependencies (repositories, channels, flakes)
+  inputs = {
+    # Main NixOS package repository (tracking unstable channel):
+    nixpkgs.url = &quot;github:nixos/nixpkgs/nixos-unstable&quot;;
+
+    # Home Manager (pinned to follow the same nixpkgs instance to save disk space):
+    home-manager = {
+      url = &quot;github:nix-community/home-manager&quot;;
+      inputs.nixpkgs.follows = &quot;nixpkgs&quot;;
+    };
+  };
+
+  # 2. OUTPUTS: A function taking inputs and returning standardized attributes
+  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+    # System configurations accessible via: nixos-rebuild switch --flake .#loki
+    nixosConfigurations = {
+      loki = nixpkgs.lib.nixosSystem {
+        system = &quot;x86_64-linux&quot;;
+        # Special arguments passed into all submodules:
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/loki/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.yada = import ./home;
+          }
+        ];
+      };
+    };
+
+    # Reusable development shells accessible via: nix develop
+    devShells.x86_64-linux.default = let
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    in pkgs.mkShell {
+      buildInputs = [ pkgs.git pkgs.neovim ];
+    };
+  };
+}
+```
+
+### Why `inputs.nixpkgs.follows` Is Essential
+Without `inputs.nixpkgs.follows = &quot;nixpkgs&quot;;`, `home-manager` or third-party plugins will download their *own* separate copy of the `nixpkgs` git repository. This leads to:
+- Evaluating two different copies of Nixpkgs (wasting RAM and CPU).
+- Compiling duplicate versions of common libraries (wasting gigabytes of `/nix/store` disk space).
+- Version mismatch bugs between system packages and user packages.
+
+`follows` forces the sub-flake to use your top-level `nixpkgs` input.
+
+### The Role of `flake.lock`
+When you run `nix flake update` or build a flake for the first time, Nix generates `flake.lock`. It records the exact Git commit SHA and source tree hash for every input:
+
+```json
+{
+  &quot;nodes&quot;: {
+    &quot;nixpkgs&quot;: {
+      &quot;locked&quot;: {
+        &quot;lastModified&quot;: 1725791234,
+        &quot;narHash&quot;: &quot;sha256-V1u54P6q...&quot;,
+        &quot;owner&quot;: &quot;nixos&quot;,
+        &quot;repo&quot;: &quot;nixpkgs&quot;,
+        &quot;rev&quot;: &quot;c374d94f15360f322e92d024da1ae65372f96aa9&quot;,
+        &quot;type&quot;: &quot;github&quot;
+      }
+    }
+  }
+}
+```
+
+### Step-by-Step: Converting a Legacy Config to a Flake
+If you encounter an old channel-based system:
+1. Initialize a git repository: `git init`.
+2. Create `flake.nix` with `inputs.nixpkgs.url = &quot;github:nixos/nixpkgs/nixos-24.05&quot;;`.
+3. Move `configuration.nix` and `hardware-configuration.nix` into the repository.
+4. Add them to `nixosConfigurations.&lt;hostname&gt;.modules`.
+5. Run `git add .` (Crucial! Unstaged files are ignored by Flakes).
+6. Build with `sudo nixos-rebuild switch --flake .#&lt;hostname&gt;`.
+
+### Primary Sources
+- [Zero to Nix: What is a Flake?](https://zero-to-nix.com/concepts/flakes)
+- [Nix Manual: Flakes Specification](https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-flake.html)
+- [NixOS Wiki: Flakes Guide](https://wiki.nixos.org/wiki/Flakes)
+
+### Hands-on Project (Stage 7)
+In a temporary directory:
+1. Run `nix flake init` to inspect the minimal template.
+2. Add a `devShells` output that provides `cowsay` and `fortune`.
+3. Test it by running `nix develop` and executing `fortune | cowsay`.
+4. Run `nix flake metadata` and inspect the generated `flake.lock`.
+
+---
+
+## Stage 8: Home Manager — Declarative User Environments
+
+### Why This Matters
+In Omarchy or vanilla Arch, your dotfiles workflow looked like this:
+```
+dotfiles/
+  ├── hypr/hyprland.conf
+  ├── waybar/config.jsonc
+  └── kitty/kitty.conf
+```
+You ran `stow hypr waybar kitty` to create symlinks into `~/.config/`.
+When you edited a file, it mutated immediately. If you made a syntax error in `hyprland.conf`, Hyprland crashed or failed to launch on your next login.
+
+**Home Manager brings the NixOS paradigm to your user space**:
+- Packages installed for *your user only* without needing `sudo`.
+- Dotfiles generated declaratively from Nix code or linked from local files.
+- Versioned user generations: if your new Waybar layout breaks, rollback your user profile without touching the OS!
+
+### Standalone vs. NixOS Module
+
+There are two primary ways to run Home Manager:
+
+| Mode | Command to Switch | Pros | Cons |
+| :--- | :--- | :--- | :--- |
+| **NixOS Module** (Inside `flake.nix`) | `sudo nixos-rebuild switch` | Atomic! System updates and user dotfiles update together in a single command. | Requires `sudo` to update user configs. |
+| **Standalone** | `home-manager switch --flake .#yada` | User updates do not need `sudo`; works on Arch/macOS. | Two separate commands to update system vs dotfiles. |
+
+*(In your existing repository, you are using the **NixOS Module** approach via `home-manager.nixosModules.home-manager` in `flake.nix`.)*
+
+### How Dotfiles Are Generated: Three Migration Patterns
+
+When migrating your old Arch dotfiles to Home Manager, you do not need to convert everything into complex Nix options on day one. You can migrate incrementally:
+
+#### Pattern 1: Raw Symlink (Easiest migration from Arch)
+If you already have a working `hyprland.conf` or `waybar/config.jsonc` file:
+```nix
+{ config, pkgs, ... }:
+
+{
+  xdg.configFile.&quot;hypr/hyprland.conf&quot;.source = ./hyprland.conf;
+  xdg.configFile.&quot;waybar/config.jsonc&quot;.source = ./waybar/config.jsonc;
+  xdg.configFile.&quot;waybar/style.css&quot;.source = ./waybar/style.css;
+}
+```
+Home Manager creates a read-only symlink in `~/.config/hypr/hyprland.conf` pointing directly into `/nix/store/...-hyprland.conf`.
+
+#### Pattern 2: Inline Text with Nix Interpolation
+When you want to dynamically inject colors, fonts, or Nix store paths:
+```nix
+{ config, pkgs, theme, ... }:
+
+{
+  xdg.configFile.&quot;kitty/kitty.conf&quot;.text = &#x27;&#x27;
+    font_family      JetBrainsMono Nerd Font
+    font_size        11.0
+    foreground       ${theme.colors.foreground}
+    background       ${theme.colors.background}
+    
+    # Run a script packaged by Nix directly:
+    map ctrl+shift+e launch --type=overlay ${pkgs.fish}/bin/fish
+  &#x27;&#x27;;
+}
+```
+
+#### Pattern 3: High-Level Typed Modules (The Idiomatic Nix Way)
+Home Manager provides rich modules with auto-generated configurations and validation:
+```nix
+{ pkgs, ... }:
+
+{
+  programs.kitty = {
+    enable = true;
+    theme = &quot;Tokyo Night&quot;;
+    settings = {
+      font_size = 11;
+      enable_audio_bell = false;
+      confirm_os_window_close = 0;
+    };
+  };
+
+  programs.fish = {
+    enable = true;
+    shellAliases = {
+      ls = &quot;eza --icons&quot;;
+      g = &quot;git&quot;;
+      rebuild = &quot;sudo nixos-rebuild switch --flake ~/nixos-config#loki&quot;;
+    };
+  };
+}
+```
+
+### Primary Sources
+- [Home Manager Community Manual](https://nix-community.github.io/home-manager/)
+- [Home Manager Option Search](https://home-manager-options.extranix.com/)
+- [NixOS Wiki: Home Manager](https://wiki.nixos.org/wiki/Home_Manager)
+
+### Hands-on Project (Stage 8)
+1. Inspect the symlinks in your home directory:
+   ```bash
+   ls -l ~/.config/kitty/kitty.conf
+   ```
+   Notice that it points to `/etc/profiles/per-user/...` or `/nix/store/...`.
+2. Try to edit that file directly with `nano` or `vim`. You will find it is strictly read-only!
+3. To change it, edit your `home/default.nix` or kitty module and rebuild.
+
+---
+
+## Stage 9: Advanced Topics — Custom Derivations, Secrets &amp; IFD
+
+### Why This Matters
+Once you know how to configure programs, you will inevitably hit real-world demands:
+- A custom internal tool or Arch script you wrote isn&#x27;t in Nixpkgs.
+- You need to manage sensitive credentials (Wi-Fi passwords, SSH keys, API tokens) without leaking them in public GitHub git repositories.
+- You encounter complex Nix expressions that evaluate painfully slowly and need to understand why.
+
+### 1. Packaging Custom Scripts with `writeShellApplication`
+In Arch, you dropped custom scripts in `~/.local/bin/` and hoped your `$PATH` had `curl`, `jq`, and `ffmpeg`.
+
+In Nix, use `pkgs.writeShellApplication`. It runs **ShellCheck** on your code at build time and guarantees runtime dependencies are present:
+
+```nix
+{ pkgs }:
+
+pkgs.writeShellApplication {
+  name = &quot;omarchy-screenshot&quot;;
+
+  runtimeInputs = [
+    pkgs.grim
+    pkgs.slurp
+    pkgs.wl-clipboard
+    pkgs.libnotify
+  ];
+
+  text = &#x27;&#x27;
+    GEOM=$(slurp)
+    grim -g &quot;$GEOM&quot; - | wl-copy
+    notify-send &quot;Screenshot copied to clipboard!&quot;
+  &#x27;&#x27;;
+}
+```
+You can add this directly to `environment.systemPackages` or `home.packages`. It will *never* fail due to missing utilities, even on a bare-bones system.
+
+### 2. Secrets Management: Why `/nix/store` Is Public
+&gt; [!CAUTION]
+&gt; **Never put plaintext passwords, API keys, or private SSH keys in your Nix files.**
+&gt; The `/nix/store` directory is world-readable (`chmod 755`) by design. Any unprivileged user or process on the machine can read every file in `/nix/store`. If you write `password = &quot;hunter2&quot;;`, it will be readable by everyone.
+
+The modern standard solutions are **sops-nix** and **agenix**:
+
+```
+[Plain Secret File] ──(Encrypted with Host SSH Public Key)──&gt; [secrets.yaml in Git]
+                                                                     │
+                                                    nixos-rebuild switch
+                                                                     │
+                                                                     ▼
+[Host&#x27;s Private SSH Key] ──(Decrypts at runtime to RAM /run/secrets/)──&gt; Protected Service
+```
+
+#### How `sops-nix` Works:
+1. Secrets are encrypted using age or PGP with your machine&#x27;s SSH host key (`/etc/ssh/ssh_host_ed25519_key.pub`).
+2. The encrypted file `secrets.yaml` is safely committed to Git.
+3. During boot or activation, `sops-nix` uses the private key in `/etc/ssh/` to decrypt the secrets into a RAM disk (`/run/secrets/`), owned by `root` or a dedicated service user with `chmod 0400`.
+
+Example `sops-nix` usage in NixOS:
+```nix
+{ config, pkgs, ... }:
+{
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.age.sshKeyPaths = [ &quot;/etc/ssh/ssh_host_ed25519_key&quot; ];
+
+  sops.secrets.wifi_password = { };
+
+  # Use the decrypted path in your service:
+  networking.wireless.environmentFile = config.sops.secrets.wifi_password.path;
+}
+```
+
+### 3. IFD (Import From Derivation): What It Is and Why to Avoid It
+
+In standard Nix evaluation, there are two distinct phases:
+1. **Evaluation Phase**: The Nix expression evaluates to a complete Derivation Graph (`.drv` files).
+2. **Build Phase**: The Nix daemon reads `.drv` files and builds them in parallel sandboxes.
+
+**What is IFD?**
+IFD occurs when a Nix expression takes the *output of a derivation* and `import`s it back into the evaluation phase:
+
+```nix
+# BAD PRACTICE (IFD example):
+let
+  generatedJson = pkgs.runCommand &quot;gen.json&quot; {} &#x27;&#x27;
+    echo &#x27;{&quot;name&quot;: &quot;yada&quot;}&#x27; &gt; $out
+  &#x27;&#x27;;
+in
+# This IMPORT pauses evaluation, forces a build of generatedJson, then continues evaluating:
+import (builtins.fromJSON (builtins.readFile generatedJson))
+```
+
+#### Why IFD Hurts:
+- It halts Nix evaluation completely while waiting for the derivation to compile.
+- It breaks distributed evaluators (like Hydra CI) because evaluation machines are not meant to run heavy build workloads.
+- It prevents tools like `nix flake check` or `colmena` from evaluating your infrastructure in parallel.
+
+Keep code generation outside of the evaluation loop or use pure Nix functions rather than building external scripts to generate Nix expressions.
+
+### Primary Sources
+- [Mic92/sops-nix GitHub Repository](https://github.com/Mic92/sops-nix)
+- [ryantm/agenix GitHub Repository](https://github.com/ryantm/agenix)
+- [NixOS Manual: Writing Packages](https://nixos.org/manual/nixpkgs/stable/#chap-quick-start)
+
+### Hands-on Project (Stage 9)
+Write a package expression for a small custom shell script using `pkgs.writeShellApplication` with at least two `runtimeInputs` (like `curl` and `jq`), add it to your `devShells` in `flake.nix`, and test it.
+
+---
+
+## Where Beginners Get Stuck: Real Pitfalls &amp; Troubleshooting
+
+### Pitfall 1: Infinite Recursion (`infinite recursion encountered`)
+#### Why It Happens
+In lazy evaluation, circular dependencies cause the evaluator to chase its own tail:
+```nix
+# Obvious example:
+rec {
+  a = b + 1;
+  b = a + 1;
+}
+```
+In NixOS modules, this often happens when you configure an option based on an attribute that depends on that same option:
+```nix
+# Tricky module example:
+config = {
+  networking.hostName = if config.networking.hostName == &quot;loki&quot; then &quot;loki&quot; else &quot;generic&quot;;
+}
+```
+#### How to Fix
+Run the rebuild with `--show-trace`:
+```bash
+sudo nixos-rebuild switch --flake .#loki --show-trace
+```
+Look at the bottom of the trace. It will identify the exact file and line number where the circular evaluation occurred. Break the cycle by deriving values from `lib` parameters or independent variables.
+
+---
+
+### Pitfall 2: The `with` Scoping Foot-gun
+#### Why It Happens
+Consider this snippet:
+```nix
+let
+  lib = &quot;my-custom-string&quot;;
+in
+with pkgs;
+[
+  lib
+]
+```
+What is inside the list? Is it `&quot;my-custom-string&quot;`, or is it the Nixpkgs `lib` attribute set?
+In Nix, `with` **does not override local variables**! Local variables take precedence.
+
+Furthermore, if a package in Nixpkgs introduces an attribute that matches a variable in your scope, `with` can silently change what your code resolves to without warning.
+
+#### How to Fix
+Avoid `with` in function headers and module bodies. Instead, use explicit references or `inherit`:
+```nix
+# Bad:
+with pkgs; [ git neovim fish ]
+
+# Good:
+[ pkgs.git pkgs.neovim pkgs.fish ]
+
+# Or with inherit:
+let
+  inherit (pkgs) git neovim fish;
+in
+[ git neovim fish ]
+```
+
+---
+
+### Pitfall 3: Flake Purity &amp; Unstaged Git Files
+#### The Error
+```
+error: getting status of &#x27;/nix/store/...-source/home/modules/waybar.nix&#x27;: No such file or directory
+```
+#### Why It Happens
+Coming from Arch, you are used to creating a new file `nano waybar.nix` and immediately testing your software.
+In Flakes, Nix copies the **Git worktree** into the `/nix/store` before evaluating. If a new file is not tracked by Git, **Nix cannot see it!**
+
+#### How to Fix
+Always stage newly created files before rebuilding:
+```bash
+git add -N .  # or git add .
+```
+`-N` (`--intent-to-add`) tells Git to track the file path without committing it. Nix will now include it in the evaluation.
+
+---
+
+### Pitfall 4: CLI Confusion: `nix-shell` vs `nix shell` vs `nix develop`
+
+| Command | Purpose | Input Source |
+| :--- | :--- | :--- |
+| `nix-shell -p pkg` | Legacy ad-hoc shell | Channels (`&lt;nixpkgs&gt;`) |
+| `nix shell nixpkgs#pkg` | Modern ad-hoc shell | Flake URL (`nixpkgs#...`) |
+| `nix develop` | Enters a package&#x27;s exact *build environment* (all compiler tools, headers, shell hooks) | Flake `devShells` output |
+
+If you want to quickly test a tool, use `nix shell`.
+If you are developing a project and need compilers and build flags loaded, use `nix develop`.
+
+---
+
+### Pitfall 5: How to Read Nix Error Tracebacks
+Nix tracebacks read from **outermost call to innermost failure** (top to bottom):
+
+```
+error:
+       … while evaluating the attribute &#x27;activationScript&#x27;
+       … while evaluating the attribute &#x27;config.system.build.toplevel&#x27;
+       … while evaluating the module ./modules/waybar.nix:
+       error: undefined variable &#x27;foobar&#x27; at /home/yada/nixos-config/modules/waybar.nix:14:7
+```
+
+**Workflow to debug:**
+1. Scroll straight to the **very last line** of the error message. That is the actual exception (`undefined variable`, `type error`, `infinite recursion`).
+2. Read the file path and line number right above it.
+3. If the error is ambiguous, rerun with `--show-trace` to reveal the entire module evaluation chain.
+
+---
+
+## Primary Sources &amp; Curated Reference Library
+
+Every link below is verified and active. Use these as your definitive guides:
+
+### Official Documentation
+- **[Nix.dev](https://nix.dev)** — The modern, official portal for Nix tutorials and language reference.
+- **[Nix Manual (Stable)](https://nixos.org/manual/nix/stable/)** — Complete specification of the `nix` CLI, commands, and language builtins.
+- **[NixOS Manual (Stable)](https://nixos.org/manual/nixos/stable/)** — Complete guide to the NixOS operating system, module options, and administration.
+- **[Nix Pills](https://nixos.org/guides/nix-pills/)** — The timeless 25-part series walking through Nix internals from first principles.
+- **[Zero to Nix](https://zero-to-nix.com)** — Fast, practical, modern introduction focused on Flakes and reproducible environments.
+- **[Home Manager Manual](https://nix-community.github.io/home-manager/)** — Official documentation for configuring user environments and dotfiles.
+
+### Exploration and Search Engines
+- **[Search Nixpkgs](https://search.nixos.org/packages)** — Search all 100,000+ packages in Nixpkgs.
+- **[Search NixOS Options](https://search.nixos.org/options)** — Official search engine for all system options.
+- **[Noogle.dev](https://noogle.dev)** — Search engine for Nixpkgs `lib` functions, arguments, and type signatures.
+- **[Home Manager Options](https://home-manager-options.extranix.com/)** — Fast interactive search for Home Manager settings.
+
+### Community &amp; Secrets
+- **[NixOS Discourse](https://discourse.nixos.org)** — Official community discussion forum.
+- **[NixOS Official Wiki](https://wiki.nixos.org)** — Community documentation and hardware-specific guides.
+- **[sops-nix Repository](https://github.com/Mic92/sops-nix)** — Declarative secret encryption using SOPS and age.
+- **[agenix Repository](https://github.com/ryantm/agenix)** — Age-based secrets management for NixOS.
+
+---
+
+## Final Words: The Road Forward
+
+You already know Linux. You know how window managers communicate with Wayland compositors, how systemd handles cgroups, and how dynamic linkers load libraries.
+
+Do not treat Nix as a magical configuration generator. Treat it as a **rigorous functional compiler** whose output is an entire operating system. When you approach it with this mental model, the friction disappears, and you will never want to manage an imperative Linux distribution again.
+
+*Now open `Stage 1`, start your `nix repl`, and begin building your system with confidence.*
+</script>
+  <script>
+    const raw = document.getElementById("raw-markdown").textContent;
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      highlight: function(code, lang) {
+        const language = highlight.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+      }
+    });
+    document.getElementById("app").innerHTML = marked.parse(raw);
+    hljs.highlightAll();
+  </script>
+</body>
+</html>
