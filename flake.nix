@@ -1,77 +1,12 @@
 {
-  description = "Yada's NixOS Configuration";
+  description = "My Dendritic Nixos Configuration";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    antigravity-nix = {
-      url = "github:jacopone/antigravity-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:denful/import-tree";
   };
 
-  outputs = { self, nixpkgs, home-manager, antigravity-nix, ... }: {
-    nixosConfigurations = {
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
-      # Host 1: Physical Laptop
-      loki = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          {
-            nixpkgs.overlays = [
-              antigravity-nix.overlays.default
-            ];
-          }
-
-          ./hosts/loki
-          ./modules/core.nix
-          ./modules/hardware.nix
-          ./modules/desktop.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {
-              theme = import ./theme;
-            };
-            home-manager.users.yada = import ./home;
-          }
-        ];
-      };
-
-      # Host 2: Virtual Machine (virt-manager / QEMU)
-      vm = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          {
-            nixpkgs.overlays = [
-              antigravity-nix.overlays.default
-            ];
-          }
-
-          ./hosts/vm
-          ./modules/core.nix
-          ./modules/hardware.nix
-          ./modules/desktop.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {
-              theme = import ./theme;
-            };
-            home-manager.users.yada = import ./home;
-          }
-        ];
-      };
-
-    };
-  };
 }
