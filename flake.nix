@@ -6,6 +6,7 @@
     flake-parts.url = "git+https://github.com/hercules-ci/flake-parts.git";
     import-tree.url = "git+https://github.com/denful/import-tree.git";
 
+
     home-manager = {
 
       url = "github:nix-community/home-manager";

@@ -11,7 +11,9 @@
           useUserPackages = true;
           users.yada = {
             home.stateVersion = "26.05";
-            imports = [ ];
+            imports = [
+             self.homeModules.helix 
+            ];
           };
 
         };
