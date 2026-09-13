@@ -1,6 +1,5 @@
-{
-  flake.modules.nixos.hardware-vm = { lib, modulesPath, ... }: {
-
+{ ... }: {
+  flake.nixosModules.vm-hardware = { lib, modulesPath, ... }: {
     imports = [
       (modulesPath + "/profiles/qemu-guest.nix")
     ];
