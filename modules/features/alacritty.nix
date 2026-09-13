@@ -7,6 +7,7 @@
       settings = {
         window = {
           opacity = 0.95;
+          decorations = "None";
           padding = {
             x = 10;
             y = 10;

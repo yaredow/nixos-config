@@ -3,6 +3,7 @@
     imports = [
       self.nixosModules.vm-hardware
       self.nixosModules.fish
+      self.nixosModules.niri
     ];
 
     networking.hostName = "vm";
@@ -17,7 +18,7 @@
         nerd-fonts.caskaydia-cove
         nerd-fonts.fira-code
       ];
-      fontconfig.defaultFonts.monospace = [ "CaskaydiaCove Nerd Font" ];
+      fontconfig.defaultFonts.monospace = [ "FiraCode Nerd Font" ];
     };
 
     users.users.yada = {
