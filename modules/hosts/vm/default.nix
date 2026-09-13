@@ -12,7 +12,7 @@
           users.yada = {
             home.stateVersion = "26.05";
             imports = [
-             self.homeModules.helix 
+              self.homeModules.default
             ];
           };
 
