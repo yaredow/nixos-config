@@ -9,6 +9,7 @@
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
+          backupFileExtension = "backup";
           users.yada = {
             home.stateVersion = "26.05";
             imports = [

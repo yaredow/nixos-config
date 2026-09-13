@@ -2,6 +2,7 @@
   flake.nixosModules.vm-configuration = { pkgs, ... }: {
     imports = [
       self.nixosModules.vm-hardware
+      self.nixosModules.fish
     ];
 
     networking.hostName = "vm";
@@ -9,6 +10,15 @@
 
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
+
+    # System fonts
+    fonts = {
+      packages = with pkgs; [
+        nerd-fonts.caskaydia-cove
+        nerd-fonts.fira-code
+      ];
+      fontconfig.defaultFonts.monospace = [ "CaskaydiaCove Nerd Font" ];
+    };
 
     users.users.yada = {
       isNormalUser = true;
