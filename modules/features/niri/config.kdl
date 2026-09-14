@@ -8,12 +8,6 @@ output "Virtual-1" {
     scale 2.0
 }
 
-// Persistent base workspaces (1-5)
-workspace "1"
-workspace "2"
-workspace "3"
-workspace "4"
-workspace "5"
 
 input {
     keyboard {

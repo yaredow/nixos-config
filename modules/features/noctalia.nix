@@ -93,9 +93,11 @@
             };
 
             workspaces = {
+              style = "minimal";
               show_icons = false;
               show_labels = true;
               label_source = "id";
+              labels_only_when_occupied = false;
               hide_when_empty = false;
               focused_color = "primary";
               occupied_color = "on_surface";
@@ -139,7 +141,7 @@
             };
 
             control-center = {
-              glyph = "adjustments-horizontal";
+              glyph = "settings-2";
             };
 
             session = {
