@@ -55,23 +55,17 @@
               position = "top";
               layer = "top";
               reserve_space = true;
-              thickness = 34;
-              margin_edge = 8;
-              margin_ends = 16;
-              radius = 12;
-              background_opacity = 0.0;
+              thickness = 30;
+              margin_edge = 0;
+              margin_ends = 0;
+              radius = 0;
+              background_opacity = 1.0;
               border_width = 0.0;
-              capsule = true;
-              capsule_fill = "#1e2030";
-              capsule_border = "#3b4261";
-              capsule_opacity = 0.95;
-              capsule_padding = 8.0;
-              capsule_radius = 10.0;
-              capsule_thickness = 0.85;
-              widget_spacing = 8;
-              padding = 0;
+              capsule = false;
+              widget_spacing = 14;
+              padding = 16;
               font_family = "CaskaydiaCove Nerd Font";
-              font_weight = 600;
+              font_weight = 500;
 
               start = [
                 "launcher"
@@ -82,15 +76,11 @@
               end = [
                 "media"
                 "tray"
-                "notifications"
                 "network"
                 "volume"
+                "battery"
                 "control-center"
                 "session"
-              ];
-              capsule_group = [
-                [ "network" "volume" ]
-                [ "control-center" "session" ]
               ];
             };
           };
@@ -100,15 +90,13 @@
               custom_image = "/run/current-system/sw/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               custom_image_colorize = true;
               icon_color = "primary";
-              capsule_fill = "#1e2030";
             };
 
             workspaces = {
               style = "focus_hint";
-              show_icons = true;
-              show_labels = true;
-              label_source = "id";
-              hide_when_empty = false;
+              show_icons = false;
+              show_labels = false;
+              hide_when_empty = true;
               focused_color = "primary";
             };
 
@@ -119,7 +107,7 @@
             };
 
             clock = {
-              format = " {:%H:%M}  󰃭 {:%a %d %b}";
+              format = "{:%a %d %b   %H:%M}";
               tooltip_format = "%A, %d %B %Y";
             };
 
@@ -139,6 +127,11 @@
 
             volume = {
               show_label = true;
+            };
+
+            battery = {
+              show_label = true;
+              hide_when_full = false;
             };
 
             control-center = {
