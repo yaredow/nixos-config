@@ -1,8 +1,8 @@
 { self, inputs, ... }: {
-  flake.nixosConfigurations.vm = inputs.nixpkgs.lib.nixosSystem {
+  flake.nixosConfigurations.loki = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     modules = [
-      self.nixosModules.vm-configuration
+      self.nixosModules.loki-configuration
       inputs.home-manager.nixosModules.home-manager
 
       {
@@ -17,7 +17,6 @@
               self.homeModules.default
             ];
           };
-
         };
       }
     ];
