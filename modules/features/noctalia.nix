@@ -93,11 +93,13 @@
             };
 
             workspaces = {
-              style = "focus_hint";
               show_icons = false;
-              show_labels = false;
-              hide_when_empty = true;
+              show_labels = true;
+              label_source = "id";
+              hide_when_empty = false;
               focused_color = "primary";
+              occupied_color = "on_surface";
+              empty_color = "outline";
             };
 
             active_window = {
@@ -107,7 +109,7 @@
             };
 
             clock = {
-              format = "{:%a %d %b   %H:%M}";
+              format = "󰃭 {:%a %d %b}    {:%H:%M}";
               tooltip_format = "%A, %d %B %Y";
             };
 
@@ -127,6 +129,8 @@
 
             volume = {
               show_label = true;
+              glyph = "volume-2";
+              mute_glyph = "volume-off";
             };
 
             battery = {

@@ -34,6 +34,10 @@
 
     programs.git.enable = true;
 
+    environment.systemPackages = [
+      pkgs.papirus-icon-theme
+    ];
+
     services.spice-vdagentd.enable = true;
 
     # SSH access
