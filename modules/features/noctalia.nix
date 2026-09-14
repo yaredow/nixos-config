@@ -24,6 +24,11 @@
       programs.noctalia = {
         enable = true;
         settings = {
+            lockscreen = {
+              enabled = true;
+              blurred_desktop = true;
+              blur_intensity = 0.7;
+            };
           config_version = 14;
 
           theme = {
