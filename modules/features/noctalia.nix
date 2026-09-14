@@ -9,6 +9,7 @@
       enable = true;
       recommendedServices.enable = true;
     };
+    security.pam.services.noctalia = {};
   };
 
   flake.homeModules.noctalia = { pkgs, ... }:
@@ -29,6 +30,7 @@
               blurred_desktop = true;
               blur_intensity = 0.7;
             };
+    security.pam.services.noctalia = {};
           config_version = 14;
 
           theme = {
