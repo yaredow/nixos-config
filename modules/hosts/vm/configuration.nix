@@ -4,6 +4,7 @@
       self.nixosModules.vm-hardware
       self.nixosModules.fish
       self.nixosModules.niri
+      self.nixosModules.noctalia
     ];
 
     networking.hostName = "vm";
@@ -53,6 +54,12 @@
       trusted-users = [
         "root"
         "@wheel"
+      ];
+      extra-substituters = [
+        "https://noctalia.cachix.org"
+      ];
+      extra-trusted-public-keys = [
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       ];
     };
 
