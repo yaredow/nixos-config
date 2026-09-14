@@ -25,12 +25,16 @@
       programs.noctalia = {
         enable = true;
         settings = {
+          idle = {
+            behavior.screen-off.enabled = false;
+            behavior.lock-and-suspend.enabled = false;
+          };
+
             lockscreen = {
               enabled = true;
               blurred_desktop = true;
               blur_intensity = 0.7;
             };
-    security.pam.services.noctalia = {};
           config_version = 14;
 
           theme = {
