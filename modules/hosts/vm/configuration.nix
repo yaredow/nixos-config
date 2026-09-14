@@ -11,6 +11,7 @@
 
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.systemd-boot.configurationLimit = 5;
 
     # System fonts
     fonts = {
@@ -31,6 +32,8 @@
     };
 
     programs.git.enable = true;
+
+    services.spice-vdagentd.enable = true;
 
     # SSH access
     services.openssh = {
