@@ -61,7 +61,9 @@
               radius = 0;
               background_opacity = 1.0;
               border_width = 0.0;
-              capsule = false;
+              capsule = true;
+            capsule_radius = 15;
+            capsule_padding = 4;
               widget_spacing = 14;
               padding = 16;
               font_family = "CaskaydiaCove Nerd Font";
@@ -131,8 +133,8 @@
 
             volume = {
               show_label = true;
-              glyph = "volume-2";
-              mute_glyph = "volume-off";
+              custom_image = "/run/current-system/sw/share/icons/Papirus/24x24/symbolic/status/audio-volume-high-symbolic.svg";
+              custom_image_colorize = true;
             };
 
             battery = {
@@ -141,11 +143,13 @@
             };
 
             control-center = {
-              glyph = "settings-2";
+              custom_image = "/run/current-system/sw/share/icons/Papirus/24x24/symbolic/categories/preferences-system-symbolic.svg";
+              custom_image_colorize = true;
             };
 
             session = {
-              glyph = "power";
+              custom_image = "/run/current-system/sw/share/icons/Papirus/24x24/symbolic/actions/system-shutdown-symbolic.svg";
+              custom_image_colorize = true;
               color = "error";
             };
           };
