@@ -2,7 +2,7 @@
   flake.nixosModules.vm-configuration = { pkgs, ... }: {
     imports = [
       self.nixosModules.vm-hardware
-      self.nixosModules.zsh
+      self.nixosModules.fish
       self.nixosModules.niri
       self.nixosModules.noctalia
     ];
