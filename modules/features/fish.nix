@@ -34,10 +34,6 @@
         la = "eza -lha --git";
         tree = "eza --tree";
 
-        sp = "sudo pacman";
-        sps = "sudo pacman -S --noconfirm";
-        spu = "sudo pacman -Syu --noconfirm";
-
         gs = "git status";
         gc = "git commit";
         gp = "git push";
