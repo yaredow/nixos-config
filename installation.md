@@ -1,40 +1,53 @@
-# Loki Installation Guide
+# Loki Installation Guide (Fresh Wipe)
 
-Follow these steps to apply this flake configuration to your main laptop (`loki`).
+Since you are wiping your laptop SSD and installing from scratch, you cannot just run `nixos-rebuild`. You must boot from a Live USB, format the drive, and use `nixos-install`.
 
-## Prerequisites
-- You must already be running NixOS on `loki`.
-- (If this is a brand new, wiped disk install, the UUIDs in `modules/hosts/loki/hardware.nix` will be incorrect. You must generate a new hardware config via `nixos-generate-config --show-hardware-config` and update `hardware.nix` with the new UUIDs before proceeding).
+**CRITICAL WARNING:** When you wipe your SSD, your disk partitions get new, random UUIDs. The UUIDs currently hardcoded in `modules/hosts/loki/hardware.nix` will be wrong. If you don't update them, your new install will fail to boot because it won't be able to find the hard drive!
 
-## Step 1: Clone the Repository
-Open a terminal on your laptop and clone your configuration repository if you haven't already:
+## Step 1: Boot and Partition
+1. Boot into the NixOS Live USB.
+2. Partition your disk (e.g., using `cfdisk /dev/nvme0n1`). You need at least:
+   - A boot partition (e.g., 512MB, type EFI System)
+   - A root partition (e.g., the rest of the disk, type Linux filesystem)
+3. Format the partitions:
+   ```bash
+   mkfs.fat -F 32 -n boot /dev/nvme0n1p1
+   mkfs.ext4 -L nixos /dev/nvme0n1p2
+   ```
+4. Mount them:
+   ```bash
+   mount /dev/disk/by-label/nixos /mnt
+   mkdir -p /mnt/boot
+   mount /dev/disk/by-label/boot /mnt/boot
+   ```
 
+## Step 2: Generate New Hardware Config
+NixOS needs to know the new UUIDs of the partitions you just created.
 ```bash
-git clone git@github.com:yaredow/nixos-config.git ~/nixos-config
-cd ~/nixos-config
+nixos-generate-config --root /mnt
 ```
+This generates `/mnt/etc/nixos/hardware-configuration.nix`.
 
-## Step 2: Checkout the Working Branch
-The new Dendritic configuration for `loki` is currently on the `scratch-vm` branch. Fetch and checkout this branch:
+## Step 3: Clone and Update Flake
+1. Clone your configuration repo onto the mounted drive:
+   ```bash
+   nix-shell -p git
+   git clone -b scratch-vm https://github.com/yaredow/nixos-config.git /mnt/etc/nixos-config
+   cd /mnt/etc/nixos-config
+   ```
+2. Open `/mnt/etc/nixos/hardware-configuration.nix` (the newly generated one) and `/mnt/etc/nixos-config/modules/hosts/loki/hardware.nix` (the one in your repo) side-by-side.
+3. **CRUCIAL STEP:** Copy the entire `fileSystems` block from the generated file into your repo's `hardware.nix`. This updates the UUIDs so your system knows where to boot from!
 
+## Step 4: Install
+Run the flake installer pointing to the `loki` configuration:
 ```bash
-git fetch origin
-git checkout scratch-vm
-git pull origin scratch-vm
+nixos-install --flake .#loki --root /mnt
 ```
+It will build the system and ask you to set a root password.
 
-## Step 3: Build and Switch
-Deploy the flake to the system. Since the flake defines `nixosConfigurations.loki`, it will automatically use the `loki` configuration because it matches your hostname (or you can specify it explicitly).
-
+## Step 5: Reboot
+Once it finishes:
 ```bash
-sudo nixos-rebuild switch --flake .#loki
+reboot
 ```
-
-## Step 4: Finalize
-1. The build will download and compile the necessary packages (Noctalia, Niri, etc.).
-2. Once completed, the system display manager will likely restart, throwing you into the `noctalia-greeter` login screen.
-3. Log in with your password. You should now be in your new Niri Wayland session.
-
-## Troubleshooting
-- **No Route to Host / Network Issues**: Make sure you are connected to the internet before running `nixos-rebuild`.
-- **Disk UUID Errors**: If you wiped your drive and reinstalled from a USB, your partition UUIDs have changed. Run `sudo nixos-generate-config` and copy the new UUIDs into `modules/hosts/loki/hardware.nix`, then rebuild.
+Remove your USB drive, and you will boot directly into the Noctalia Greeter!
