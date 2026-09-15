@@ -67,6 +67,10 @@
       ];
     };
 
+    
+    # Fix dual/inverted cursor in VM by forcing software cursors
+    environment.variables.WLR_NO_HARDWARE_CURSORS = "1";
+
     system.stateVersion = "26.05";
 
   };
