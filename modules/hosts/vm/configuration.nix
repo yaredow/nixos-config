@@ -1,5 +1,6 @@
 { self, ... }: {
   flake.nixosModules.vm-configuration = { pkgs, ... }: {
+  nixpkgs.config.allowUnfree = true;
     imports = [
       self.nixosModules.vm-hardware
       self.nixosModules.fish

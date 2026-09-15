@@ -7,6 +7,7 @@
       self.homeModules.starship
       self.homeModules.niri
       self.homeModules.noctalia
+      self.homeModules.antigravity
     ];
   };
 }

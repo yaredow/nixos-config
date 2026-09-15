@@ -1,5 +1,6 @@
 { self, ... }: {
   flake.nixosModules.loki-configuration = { pkgs, ... }: {
+  nixpkgs.config.allowUnfree = true;
     imports = [
       self.nixosModules.loki-hardware
       self.nixosModules.fish
