@@ -14,6 +14,7 @@
             home.stateVersion = "26.05";
             imports = [
               self.homeModules.programs
+              self.homeModules.cursor
               self.homeModules.default
             ];
           };
