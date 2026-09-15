@@ -2,7 +2,7 @@
   flake.nixosModules.loki-configuration = { pkgs, ... }: {
     imports = [
       self.nixosModules.loki-hardware
-      self.nixosModules.fish
+      self.nixosModules.zsh
       self.nixosModules.niri
       self.nixosModules.noctalia
     ];
