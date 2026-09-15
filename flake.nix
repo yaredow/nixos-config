@@ -13,6 +13,7 @@
 
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
+    helium-browser.url = "github:oxcl/nix-flake-helium-browser";
     home-manager = {
 
       url = "github:nix-community/home-manager";

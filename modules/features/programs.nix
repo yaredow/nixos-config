@@ -1,4 +1,4 @@
-{ self, ... }: {
+{ self, inputs, ... }: {
   flake.homeModules.programs = { pkgs, ... }: {
     home.pointerCursor = {
       enable = true;
@@ -21,6 +21,7 @@
       mpv
       yt-dlp
       btop
+      inputs.helium-browser.packages.${pkgs.system}.default
     ];
 
     programs.zoxide = {
@@ -56,6 +57,18 @@
       presets = [ "nerd-font-symbols" ];
     };
 
-    programs.btop.enable = true;\n    programs.direnv = { enable = true; enableFishIntegration = true; };
+    programs.btop.enable = true;
+
+    xdg.mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "text/html" = [ "helium-browser.desktop" ];
+        "x-scheme-handler/http" = [ "helium-browser.desktop" ];
+        "x-scheme-handler/https" = [ "helium-browser.desktop" ];
+        "x-scheme-handler/about" = [ "helium-browser.desktop" ];
+        "x-scheme-handler/unknown" = [ "helium-browser.desktop" ];
+      };
+    };
+    programs.direnv = { enable = true; enableFishIntegration = true; };
   };
 }
