@@ -15,9 +15,9 @@
         };
 
         font = {
-          size = 11;
+          size = 10;
           normal = {
-            family = "monospace";
+            family = "CaskaydiaCove Nerd Font";
           };
         };
 

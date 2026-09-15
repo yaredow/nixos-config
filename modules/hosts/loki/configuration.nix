@@ -38,7 +38,7 @@
         nerd-fonts.caskaydia-cove
         nerd-fonts.fira-code
       ];
-      fontconfig.defaultFonts.monospace = [ "FiraCode Nerd Font" ];
+      fontconfig.defaultFonts.monospace = [ "CaskaydiaCove Nerd Font" ];
     };
 
     users.users.yada = {
