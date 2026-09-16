@@ -26,5 +26,3 @@ sudo nixos-rebuild switch --flake .#loki
 # Rebuild VM
 sudo nixos-rebuild switch --flake .#vm
 ```
-
-For fresh bare-metal installs, see [installation.md](installation.md).
