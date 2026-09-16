@@ -6,6 +6,7 @@
       self.nixosModules.fish
       self.nixosModules.niri
       self.nixosModules.noctalia
+      self.nixosModules.keyd
     ];
 
     networking.hostName = "loki";
