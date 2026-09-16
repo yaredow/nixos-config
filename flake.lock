@@ -8,17 +8,35 @@
         ]
       },
       "locked": {
-        "lastModified": 1788592425,
-        "narHash": "sha256-N6tHHlKKL0ErBZN0FRN47bFRGe7jzd5n/s0iv5codi8=",
+        "lastModified": 1789542992,
+        "narHash": "sha256-sNXMMiOXf1pCDS3ZODjJ8QdgaVjvmYZi8xOumtKH+uo=",
         "owner": "jacopone",
         "repo": "antigravity-nix",
-        "rev": "6310713b4f3e0c1d6ac28b30c2fdd66bfcec9275",
+        "rev": "1526f257d74b565b736c1d279ca53dce48912d12",
         "type": "github"
       },
       "original": {
         "owner": "jacopone",
         "repo": "antigravity-nix",
         "type": "github"
+      }
+    },
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib"
+      },
+      "locked": {
+        "lastModified": 1788450739,
+        "narHash": "sha256-glZLQlzIn1fXH6PazR2iUmTo7kzzyYSshrWhLS9TqCU=",
+        "ref": "refs/heads/main",
+        "rev": "31729ca8cbdb4fa927b34e5f4353e6a83f39e993",
+        "revCount": 494,
+        "type": "git",
+        "url": "https://github.com/hercules-ci/flake-parts.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/hercules-ci/flake-parts.git"
       }
     },
     "flake-utils": {
@@ -39,6 +57,24 @@
         "type": "github"
       }
     },
+    "helium-browser": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1789214328,
+        "narHash": "sha256-ldHrGfwWiL8DwnP07DsqgGpppIPdXg/rF/FjDEXMNvI=",
+        "owner": "oxcl",
+        "repo": "nix-flake-helium-browser",
+        "rev": "7d7117d1154f9837913ae6216a25ebed96536478",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxcl",
+        "repo": "nix-flake-helium-browser",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -46,11 +82,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788487777,
-        "narHash": "sha256-Ro/e1N4ZR8/XaFF+sF9SgfPK79HM5YNEppzFj8p+0Ak=",
+        "lastModified": 1789273010,
+        "narHash": "sha256-E7dWx+utzZPpqQsBUd5sMimKTWMEEbTKFD+ya99Shps=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "693e8ce0fb240a73c116a03cfd7b19269c87af88",
+        "rev": "fdc36b12804b0179b24a5ffd282e4c95c37072e2",
         "type": "github"
       },
       "original": {
@@ -59,27 +95,110 @@
         "type": "github"
       }
     },
+    "import-tree": {
+      "locked": {
+        "lastModified": 1788467110,
+        "narHash": "sha256-ljEMTXP/rH0tOvDzc9gzwww6KcHRPRnEHzd9lK48V7s=",
+        "ref": "refs/heads/main",
+        "rev": "eb1b52eaecc57f7c136d07ae8a93e724dfecac46",
+        "revCount": 104,
+        "type": "git",
+        "url": "https://github.com/denful/import-tree.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/denful/import-tree.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1788531059,
-        "narHash": "sha256-hLD4l3QOGBQhkVp3mQ2lJ/YbEi99qUgKapb40KovZ88=",
-        "owner": "nixos",
+        "lastModified": 1777578337,
+        "narHash": "sha256-Ad49moKWeXtKBJNy2ebiTQUEgdLyvGmTeykAQ9xM+Z4=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "801bef6abd86b91e51083066b83fb354a11fc640",
+        "rev": "15f4ee454b1dce334612fa6843b3e05cf546efab",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-lib": {
+      "locked": {
+        "lastModified": 1788057806,
+        "narHash": "sha256-DTQSMxzDWmT0zhguthvegnVkn7CFqGCv4IHCzk5ZUpM=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "596e2e3940e09b2abbeb03f75fa1828c57fcd72c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1789149629,
+        "narHash": "sha256-H6GwaZzZf+4npqv0tph94w9tZddSjFjmQrVsW0z78uk=",
+        "ref": "nixos-unstable",
+        "rev": "eaad089433ca2bb662274377d33df3d0e51ef28b",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nixos/nixpkgs.git"
+      },
+      "original": {
+        "ref": "nixos-unstable",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/nixos/nixpkgs.git"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1789149629,
+        "narHash": "sha256-eQUZVehWLDBbpBR2rq6DnuRee1ULT6Y675RhsYDSjYI=",
+        "rev": "eaad089433ca2bb662274377d33df3d0e51ef28b",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1072397.eaad089433ca/nixexprs.tar.zst"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"
+      }
+    },
+    "noctalia": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1789344529,
+        "narHash": "sha256-vZ0K+5Par33Omh1z1iRAXEvS4m0/jIb6S6aflJjyUVE=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "rev": "5d66d118861fedcbe039d9d04d06904cced40613",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "ref": "cachix",
+        "repo": "noctalia",
         "type": "github"
       }
     },
     "root": {
       "inputs": {
         "antigravity-nix": "antigravity-nix",
+        "flake-parts": "flake-parts",
+        "helium-browser": "helium-browser",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "import-tree": "import-tree",
+        "nixpkgs": "nixpkgs_2",
+        "noctalia": "noctalia"
       }
     },
     "systems": {

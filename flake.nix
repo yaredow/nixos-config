@@ -1,77 +1,30 @@
 {
-  description = "Yada's NixOS Configuration";
+  description = "My Dendritic Nixos Configuration";
+
+  nixConfig = {
+    extra-substituters = [ "https://noctalia.cachix.org" ];
+    extra-trusted-public-keys = [ "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=" ];
+  };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     antigravity-nix = {
       url = "github:jacopone/antigravity-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
 
-  outputs = { self, nixpkgs, home-manager, antigravity-nix, ... }: {
-    nixosConfigurations = {
+    nixpkgs.url = "git+https://github.com/nixos/nixpkgs.git?ref=nixos-unstable&shallow=1";
+    flake-parts.url = "git+https://github.com/hercules-ci/flake-parts.git";
+    import-tree.url = "git+https://github.com/denful/import-tree.git";
 
-      # Host 1: Physical Laptop
-      loki = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          {
-            nixpkgs.overlays = [
-              antigravity-nix.overlays.default
-            ];
-          }
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
-          ./hosts/loki
-          ./modules/core.nix
-          ./modules/hardware.nix
-          ./modules/desktop.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {
-              theme = import ./theme;
-            };
-            home-manager.users.yada = import ./home;
-          }
-        ];
-      };
+    helium-browser.url = "github:oxcl/nix-flake-helium-browser";
+    home-manager = {
 
-      # Host 2: Virtual Machine (virt-manager / QEMU)
-      vm = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          {
-            nixpkgs.overlays = [
-              antigravity-nix.overlays.default
-            ];
-          }
-
-          ./hosts/vm
-          ./modules/core.nix
-          ./modules/hardware.nix
-          ./modules/desktop.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {
-              theme = import ./theme;
-            };
-            home-manager.users.yada = import ./home;
-          }
-        ];
-      };
-
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }
