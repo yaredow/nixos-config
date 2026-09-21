@@ -5,6 +5,10 @@
       enable = true;
 
       settings = {
+        scrolling = {
+          multiplier = 5;
+        };
+
         window = {
           opacity = 0.95;
           decorations = "None";
@@ -17,13 +21,18 @@
         font = {
           size = 10;
           normal = {
-            family = "CaskaydiaCove Nerd Font";
+            family = "FiraCode Nerd Font";
+            style = "Medium";
+          };
+          bold = {
+            family = "FiraCode Nerd Font";
+            style = "Bold";
           };
         };
 
         colors = {
           primary = {
-            background = "#1a1b26";
+            background = "#15161e";
             foreground = "#c0caf5";
           };
           normal = {

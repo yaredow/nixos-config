@@ -18,11 +18,19 @@
       unzip
       qbittorrent
       yazi
-      mpv
       yt-dlp
       btop
-      inputs.helium-browser.packages.${pkgs.system}.default
     ];
+
+    programs.brave = {
+      enable = true;
+      commandLineArgs = [
+        "--enable-features=VaapiVideoDecodeLinuxGL,VaapiVideoEncoder,TouchpadOverscrollHistoryNavigation"
+        "--ignore-gpu-blocklist"
+        "--enable-gpu-rasterization"
+        "--enable-zero-copy"
+      ];
+    };
 
     programs.zoxide = {
       enable = true;
@@ -56,11 +64,11 @@
     xdg.mimeApps = {
       enable = true;
       defaultApplications = {
-        "text/html" = [ "helium-browser.desktop" ];
-        "x-scheme-handler/http" = [ "helium-browser.desktop" ];
-        "x-scheme-handler/https" = [ "helium-browser.desktop" ];
-        "x-scheme-handler/about" = [ "helium-browser.desktop" ];
-        "x-scheme-handler/unknown" = [ "helium-browser.desktop" ];
+        "text/html" = [ "brave-browser.desktop" ];
+        "x-scheme-handler/http" = [ "brave-browser.desktop" ];
+        "x-scheme-handler/https" = [ "brave-browser.desktop" ];
+        "x-scheme-handler/about" = [ "brave-browser.desktop" ];
+        "x-scheme-handler/unknown" = [ "brave-browser.desktop" ];
       };
     };
     programs.direnv = { enable = true; enableFishIntegration = true; };

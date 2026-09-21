@@ -24,7 +24,6 @@
     # Bluetooth
     hardware.bluetooth.enable = true;
     hardware.bluetooth.powerOnBoot = true;
-    services.blueman.enable = true;
 
     # Power management & display brightness
     services.power-profiles-daemon.enable = true;
@@ -37,10 +36,32 @@
     # System fonts
     fonts = {
       packages = with pkgs; [
+        inter
         nerd-fonts.caskaydia-cove
         nerd-fonts.fira-code
+        noto-fonts
+        noto-fonts-cjk-sans
+        noto-fonts-color-emoji
+        dejavu_fonts
       ];
-      fontconfig.defaultFonts.monospace = [ "CaskaydiaCove Nerd Font" ];
+      fontconfig = {
+        enable = true;
+        antialias = true;
+        hinting = {
+          enable = true;
+          style = "slight";
+        };
+        subpixel = {
+          rgba = "rgb";
+          lcdfilter = "default";
+        };
+        defaultFonts = {
+          monospace = [ "FiraCode Nerd Font" "DejaVu Sans Mono" ];
+          sansSerif = [ "Inter" "Noto Sans" "DejaVu Sans" ];
+          serif = [ "Noto Serif" "DejaVu Serif" ];
+          emoji = [ "Noto Color Emoji" ];
+        };
+      };
     };
 
     users.users.yada = {

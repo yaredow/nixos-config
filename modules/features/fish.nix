@@ -48,8 +48,8 @@
         ytt = "youtube-tui";
         dotfiles = "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME";
         ase = "nohup emulator -avd Pixel_8 > /dev/null 2>&1 &!";
-        rebuild = "sudo nixos-rebuild switch --flake .#loki";
-        rebuild-vm = "sudo nixos-rebuild switch --flake .#vm";
+        rebuild = "sudo nixos-rebuild switch --flake .#loki --accept-flake-config";
+        rebuild-vm = "sudo nixos-rebuild switch --flake .#vm --accept-flake-config";
       };
 
       functions = {

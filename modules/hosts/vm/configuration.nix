@@ -19,10 +19,32 @@
     # System fonts
     fonts = {
       packages = with pkgs; [
-        nerd-fonts.caskaydia-cove
         nerd-fonts.fira-code
+        nerd-fonts.caskaydia-cove
+        inter
+        noto-fonts
+        noto-fonts-cjk-sans
+        noto-fonts-color-emoji
+        dejavu_fonts
       ];
-      fontconfig.defaultFonts.monospace = [ "CaskaydiaCove Nerd Font" ];
+      fontconfig = {
+        enable = true;
+        antialias = true;
+        hinting = {
+          enable = true;
+          style = "slight";
+        };
+        subpixel = {
+          rgba = "rgb";
+          lcdfilter = "default";
+        };
+        defaultFonts = {
+          monospace = [ "FiraCode Nerd Font" "DejaVu Sans Mono" ];
+          sansSerif = [ "Inter" "Noto Sans" "DejaVu Sans" ];
+          serif = [ "Noto Serif" "DejaVu Serif" ];
+          emoji = [ "Noto Color Emoji" ];
+        };
+      };
     };
 
     users.users.yada = {

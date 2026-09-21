@@ -3,6 +3,11 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 spawn-at-startup "noctalia"
 
+output "eDP-1" {
+    mode "2880x1800@90.001"
+    scale 2.0
+}
+
 output "Virtual-1" {
     mode custom=true "2880x1800@60.0"
     scale 2.0
@@ -18,11 +23,17 @@ input {
     touchpad {
         tap
         natural-scroll
+        scroll-factor 1.5
     }
+    mouse {
+        scroll-factor 1.2
+    }
+
+    focus-follows-mouse max-scroll-amount="0%"
 }
 
 layout {
-    gaps 12
+    gaps 8
     center-focused-column "never"
 
     default-column-width { proportion 0.5; }
@@ -44,22 +55,58 @@ layout {
     }
 }
 
+animations {
+    window-resize {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+
+    horizontal-view-movement {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+}
+
 // Automatically float utility & dialog windows
 window-rule {
     match app-id="^pavucontrol$"
-    match app-id="^blueman-manager$"
     match title="^Open File$"
     match title="^Save File$"
     match title="^Confirm to replace files$"
     open-floating true
 }
 
+// Disable solid background rendering for borders/focus-ring behind transparent windows
+window-rule {
+    draw-border-with-background false
+}
+
+// Focused window is fully opaque
+window-rule {
+    match is-focused=true
+    opacity 1.0
+}
+
+// Unfocused windows have subtle transparency
+window-rule {
+    match is-focused=false
+    opacity 0.88
+}
+
 // Floating Noctalia settings window
 window-rule {
     match app-id="dev.noctalia.Noctalia"
     open-floating true
-    default-column-width { fixed 1080; }
-    default-window-height { fixed 920; }
+    default-column-width { fixed 1020; }
+    default-window-height { fixed 750; }
+    default-floating-position x=210 y=40 relative-to="top-left"
+}
+
+// Floating mpv window
+window-rule {
+    match app-id="^mpv$"
+    open-floating true
+    opacity 1.0
 }
 
 debug {

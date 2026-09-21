@@ -11,6 +11,7 @@
           line-number = "relative";
           cursorline = true;
           auto-format = true;
+          scroll-lines = 5;
           cursor-shape = {
             normal = "block";
             insert = "bar";

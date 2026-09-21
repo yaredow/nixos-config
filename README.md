@@ -15,14 +15,14 @@ My personal NixOS setup using dendritic architecture ([import-tree](https://gith
 - **Shell:** Fish + Starship
 - **Editor:** Helix
 - **Key Remap:** `keyd` (Caps Lock = Esc when tapped, Ctrl when held)
-- **Browser:** Helium
+- **Browser:** [Brave](https://brave.com/)
 
 ## Rebuilding
 
 ```bash
 # Rebuild laptop
-sudo nixos-rebuild switch --flake .#loki
+sudo nixos-rebuild switch --flake .#loki --accept-flake-config
 
 # Rebuild VM
-sudo nixos-rebuild switch --flake .#vm
+sudo nixos-rebuild switch --flake .#vm --accept-flake-config
 ```

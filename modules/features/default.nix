@@ -8,6 +8,8 @@
       self.homeModules.niri
       self.homeModules.noctalia
       self.homeModules.antigravity
+      self.homeModules.mpv
+      self.homeModules.zed
     ];
   };
 }

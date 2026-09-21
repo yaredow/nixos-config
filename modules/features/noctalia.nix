@@ -53,7 +53,8 @@
           };
 
           shell = {
-            font_family = "CaskaydiaCove Nerd Font";
+            font_family = "FiraCode Nerd Font";
+            disable_mipmaps = true;  # fixes blurry downscaled icons on HiDPI
             animation = {
               enabled = false;
               speed = 1.0;
@@ -78,10 +79,11 @@
               capsule_fill = "surface_variant";
               capsule_opacity = 0.85;
               capsule_padding = 6;
-              widget_spacing = 8;
+              widget_spacing = 6;
               padding = 8;
-              font_family = "CaskaydiaCove Nerd Font";
+              font_family = "FiraCode Nerd Font";
               font_weight = 500;
+              font_scale = 1.0;
 
               start = [
                 "launcher"
@@ -113,7 +115,7 @@
                   fill = "surface_variant";
                   opacity = 0.85;
                   padding = 6.0;
-                  widget_spacing = 8;
+                  widget_spacing = 6;
                 }
               ];
 
@@ -137,6 +139,8 @@
               visualization = "none";
               show_glyph = true;
               show_value = true;
+              font_family = "FiraCode Nerd Font";
+              font_weight = 500;
             };
 
             sysmon_temp = {
@@ -145,6 +149,8 @@
               visualization = "none";
               show_glyph = true;
               show_value = true;
+              font_family = "FiraCode Nerd Font";
+              font_weight = 500;
             };
 
             sysmon_ram = {
@@ -153,12 +159,16 @@
               visualization = "none";
               show_glyph = true;
               show_value = true;
+              font_family = "FiraCode Nerd Font";
+              font_weight = 500;
             };
 
             media = {
               hide_when_no_media = true;
               show_progress = false;
               max_length = 180.0;
+              font_family = "FiraCode Nerd Font";
+              font_weight = 500;
             };
 
             workspaces = {
@@ -211,6 +221,8 @@
             clock = {
               format = "{:%H:%M %a, %b %d}";
               tooltip_format = "%A, %d %B %Y";
+              font_family = "FiraCode Nerd Font";
+              font_weight = 500;
             };
 
             control-center = {
