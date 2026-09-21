@@ -87,10 +87,10 @@
 
               start = [
                 "launcher"
-                "group:stats"
+                "workspaces"
                 "media"
               ];
-              center = [ "workspaces" ];
+              center = [ "clock" ];
               end = [
                 "privacy"
                 "tray"
@@ -100,23 +100,7 @@
                 "battery"
                 "volume"
                 "mic"
-                "clock"
                 "control-center"
-              ];
-
-              capsule_group = [
-                {
-                  id = "stats";
-                  members = [
-                    "sysmon_cpu"
-                    "sysmon_temp"
-                    "sysmon_ram"
-                  ];
-                  fill = "surface_variant";
-                  opacity = 0.85;
-                  padding = 6.0;
-                  widget_spacing = 6;
-                }
               ];
 
               dead_zone.actions = {
@@ -131,36 +115,6 @@
               custom_image = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               custom_image_colorize = true;
               icon_color = "primary";
-            };
-
-            sysmon_cpu = {
-              type = "sysmon";
-              stat = "cpu_usage";
-              visualization = "none";
-              show_glyph = true;
-              show_value = true;
-              font_family = "FiraCode Nerd Font";
-              font_weight = 500;
-            };
-
-            sysmon_temp = {
-              type = "sysmon";
-              stat = "cpu_temp";
-              visualization = "none";
-              show_glyph = true;
-              show_value = true;
-              font_family = "FiraCode Nerd Font";
-              font_weight = 500;
-            };
-
-            sysmon_ram = {
-              type = "sysmon";
-              stat = "ram_used";
-              visualization = "none";
-              show_glyph = true;
-              show_value = true;
-              font_family = "FiraCode Nerd Font";
-              font_weight = 500;
             };
 
             media = {
