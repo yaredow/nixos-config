@@ -4,7 +4,7 @@
       enable = true;
       extraPackages = with pkgs; [
         nixd
-        nixfmt-rfc-style
+        nixfmt
       ];
     };
 
