@@ -29,10 +29,14 @@
         hidpi-window-scale = true;
         osd-scale = 2;
         sub-scale = 1.2;
-        autofit = "75%x75%";
-        autofit-larger = "85%x85%";
-        autofit-smaller = "50%x50%";
+        autofit = "50%x50%";
+        autofit-larger = "65%x65%";
+        autofit-smaller = "30%x30%";
         geometry = "50%:50%";
+
+        # Use mpv's own fullscreen (expands the floating window)
+        # instead of compositor fullscreen which causes tiled layout shift
+        native-fs = false;
       };
       bindings = {
         z = "add sub-delay -0.1";
