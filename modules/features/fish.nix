@@ -14,17 +14,11 @@
       shellInit = ''
         set -g fish_greeting
 
-        # Environment variables
-        set -gx PNPM_HOME "$HOME/.local/share/pnpm"
-        if not contains "$PNPM_HOME/bin" $PATH
-          set -gx PATH "$PNPM_HOME/bin" $PATH
+        if test -d "$HOME/.local/bin"
+          if not contains "$HOME/.local/bin" $PATH
+            set -gx PATH "$HOME/.local/bin" $PATH
+          end
         end
-        set -gx PATH "$PATH:$HOME/go/bin"
-        if test -s "$HOME/.bun/_bun"
-          source "$HOME/.bun/_bun"
-        end
-        set -gx PATH "$HOME/.local/bin" $PATH
-        set -gx PATH "/home/yada/.local/share/mise/installs/node/26.5.0/bin" $PATH
       '';
 
       shellAliases = {
@@ -49,8 +43,10 @@
         brd = "bun run dev";
 
         oc = "opencode";
+        cy = "codex --approve-for-me";
+        cx = "printf '\\033[2J\\033[3J\\033[H' && claude --permission-mode auto";
         ytt = "youtube-tui";
-        dotfiles = "/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME";
+        dotfiles = "git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME";
         ase = "nohup emulator -avd Pixel_8 > /dev/null 2>&1 &!";
         rebuild = "sudo nixos-rebuild switch --flake .#loki";
         rebuild-vm = "sudo nixos-rebuild switch --flake .#vm";

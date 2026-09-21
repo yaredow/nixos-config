@@ -51,12 +51,6 @@
       historyWidget.fish.command = "";
     };
 
-    programs.starship = {
-      enable = true;
-      enableFishIntegration = true;
-      presets = [ "nerd-font-symbols" ];
-    };
-
     programs.btop.enable = true;
 
     xdg.mimeApps = {
