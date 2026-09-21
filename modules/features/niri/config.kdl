@@ -134,6 +134,10 @@ layer-rule {
     place-within-backdrop true
 }
 
+hotkey-overlay {
+    skip-at-startup
+}
+
 binds {
     // Cheatsheet
     Mod+Shift+Slash { show-hotkey-overlay; }
