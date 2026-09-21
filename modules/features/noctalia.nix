@@ -24,6 +24,7 @@
 
       programs.noctalia = {
         enable = true;
+        checkConfig = false;
         settings = {
           idle = {
             behavior.screen-off.enabled = false;
@@ -72,6 +73,7 @@
               radius = 0;
               background_opacity = 1.0;
               border_width = 0.0;
+              shadow = false;
               capsule = true;
               capsule_fill = "surface_variant";
               capsule_opacity = 0.85;
@@ -82,6 +84,7 @@
               font_weight = 500;
 
               start = [
+                "launcher"
                 "group:stats"
                 "media"
               ];
@@ -122,6 +125,12 @@
           };
 
           widget = {
+            launcher = {
+              custom_image = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              custom_image_colorize = true;
+              icon_color = "primary";
+            };
+
             sysmon_cpu = {
               type = "sysmon";
               stat = "cpu_usage";
