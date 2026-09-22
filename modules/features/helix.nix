@@ -37,6 +37,19 @@
       extraPackages = with pkgs; [
         nil
         nixfmt
+
+        # Go tooling & LSP
+        go
+        gopls
+        delve
+        golangci-lint
+        golangci-lint-langserver
+        gofumpt
+
+        # TypeScript & JavaScript tooling & LSP
+        bun
+        typescript
+        typescript-language-server
       ];
     };
   };

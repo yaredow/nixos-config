@@ -19,6 +19,18 @@
             set -gx PATH "$HOME/.local/bin" $PATH
           end
         end
+
+        if test -d "$HOME/go/bin"
+          if not contains "$HOME/go/bin" $PATH
+            set -gx PATH "$HOME/go/bin" $PATH
+          end
+        end
+
+        if test -d "$HOME/.bun/bin"
+          if not contains "$HOME/.bun/bin" $PATH
+            set -gx PATH "$HOME/.bun/bin" $PATH
+          end
+        end
       '';
 
       shellAliases = {
@@ -32,7 +44,6 @@
         gc = "git commit";
         gp = "git push";
 
-        v = "nvim";
         c = "clear";
         ccwd = "cd ~/Documents/code";
 
@@ -60,7 +71,7 @@
               fzf -m --preview 'bat --color=always --style=numbers {}' \
                 --preview-window=right:60%)
             if test -n "$files"
-              echo $files | xargs -d '\n' nvim
+              echo $files | xargs -d '\n' hx
             end
           '';
         };
@@ -104,7 +115,7 @@
             if test -n "$match"
               set -l file (echo $match | awk -F: '{print $1}')
               set -l line (echo $match | awk -F: '{print $2}')
-              nvim "+$line" "$file"
+              hx "+$line" "$file"
             end
           '';
         };

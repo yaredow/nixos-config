@@ -53,7 +53,7 @@
           };
 
           shell = {
-            font_family = "FiraCode Nerd Font";
+            font_family = "JetBrainsMono Nerd Font";
             disable_mipmaps = true;  # fixes blurry downscaled icons on HiDPI
             animation = {
               enabled = false;
@@ -81,7 +81,7 @@
               capsule_padding = 6;
               widget_spacing = 6;
               padding = 8;
-              font_family = "FiraCode Nerd Font";
+              font_family = "JetBrainsMono Nerd Font";
               font_weight = 500;
               font_scale = 1.0;
 
@@ -100,7 +100,6 @@
                 "battery"
                 "volume"
                 "mic"
-                "control-center"
               ];
 
               dead_zone.actions = {
@@ -121,7 +120,7 @@
               hide_when_no_media = true;
               show_progress = false;
               max_length = 180.0;
-              font_family = "FiraCode Nerd Font";
+              font_family = "JetBrainsMono Nerd Font";
               font_weight = 500;
             };
 
@@ -175,7 +174,7 @@
             clock = {
               format = "{:%H:%M %a, %b %d}";
               tooltip_format = "%A, %d %B %Y";
-              font_family = "FiraCode Nerd Font";
+              font_family = "JetBrainsMono Nerd Font";
               font_weight = 500;
             };
 

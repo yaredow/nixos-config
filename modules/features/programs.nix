@@ -1,14 +1,12 @@
 { self, inputs, ... }: {
-  flake.homeModules.programs = { pkgs, ... }: {
-    home.pointerCursor = {
-      enable = true;
-      name = "Adwaita";
-      package = pkgs.adwaita-icon-theme;
-      size = 24;
-      gtk.enable = true;
-      x11.enable = true;
-    };
+  # System level configuration for desktop integration services
+  flake.nixosModules.programs = { pkgs, ... }: {
+    # File manager integration (trash, network shares, USB mounting, and thumbnails)
+    services.gvfs.enable = true;
+    services.tumbler.enable = true;
+  };
 
+  flake.homeModules.programs = { pkgs, ... }: {
     home.packages = with pkgs; [
       fastfetch
       bat
@@ -20,6 +18,26 @@
       yazi
       yt-dlp
       btop
+      cliamp
+      telegram-desktop
+      nautilus
+      loupe
+      evince
+      gnumake
+      docker-compose
+
+      # Go development
+      go
+      gopls
+      delve
+      golangci-lint
+      golangci-lint-langserver
+      gofumpt
+
+      # JavaScript / TypeScript development
+      bun
+      typescript
+      typescript-language-server
     ];
 
     programs.brave = {
@@ -71,6 +89,9 @@
         "x-scheme-handler/unknown" = [ "brave-browser.desktop" ];
       };
     };
-    programs.direnv = { enable = true; enableFishIntegration = true; };
+    programs.direnv = {
+      enable = true;
+      enableFishIntegration = true;
+    };
   };
 }

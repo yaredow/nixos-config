@@ -1,6 +1,17 @@
 prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
+cursor {
+    xcursor-theme "Adwaita"
+    xcursor-size 24
+}
+
+environment {
+    QT_QPA_PLATFORM "wayland"
+    QT_QPA_PLATFORMTHEME "adwaita"
+    QT_STYLE_OVERRIDE "adwaita-dark"
+}
+
 spawn-at-startup "noctalia"
 
 output "eDP-1" {
@@ -69,7 +80,7 @@ animations {
 
 // Automatically float utility & dialog windows
 window-rule {
-    match app-id="^pavucontrol$"
+    match app-id="^org.gnome.Loupe$"
     match title="^Open File$"
     match title="^Save File$"
     match title="^Confirm to replace files$"
@@ -90,7 +101,7 @@ window-rule {
 // Unfocused windows have subtle transparency
 window-rule {
     match is-focused=false
-    opacity 0.88
+    opacity 0.95
 }
 
 // Floating Noctalia settings window
@@ -206,6 +217,11 @@ binds {
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
     Mod+C { center-column; }
+
+    // Tabbed Display & Vertical Stacking
+    Mod+W { toggle-column-tabbed-display; }
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
 
     // Screenshots
     Print { screenshot; }

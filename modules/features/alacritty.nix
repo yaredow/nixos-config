@@ -19,13 +19,13 @@
         };
 
         font = {
-          size = 10;
+          size = 9.5;
           normal = {
-            family = "FiraCode Nerd Font";
-            style = "Medium";
+            family = "JetBrainsMono Nerd Font";
+            style = "Regular";
           };
           bold = {
-            family = "FiraCode Nerd Font";
+            family = "JetBrainsMono Nerd Font";
             style = "Bold";
           };
         };

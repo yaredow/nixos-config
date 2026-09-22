@@ -10,6 +10,8 @@
       self.homeModules.antigravity
       self.homeModules.mpv
       self.homeModules.zed
+      self.homeModules.herdr
+      self.homeModules.theme
     ];
   };
 }

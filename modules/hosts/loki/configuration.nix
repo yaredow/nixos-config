@@ -7,6 +7,8 @@
       self.nixosModules.niri
       self.nixosModules.noctalia
       self.nixosModules.keyd
+      self.nixosModules.theme
+      self.nixosModules.programs
     ];
 
     networking.hostName = "loki";
@@ -40,6 +42,7 @@
         inter
         nerd-fonts.caskaydia-cove
         nerd-fonts.fira-code
+        nerd-fonts.jetbrains-mono
         noto-fonts
         noto-fonts-cjk-sans
         noto-fonts-color-emoji
@@ -57,7 +60,7 @@
           lcdfilter = "default";
         };
         defaultFonts = {
-          monospace = [ "FiraCode Nerd Font" "DejaVu Sans Mono" ];
+          monospace = [ "JetBrainsMono Nerd Font" "DejaVu Sans Mono" ];
           sansSerif = [ "Inter" "Noto Sans" "DejaVu Sans" ];
           serif = [ "Noto Serif" "DejaVu Serif" ];
           emoji = [ "Noto Color Emoji" ];
@@ -70,8 +73,11 @@
       extraGroups = [
         "wheel"
         "networkmanager"
+        "docker"
       ];
     };
+
+    virtualisation.docker.enable = true;
 
     programs.git.enable = true;
 
@@ -93,6 +99,10 @@
       trusted-users = [
         "root"
         "@wheel"
+      ];
+      substituters = [
+        "https://nixos-cache-proxy.cofob.dev?priority=10"
+        "https://cache.nixos.org"
       ];
       extra-substituters = [
         "https://noctalia.cachix.org"
