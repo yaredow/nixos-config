@@ -1,7 +1,7 @@
 { self, ... }: {
   flake.homeModules.default = { ... }: {
     imports = [
-      self.homeModules.helix
+      self.homeModules.neovim
       self.homeModules.alacritty
       self.homeModules.fish
       self.homeModules.starship
@@ -9,7 +9,6 @@
       self.homeModules.noctalia
       self.homeModules.antigravity
       self.homeModules.mpv
-      self.homeModules.zed
       self.homeModules.herdr
       self.homeModules.theme
     ];

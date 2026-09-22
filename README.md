@@ -13,7 +13,7 @@ My personal NixOS setup using dendritic architecture ([import-tree](https://gith
 - **Desktop Shell:** [Noctalia](https://github.com/noctalia-dev/noctalia) (bar, widgets, lockscreen)
 - **Terminal:** Alacritty
 - **Shell:** Fish + Starship
-- **Editor:** Helix
+- **Editor:** Neovim (LazyVim)
 - **Key Remap:** `keyd` (Caps Lock = Esc when tapped, Ctrl when held)
 - **Browser:** [Brave](https://brave.com/)
 

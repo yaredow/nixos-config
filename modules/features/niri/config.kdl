@@ -44,7 +44,7 @@ input {
 }
 
 layout {
-    gaps 8
+    gaps 7
     center-focused-column "never"
 
     default-column-width { proportion 0.5; }
@@ -73,6 +73,11 @@ animations {
     }
 
     horizontal-view-movement {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+
+    window-movement {
         duration-ms 150
         curve "ease-out-quad"
     }
@@ -117,6 +122,8 @@ window-rule {
 window-rule {
     match app-id="^mpv$"
     open-floating true
+    default-column-width { fixed 875; }
+    default-window-height { fixed 600; }
     opacity 1.0
 }
 
@@ -217,6 +224,7 @@ binds {
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
     Mod+C { center-column; }
+    Mod+V { toggle-window-floating; }
 
     // Tabbed Display & Vertical Stacking
     Mod+W { toggle-column-tabbed-display; }

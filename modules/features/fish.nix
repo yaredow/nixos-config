@@ -44,6 +44,7 @@
         gc = "git commit";
         gp = "git push";
 
+        v = "nvim";
         c = "clear";
         ccwd = "cd ~/Documents/code";
 
@@ -71,7 +72,7 @@
               fzf -m --preview 'bat --color=always --style=numbers {}' \
                 --preview-window=right:60%)
             if test -n "$files"
-              echo $files | xargs -d '\n' hx
+              echo $files | xargs -d '\n' nvim
             end
           '';
         };
@@ -115,7 +116,7 @@
             if test -n "$match"
               set -l file (echo $match | awk -F: '{print $1}')
               set -l line (echo $match | awk -F: '{print $2}')
-              hx "+$line" "$file"
+              nvim "+$line" "$file"
             end
           '';
         };

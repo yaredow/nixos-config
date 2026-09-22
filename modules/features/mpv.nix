@@ -20,15 +20,19 @@
 
         # Subtitle Appearance & Styling
         sub-font = "sans-serif";
-        sub-font-size = 40;
+        sub-font-size = 36;
         sub-border-size = 2.5;
         sub-shadow-offset = 1;
         sub-pos = 95;
 
-        # HiDPI Scaling & Appropriate Floating Sizing
-        hidpi-window-scale = true;
-        osd-scale = 2;
-        sub-scale = 1.2;
+        # OSD Appearance (Volume, Subtitle & Notification Popups)
+        osd-font = "sans-serif";
+        osd-font-size = 26;
+        osd-border-size = 2.0;
+        osd-scale = 1;
+
+        # Appropriate Floating Sizing & HiDPI Content Scaling (2x for 3.2k display)
+        sub-scale = 1.0;
         autofit = "60%x60%";
         autofit-larger = "70%x70%";
         autofit-smaller = "35%x35%";
@@ -43,8 +47,8 @@
       };
       scriptOpts = {
         osc = {
-          scalewindowed = 2.5;
-          scalefullscreen = 2.5;
+          scalewindowed = 2.0;
+          scalefullscreen = 2.0;
           vidscale = false;
           accent = "#7aa2f7";
           fg = "#c0caf5";

@@ -172,6 +172,7 @@
             };
 
             clock = {
+              capsule = false;
               format = "{:%H:%M %a, %b %d}";
               tooltip_format = "%A, %d %B %Y";
               font_family = "JetBrainsMono Nerd Font";
