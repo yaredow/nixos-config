@@ -14,8 +14,7 @@
 
   flake.homeModules.noctalia = { pkgs, ... }:
     let
-      noctaliaPkg = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      wallpaperPath = "${noctaliaPkg}/share/noctalia/assets/noctalia-wallpaper.png";
+      wallpaperPath = "${../../assets/omanix.jpeg}";
     in
     {
       imports = [
@@ -31,11 +30,75 @@
             behavior.lock-and-suspend.enabled = false;
           };
 
-            lockscreen = {
-              enabled = true;
-              blurred_desktop = true;
-              blur_intensity = 0.7;
+          lockscreen = {
+            enabled = true;
+            blurred_desktop = true;
+            blur_intensity = 0.7;
+            tint_intensity = 0.35;
+            lock_before_suspend = true;
+          };
+
+          lockscreen_widgets = {
+            enabled = true;
+            widget = {
+              "clock@eDP-1" = {
+                type = "clock";
+                output = "eDP-1";
+                cx = 720.0;
+                cy = 350.0;
+                settings = {
+                  format = "{:%H:%M}";
+                };
+              };
+              "lockscreen-login-box@eDP-1" = {
+                type = "login_box";
+                output = "eDP-1";
+                cx = 720.0;
+                cy = 470.0;
+                box_width = 380.0;
+                settings = {
+                  layout = "compact";
+                  center_password_text = true;
+                  show_login_button = true;
+                  show_caps_lock = true;
+                  show_unlock_hint = false;
+                  background_color = "surface_variant";
+                  background_opacity = 0.85;
+                  background_radius = 16.0;
+                  input_opacity = 0.9;
+                  input_radius = 8.0;
+                };
+              };
+              "clock@Virtual-1" = {
+                type = "clock";
+                output = "Virtual-1";
+                cx = 720.0;
+                cy = 350.0;
+                settings = {
+                  format = "{:%H:%M}";
+                };
+              };
+              "lockscreen-login-box@Virtual-1" = {
+                type = "login_box";
+                output = "Virtual-1";
+                cx = 720.0;
+                cy = 470.0;
+                box_width = 380.0;
+                settings = {
+                  layout = "compact";
+                  center_password_text = true;
+                  show_login_button = true;
+                  show_caps_lock = true;
+                  show_unlock_hint = false;
+                  background_color = "surface_variant";
+                  background_opacity = 0.85;
+                  background_radius = 16.0;
+                  input_opacity = 0.9;
+                  input_radius = 8.0;
+                };
+              };
             };
+          };
           config_version = 14;
 
           theme = {
@@ -49,6 +112,7 @@
             enabled = true;
             fill_mode = "crop";
             default.path = wallpaperPath;
+            monitors."eDP-1" = wallpaperPath;
             monitors."Virtual-1" = wallpaperPath;
           };
 

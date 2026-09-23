@@ -242,6 +242,7 @@ binds {
     Mod+S     { spawn-sh "noctalia msg panel-toggle control-center"; }
     Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
     Alt+Tab   { spawn-sh "noctalia msg window-switcher"; }
+    Mod+Ctrl+L hotkey-overlay-title="Lock Screen" { spawn-sh "noctalia msg session lock"; }
 
     // Volume & Media Keys (via Noctalia OSD)
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "noctalia msg volume-up"; }

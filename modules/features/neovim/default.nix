@@ -42,7 +42,10 @@
       ];
     };
 
-    xdg.configFile."nvim".source = ./nvim;
+    xdg.configFile."nvim" = {
+      source = ./nvim;
+      force = true;
+    };
     xdg.configFile."nvim/init.lua".enable = lib.mkForce false;
   };
 }

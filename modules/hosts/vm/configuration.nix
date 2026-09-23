@@ -1,6 +1,6 @@
 { self, ... }: {
   flake.nixosModules.vm-configuration = { pkgs, ... }: {
-  nixpkgs.config.allowUnfree = true;
+    nixpkgs.config.allowUnfree = true;
     imports = [
       self.nixosModules.vm-hardware
       self.nixosModules.fish
@@ -42,9 +42,19 @@
           lcdfilter = "default";
         };
         defaultFonts = {
-          monospace = [ "JetBrainsMono Nerd Font" "DejaVu Sans Mono" ];
-          sansSerif = [ "Inter" "Noto Sans" "DejaVu Sans" ];
-          serif = [ "Noto Serif" "DejaVu Serif" ];
+          monospace = [
+            "JetBrainsMono Nerd Font"
+            "DejaVu Sans Mono"
+          ];
+          sansSerif = [
+            "Inter"
+            "Noto Sans"
+            "DejaVu Sans"
+          ];
+          serif = [
+            "Noto Serif"
+            "DejaVu Serif"
+          ];
           emoji = [ "Noto Color Emoji" ];
         };
       };
@@ -100,7 +110,9 @@
       ];
     };
 
-    
+    # Timezone
+    time.timeZone = "Africa/Addis_Ababa";
+
     # Fix dual/inverted cursor in VM by forcing software cursors
     environment.variables.WLR_NO_HARDWARE_CURSORS = "1";
 

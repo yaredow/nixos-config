@@ -25,6 +25,8 @@
       evince
       gnumake
       docker-compose
+      spotify
+      speedtest-cli
 
       # Go development
       go
