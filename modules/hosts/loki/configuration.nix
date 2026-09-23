@@ -1,6 +1,6 @@
 { self, ... }: {
   flake.nixosModules.loki-configuration = { pkgs, ... }: {
-  nixpkgs.config.allowUnfree = true;
+    nixpkgs.config.allowUnfree = true;
     imports = [
       self.nixosModules.loki-hardware
       self.nixosModules.fish
@@ -27,6 +27,11 @@
     # Bluetooth
     hardware.bluetooth.enable = true;
     hardware.bluetooth.powerOnBoot = true;
+    hardware.bluetooth.settings = {
+      General = {
+        ControllerMode = "bredr";
+      };
+    };
 
     # Power management & display brightness
     services.power-profiles-daemon.enable = true;
@@ -60,9 +65,19 @@
           lcdfilter = "default";
         };
         defaultFonts = {
-          monospace = [ "JetBrainsMono Nerd Font" "DejaVu Sans Mono" ];
-          sansSerif = [ "Inter" "Noto Sans" "DejaVu Sans" ];
-          serif = [ "Noto Serif" "DejaVu Serif" ];
+          monospace = [
+            "JetBrainsMono Nerd Font"
+            "DejaVu Sans Mono"
+          ];
+          sansSerif = [
+            "Inter"
+            "Noto Sans"
+            "DejaVu Sans"
+          ];
+          serif = [
+            "Noto Serif"
+            "DejaVu Serif"
+          ];
           emoji = [ "Noto Color Emoji" ];
         };
       };
