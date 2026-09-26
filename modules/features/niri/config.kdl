@@ -139,13 +139,6 @@ layer-rule {
     }
 }
 
-layer-rule {
-    match namespace="noctalia-window-switcher"
-    background-effect {
-        blur true
-        xray false
-    }
-}
 
 layer-rule {
     match namespace="^noctalia-backdrop"
@@ -241,7 +234,6 @@ binds {
     Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
     Mod+S     { spawn-sh "noctalia msg panel-toggle control-center"; }
     Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
-    Alt+Tab   { spawn-sh "noctalia msg window-switcher"; }
     Mod+Ctrl+L hotkey-overlay-title="Lock Screen" { spawn-sh "noctalia msg session lock"; }
 
     // Volume & Media Keys (via Noctalia OSD)

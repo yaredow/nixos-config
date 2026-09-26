@@ -33,8 +33,8 @@
           lockscreen = {
             enabled = true;
             blurred_desktop = true;
-            blur_intensity = 0.7;
-            tint_intensity = 0.35;
+            blur_intensity = 1.0;
+            tint_intensity = 0.65;
             lock_before_suspend = true;
           };
 

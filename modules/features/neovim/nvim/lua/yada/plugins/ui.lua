@@ -66,7 +66,7 @@ return {
   },
 
   colorscheme_spec('folke/tokyonight.nvim', nil, 'tokyonight-night',
-    { styles = { comments = { italic = false } } },
+    { style = 'night', styles = { comments = { italic = false } } },
     function(opts) require('tokyonight').setup(opts) end),
 
   colorscheme_spec('catppuccin/nvim', 'catppuccin', 'catppuccin-mocha',

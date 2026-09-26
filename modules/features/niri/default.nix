@@ -1,5 +1,6 @@
-{ inputs, ... }: {
-  flake.nixosModules.niri = { pkgs, ... }:
+{ ... }: {
+  flake.nixosModules.niri =
+    { pkgs, ... }:
     let
       wallpaperPath = "${../../../assets/omanix-blurred.png}";
     in

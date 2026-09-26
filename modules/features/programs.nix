@@ -27,7 +27,7 @@
       docker-compose
       spotify
       speedtest-cli
-      claude-code
+      lazygit
 
       # Go development
       go
