@@ -127,6 +127,14 @@ window-rule {
     opacity 1.0
 }
 
+// Floating fastfetch window
+window-rule {
+    match app-id="^fastfetch$"
+    open-floating true
+    default-column-width { fixed 820; }
+    default-window-height { fixed 450; }
+}
+
 debug {
     honor-xdg-activation-with-invalid-serial
 }
@@ -156,6 +164,9 @@ binds {
     // Terminal
     Mod+Return hotkey-overlay-title="Open Terminal" { spawn "alacritty"; }
     Mod+T hotkey-overlay-title="Open Terminal" { spawn "alacritty"; }
+
+    // Fastfetch
+    Mod+Shift+Return hotkey-overlay-title="Fastfetch" { spawn "alacritty" "--class" "fastfetch" "-e" "fish" "/home/yada/.config/fastfetch/launch.fish"; }
 
     // Window Controls
     Mod+Q { close-window; }

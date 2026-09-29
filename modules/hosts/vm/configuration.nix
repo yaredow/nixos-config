@@ -21,8 +21,6 @@
     # System fonts
     fonts = {
       packages = with pkgs; [
-        nerd-fonts.fira-code
-        nerd-fonts.caskaydia-cove
         nerd-fonts.jetbrains-mono
         inter
         noto-fonts
@@ -73,8 +71,9 @@
 
     programs.git.enable = true;
 
-    environment.systemPackages = [
-      pkgs.papirus-icon-theme
+    environment.systemPackages = with pkgs; [
+      yaru-theme
+      adwaita-icon-theme
     ];
 
     services.spice-vdagentd.enable = true;

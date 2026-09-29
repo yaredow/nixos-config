@@ -14,6 +14,8 @@
     networking.hostName = "loki";
     networking.networkmanager.enable = true;
 
+    time.timeZone = "Africa/Addis_Ababa";
+
     boot.loader.systemd-boot.enable = true;
     boot.loader.systemd-boot.configurationLimit = 10;
     boot.loader.efi.canTouchEfiVariables = true;
@@ -38,15 +40,17 @@
     services.upower.enable = true;
     environment.systemPackages = with pkgs; [
       brightnessctl
-      papirus-icon-theme
+      yaru-theme
+      adwaita-icon-theme
     ];
+
+    # Fingerprint reader
+    services.fprintd.enable = true;
 
     # System fonts
     fonts = {
       packages = with pkgs; [
         inter
-        nerd-fonts.caskaydia-cove
-        nerd-fonts.fira-code
         nerd-fonts.jetbrains-mono
         noto-fonts
         noto-fonts-cjk-sans

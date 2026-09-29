@@ -27,7 +27,9 @@
       docker-compose
       spotify
       speedtest-cli
+      cursor-cli
       lazygit
+      fprintd
 
       # Go development
       go
