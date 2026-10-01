@@ -17,7 +17,6 @@
       qbittorrent
       yazi
       yt-dlp
-      btop
       cliamp
       telegram-desktop
       nautilus
@@ -55,6 +54,14 @@
       ];
     };
 
+    programs.btop = {
+      enable = true;
+      settings = {
+        color_theme = "tokyo-night";
+        theme_background = "dark";
+      };
+    };
+
     programs.zoxide = {
       enable = true;
       enableFishIntegration = true;
@@ -81,8 +88,6 @@
       enableFishIntegration = true;
       historyWidget.fish.command = "";
     };
-
-    programs.btop.enable = true;
 
     xdg.mimeApps = {
       enable = true;
