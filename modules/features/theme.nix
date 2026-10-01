@@ -1,7 +1,5 @@
 { self, ... }: {
-  # System level configuration for theming infrastructure
   flake.nixosModules.theme = { pkgs, ... }: {
-    # Required for GTK/GNOME settings, dark mode preference, and dconf storage
     programs.dconf.enable = true;
     environment.sessionVariables = {
       QT_QPA_PLATFORMTHEME = "adwaita";
@@ -9,11 +7,10 @@
     };
   };
 
-  # User level theme configuration
-  flake.homeModules.theme = { pkgs, lib, ... }:
+  flake.homeModules.theme =
+    { pkgs, lib, ... }:
     let
       tokyoNightGtkCss = ''
-        /* Tokyo Night theme for GTK 4 / Libadwaita and GTK 3 */
         @define-color window_bg_color #1a1b26;
         @define-color window_fg_color #a9b1d6;
         @define-color view_bg_color #1a1b26;
@@ -60,7 +57,6 @@
       '';
     in
     {
-      # Pointer cursor
       home.pointerCursor = {
         enable = true;
         name = "Adwaita";
@@ -70,8 +66,6 @@
         x11.enable = true;
       };
 
-      # GTK Theming (GTK 3, GTK 4 / Libadwaita)
-      # Adopts Omarchy's icon configuration (Yaru-magenta matching Tokyo Night) and Tokyo Night palette
       gtk = {
         enable = true;
         theme = {
@@ -86,32 +80,12 @@
         gtk4.extraCss = tokyoNightGtkCss;
       };
 
-      # Qt Theming (bridges Qt apps like qBittorrent to dark theme)
       qt = {
         enable = true;
         platformTheme.name = "adwaita";
         style.name = "adwaita-dark";
       };
 
-      # Tokyo Night theme for qBittorrent
-      xdg.configFile."qBittorrent/themes/tokyo-night.qbtheme".source =
-        ../../assets/themes/tokyo-night.qbtheme;
-
-      home.activation.configureQbittorrentTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        CONF="$HOME/.config/qBittorrent/qBittorrent.conf"
-        THEME_PATH="$HOME/.config/qBittorrent/themes/tokyo-night.qbtheme"
-        if [ -f "$CONF" ]; then
-          if grep -q "\[Preferences\]" "$CONF"; then
-            sed -i '/^General\\UseCustomUITheme=/d' "$CONF"
-            sed -i '/^General\\CustomUIThemePath=/d' "$CONF"
-            sed -i '/^\[Preferences\]/a General\\CustomUIThemePath='"$THEME_PATH"'\nGeneral\\UseCustomUITheme=true' "$CONF"
-          else
-            printf '\n[Preferences]\nGeneral\\CustomUIThemePath=%s\nGeneral\\UseCustomUITheme=true\n' "$THEME_PATH" >> "$CONF"
-          fi
-        fi
-      '';
-
-      # System-wide dark mode preference for modern GTK4/libadwaita apps
       dconf.settings = {
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
@@ -123,5 +97,8 @@
           monospace-font-name = "JetBrainsMono Nerd Font 10";
         };
       };
+
+      xdg.dataFile."TelegramDesktop/themes/TokyoNight.tdesktop-theme".source =
+        ../../assets/themes/TokyoNight.tdesktop-theme;
     };
 }

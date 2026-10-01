@@ -1,7 +1,5 @@
 { self, inputs, ... }: {
-  # System level configuration for desktop integration services
   flake.nixosModules.programs = { pkgs, ... }: {
-    # File manager integration (trash, network shares, USB mounting, and thumbnails)
     services.gvfs.enable = true;
     services.tumbler.enable = true;
   };
@@ -9,7 +7,6 @@
   flake.homeModules.programs = { pkgs, ... }: {
     home.packages = with pkgs; [
       fastfetch
-      bat
       ripgrep
       fd
       wget
@@ -30,7 +27,6 @@
       lazygit
       fprintd
 
-      # Go development
       go
       gopls
       delve
@@ -38,7 +34,6 @@
       golangci-lint-langserver
       gofumpt
 
-      # JavaScript / TypeScript development
       bun
       typescript
       typescript-language-server
@@ -58,7 +53,20 @@
       enable = true;
       settings = {
         color_theme = "tokyo-night";
-        theme_background = "dark";
+        theme_background = false;
+      };
+    };
+
+    programs.bat = {
+      enable = true;
+      config = {
+        theme = "tokyonight_night";
+      };
+      themes = {
+        tokyonight_night = {
+          src = ../../assets/themes;
+          file = "tokyonight_night.tmTheme";
+        };
       };
     };
 
@@ -99,6 +107,7 @@
         "x-scheme-handler/unknown" = [ "brave-browser.desktop" ];
       };
     };
+
     programs.direnv = {
       enable = true;
       enableFishIntegration = true;
