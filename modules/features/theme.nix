@@ -98,6 +98,23 @@
         };
       };
 
+      xdg.configFile."qBittorrent/themes/tokyo-night.qbtheme".source =
+        ../../assets/themes/tokyo-night.qbtheme;
+
+      home.activation.configureQbittorrentTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        CONF="$HOME/.config/qBittorrent/qBittorrent.conf"
+        THEME_PATH="$HOME/.config/qBittorrent/themes/tokyo-night.qbtheme"
+        if [ -f "$CONF" ]; then
+          if grep -q "\[Preferences\]" "$CONF"; then
+            sed -i '/^General\\UseCustomUITheme=/d' "$CONF"
+            sed -i '/^General\\CustomUIThemePath=/d' "$CONF"
+            sed -i '/^\[Preferences\]/a General\\CustomUIThemePath='"$THEME_PATH"'\nGeneral\\UseCustomUITheme=true' "$CONF"
+          else
+            printf '\n[Preferences]\nGeneral\\CustomUIThemePath=%s\nGeneral\\UseCustomUITheme=true\n' "$THEME_PATH" >> "$CONF"
+          fi
+        fi
+      '';
+
       xdg.dataFile."TelegramDesktop/themes/TokyoNight.tdesktop-theme".source =
         ../../assets/themes/TokyoNight.tdesktop-theme;
     };
