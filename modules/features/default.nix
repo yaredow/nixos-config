@@ -1,7 +1,7 @@
 { self, ... }: {
   flake.homeModules.default = { ... }: {
     imports = [
-      self.homeModules.neovim
+      self.homeModules.nvim
       self.homeModules.alacritty
       self.homeModules.fish
       self.homeModules.starship
