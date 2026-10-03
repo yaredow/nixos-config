@@ -39,16 +39,6 @@
       typescript-language-server
     ];
 
-    programs.brave = {
-      enable = true;
-      commandLineArgs = [
-        "--enable-features=VaapiVideoDecodeLinuxGL,VaapiVideoEncoder,TouchpadOverscrollHistoryNavigation"
-        "--ignore-gpu-blocklist"
-        "--enable-gpu-rasterization"
-        "--enable-zero-copy"
-      ];
-    };
-
     programs.btop = {
       enable = true;
       settings = {
@@ -100,11 +90,11 @@
     xdg.mimeApps = {
       enable = true;
       defaultApplications = {
-        "text/html" = [ "brave-browser.desktop" ];
-        "x-scheme-handler/http" = [ "brave-browser.desktop" ];
-        "x-scheme-handler/https" = [ "brave-browser.desktop" ];
-        "x-scheme-handler/about" = [ "brave-browser.desktop" ];
-        "x-scheme-handler/unknown" = [ "brave-browser.desktop" ];
+        "text/html" = [ "firefox.desktop" ];
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
       };
     };
 

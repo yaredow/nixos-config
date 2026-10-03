@@ -11,6 +11,7 @@
       self.homeModules.mpv
       self.homeModules.herdr
       self.homeModules.theme
+      self.homeModules.firefox
     ];
   };
 }
