@@ -1,7 +1,7 @@
 { ... }:
 let
   nvimModule =
-    { config, pkgs, ... }:
+    { config, pkgs, lib, ... }:
     {
       programs.neovim = {
         enable = true;
@@ -48,6 +48,7 @@ let
 
       xdg.configFile."nvim".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nvim-config";
+      xdg.configFile."nvim/init.lua".enable = lib.mkForce false;
     };
 in
 {
