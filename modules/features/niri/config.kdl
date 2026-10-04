@@ -10,7 +10,6 @@ environment {
     QT_QPA_PLATFORM "wayland"
     QT_QPA_PLATFORMTHEME "adwaita"
     QT_STYLE_OVERRIDE "adwaita-dark"
-    MOZ_ENABLE_WAYLAND "1"
 }
 
 spawn-at-startup "noctalia"
@@ -136,9 +135,9 @@ window-rule {
     default-window-height { fixed 450; }
 }
 
-// Firefox Picture-in-Picture
+// Brave Picture-in-Picture
 window-rule {
-    match app-id="firefox$" title="^Picture-in-Picture$"
+    match app-id=r#"^brave-browser"# title=r#"(?i)picture[- ]in[- ]picture"#
     open-floating true
     default-column-width { fixed 480; }
     default-window-height { fixed 270; }
@@ -146,12 +145,9 @@ window-rule {
     opacity 1.0
 }
 
-// Firefox dialogs and sharing indicator
+// Brave extension popups
 window-rule {
-    match app-id="firefox$" title="^About Mozilla Firefox$"
-    match app-id="firefox$" title="^Library$"
-    match app-id="firefox$" title=".*Sharing Indicator.*"
-    match app-id="firefox$" title="^Extension: "
+    match app-id=r#"^brave-browser"# title="^Extension: "
     open-floating true
 }
 

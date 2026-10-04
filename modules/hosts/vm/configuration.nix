@@ -9,6 +9,7 @@
       self.nixosModules.keyd
       self.nixosModules.theme
       self.nixosModules.programs
+      self.nixosModules.brave
     ];
 
     networking.hostName = "vm";
