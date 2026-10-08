@@ -12,6 +12,7 @@
       self.homeModules.herdr
       self.homeModules.theme
       self.homeModules.brave
+      self.homeModules.screen-recorder
     ];
   };
 }

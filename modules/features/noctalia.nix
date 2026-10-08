@@ -166,6 +166,7 @@
               center = [ "clock" ];
               end = [
                 "privacy"
+                "noctalia/screen_recorder:recorder"
                 "tray"
                 "notifications"
                 "network"

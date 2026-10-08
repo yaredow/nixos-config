@@ -10,6 +10,7 @@
       self.nixosModules.theme
       self.nixosModules.programs
       self.nixosModules.brave
+      self.nixosModules.screen-recorder
     ];
 
     networking.hostName = "loki";
@@ -100,7 +101,6 @@
     virtualisation.docker.enable = true;
 
     programs.git.enable = true;
-    programs.gpu-screen-recorder.enable = true;
 
     # SSH access
     services.openssh = {

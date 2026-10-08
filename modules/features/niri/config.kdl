@@ -262,7 +262,7 @@ binds {
     Mod+S     { spawn-sh "noctalia msg panel-toggle control-center"; }
     Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
     Mod+Ctrl+L hotkey-overlay-title="Lock Screen" { spawn-sh "noctalia msg session lock"; }
-    Mod+Shift+R hotkey-overlay-title="Toggle Screen Recording" { spawn-sh "noctalia msg plugin noctalia/screen_recorder:service all toggle"; }
+    Mod+Shift+R hotkey-overlay-title="Screen Record (Region)" { spawn "screenrecord-toggle"; }
 
     // Volume & Media Keys (via Noctalia OSD)
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "noctalia msg volume-up"; }
