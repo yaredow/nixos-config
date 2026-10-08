@@ -9,10 +9,11 @@
       enable = true;
       recommendedServices.enable = true;
     };
-    security.pam.services.noctalia = {};
+    security.pam.services.noctalia = { };
   };
 
-  flake.homeModules.noctalia = { pkgs, ... }:
+  flake.homeModules.noctalia =
+    { pkgs, ... }:
     let
       wallpaperPath = "${../../assets/omanix.jpeg}";
     in
@@ -36,6 +37,8 @@
             blur_intensity = 1.0;
             tint_intensity = 0.65;
             lock_before_suspend = true;
+            transition = [ "fade" ];
+            transition_duration = 200;
           };
 
           lockscreen_widgets = {
@@ -101,6 +104,10 @@
           };
           config_version = 14;
 
+          plugins = {
+            enabled = [ "noctalia/screen_recorder" ];
+          };
+
           theme = {
             mode = "dark";
             source = "builtin";
@@ -114,11 +121,13 @@
             default.path = wallpaperPath;
             monitors."eDP-1" = wallpaperPath;
             monitors."Virtual-1" = wallpaperPath;
+            transition = [ "fade" ];
+            transition_duration = 200;
           };
 
           shell = {
             font_family = "JetBrainsMono Nerd Font";
-            disable_mipmaps = true;  # fixes blurry downscaled icons on HiDPI
+            disable_mipmaps = true; # fixes blurry downscaled icons on HiDPI
             animation = {
               enabled = false;
               speed = 1.0;

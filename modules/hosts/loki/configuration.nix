@@ -100,6 +100,7 @@
     virtualisation.docker.enable = true;
 
     programs.git.enable = true;
+    programs.gpu-screen-recorder.enable = true;
 
     # SSH access
     services.openssh = {
