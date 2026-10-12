@@ -26,6 +26,7 @@
       cursor-cli
       lazygit
       fprintd
+      slurp
 
       go
       gopls

@@ -2,6 +2,10 @@
 
 My personal NixOS setup using dendritic architecture ([import-tree](https://github.com/denful/import-tree) + [flake-parts](https://flake.parts/)).
 
+<p align="center">
+  <img src="assets/showcase.gif" alt="NixOS Desktop Showcase" width="100%" />
+</p>
+
 ## Hosts
 
 - **`loki`** — Daily driver laptop (Intel Alder Lake / Iris Xe).
