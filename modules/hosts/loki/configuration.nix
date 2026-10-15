@@ -10,6 +10,7 @@
       self.nixosModules.theme
       self.nixosModules.programs
       self.nixosModules.brave
+      self.nixosModules.vivaldi
     ];
 
     networking.hostName = "loki";

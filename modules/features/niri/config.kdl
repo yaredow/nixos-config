@@ -141,9 +141,9 @@ window-rule {
     default-window-height { fixed 450; }
 }
 
-// Brave Picture-in-Picture
+// Browser Picture-in-Picture (Brave, Vivaldi)
 window-rule {
-    match app-id=r#"^brave-browser"# title=r#"(?i)picture[- ]in[- ]picture"#
+    match app-id=r#"^(brave-browser|vivaldi(-stable)?)"# title=r#"(?i)picture[- ]in[- ]picture"#
     open-floating true
     default-column-width { fixed 480; }
     default-window-height { fixed 270; }
@@ -151,14 +151,15 @@ window-rule {
     opacity 1.0
 }
 
-// Brave extension popups
+// Browser extension popups (Brave, Vivaldi)
 window-rule {
-    match app-id=r#"^brave-browser"# title="^Extension: "
+    match app-id=r#"^(brave-browser|vivaldi(-stable)?)"# title="^Extension: "
     open-floating true
 }
 
 debug {
     honor-xdg-activation-with-invalid-serial
+    force-pipewire-invalid-modifier
 }
 
 // Noctalia Layer Rules
