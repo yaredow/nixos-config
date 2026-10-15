@@ -155,8 +155,8 @@
               widget_spacing = 6;
               padding = 8;
               font_family = "JetBrainsMono Nerd Font";
-              font_weight = 500;
-              font_scale = 1.0;
+              font_weight = 400;
+              font_scale = 0.91;
 
               start = [
                 "launcher"
@@ -188,6 +188,7 @@
               custom_image = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               custom_image_colorize = true;
               icon_color = "primary";
+              scale = 0.88;
             };
 
             media = {
@@ -195,7 +196,8 @@
               show_progress = false;
               max_length = 180.0;
               font_family = "JetBrainsMono Nerd Font";
-              font_weight = 500;
+              font_weight = 400;
+              font_scale = 0.88;
             };
 
             workspaces = {
@@ -203,6 +205,7 @@
               show_labels = true;
               label_source = "id";
               hide_when_empty = false;
+              scale = 0.88;
               active_pill_size = 2.0;
               inactive_pill_size = 1.0;
               focused_color = "primary";
@@ -215,34 +218,56 @@
               type = "privacy";
               hide_inactive = true;
               icon_spacing = 6;
+              scale = 0.88;
+              font_weight = 400;
+            };
+
+            "noctalia/screen_recorder:recorder" = {
+              type = "noctalia/screen_recorder:recorder";
+              scale = 0.72;
+            };
+
+            tray = {
+              scale = 0.88;
             };
 
             notifications = {
               hide_when_no_unread = false;
+              scale = 0.88;
+              font_weight = 400;
             };
 
             network = {
               show_label = false;
+              scale = 0.88;
+              font_weight = 400;
             };
 
             bluetooth = {
               show_label = false;
+              scale = 0.88;
+              font_weight = 400;
             };
 
             battery = {
               show_label = false;
-              hide_when_full = false;
+              scale = 0.88;
+              font_weight = 400;
             };
 
             volume = {
               device = "output";
               show_label = false;
+              scale = 0.88;
+              font_weight = 400;
             };
 
             mic = {
               type = "volume";
               device = "input";
               show_label = false;
+              scale = 0.88;
+              font_weight = 400;
             };
 
             clock = {
@@ -250,7 +275,8 @@
               format = "{:%H:%M %a, %b %d}";
               tooltip_format = "%A, %d %B %Y";
               font_family = "JetBrainsMono Nerd Font";
-              font_weight = 500;
+              font_weight = 450;
+              font_scale = 0.91;
             };
 
             control-center = {

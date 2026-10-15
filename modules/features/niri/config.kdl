@@ -92,6 +92,12 @@ window-rule {
     open-floating true
 }
 
+// Rounded corners matching app geometry (Brave, Telegram, etc.)
+window-rule {
+    geometry-corner-radius 5
+    clip-to-geometry true
+}
+
 // Disable solid background rendering for borders/focus-ring behind transparent windows
 window-rule {
     draw-border-with-background false
