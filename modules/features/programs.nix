@@ -91,11 +91,11 @@
     xdg.mimeApps = {
       enable = true;
       defaultApplications = {
-        "text/html" = [ "vivaldi-stable.desktop" "brave-browser.desktop" ];
-        "x-scheme-handler/http" = [ "vivaldi-stable.desktop" "brave-browser.desktop" ];
-        "x-scheme-handler/https" = [ "vivaldi-stable.desktop" "brave-browser.desktop" ];
-        "x-scheme-handler/about" = [ "vivaldi-stable.desktop" "brave-browser.desktop" ];
-        "x-scheme-handler/unknown" = [ "vivaldi-stable.desktop" "brave-browser.desktop" ];
+        "text/html" = [ "helium.desktop" ];
+        "x-scheme-handler/http" = [ "helium.desktop" ];
+        "x-scheme-handler/https" = [ "helium.desktop" ];
+        "x-scheme-handler/about" = [ "helium.desktop" ];
+        "x-scheme-handler/unknown" = [ "helium.desktop" ];
       };
     };
 

@@ -11,8 +11,7 @@
       self.homeModules.mpv
       self.homeModules.herdr
       self.homeModules.theme
-      self.homeModules.brave
-      self.homeModules.vivaldi
+      self.homeModules.helium
     ];
   };
 }

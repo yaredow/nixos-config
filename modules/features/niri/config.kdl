@@ -92,7 +92,7 @@ window-rule {
     open-floating true
 }
 
-// Rounded corners matching app geometry (Brave, Telegram, etc.)
+// Rounded corners matching app geometry (Helium, Telegram, etc.)
 window-rule {
     geometry-corner-radius 5
     clip-to-geometry true
@@ -141,9 +141,9 @@ window-rule {
     default-window-height { fixed 450; }
 }
 
-// Browser Picture-in-Picture (Brave, Vivaldi)
+// Browser Picture-in-Picture (Helium)
 window-rule {
-    match app-id=r#"^(brave-browser|vivaldi(-stable)?)"# title=r#"(?i)picture[- ]in[- ]picture"#
+    match app-id=r#"^helium"# title=r#"(?i)picture[- ]in[- ]picture"#
     open-floating true
     default-column-width { fixed 480; }
     default-window-height { fixed 270; }
@@ -151,9 +151,9 @@ window-rule {
     opacity 1.0
 }
 
-// Browser extension popups (Brave, Vivaldi)
+// Browser extension popups (Helium)
 window-rule {
-    match app-id=r#"^(brave-browser|vivaldi(-stable)?)"# title="^Extension: "
+    match app-id=r#"^helium"# title="^Extension: "
     open-floating true
 }
 
