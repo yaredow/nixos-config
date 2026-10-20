@@ -141,10 +141,9 @@ window-rule {
     default-window-height { fixed 450; }
 }
 
-// Browser Picture-in-Picture (Zen & Helium)
+// Browser Picture-in-Picture (Zen)
 window-rule {
     match app-id=r#"^zen"# title=r#"(?i)picture[- ]in[- ]picture"#
-    match app-id=r#"^helium"# title=r#"(?i)picture[- ]in[- ]picture"#
     open-floating true
     default-column-width { fixed 480; }
     default-window-height { fixed 270; }
@@ -152,11 +151,10 @@ window-rule {
     opacity 1.0
 }
 
-// Browser extension popups & password managers (Zen & Helium)
+// Browser extension popups & password managers (Zen)
 window-rule {
     match app-id=r#"^zen"# title="^Extension: "
     match app-id=r#"^zen"# title=r#"^(Bitwarden|1Password|Proton Pass)"#
-    match app-id=r#"^helium"# title="^Extension: "
     open-floating true
 }
 

@@ -19,7 +19,7 @@ My personal NixOS setup using dendritic architecture ([import-tree](https://gith
 - **Shell:** Fish + Starship
 - **Editor:** Neovim (LazyVim)
 - **Key Remap:** `keyd` (Caps Lock = Esc when tapped, Ctrl when held)
-- **Browser:** [Helium](https://helium.computer)
+- **Browser:** [Zen Browser](https://zen-browser.app)
 
 ## Rebuilding
 

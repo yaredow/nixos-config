@@ -9,7 +9,6 @@
       self.nixosModules.keyd
       self.nixosModules.theme
       self.nixosModules.programs
-      self.nixosModules.helium
     ];
 
     networking.hostName = "loki";
