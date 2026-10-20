@@ -12,6 +12,7 @@
       self.homeModules.herdr
       self.homeModules.theme
       self.homeModules.helium
+      self.homeModules.zen
     ];
   };
 }

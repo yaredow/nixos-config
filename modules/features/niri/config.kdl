@@ -141,8 +141,9 @@ window-rule {
     default-window-height { fixed 450; }
 }
 
-// Browser Picture-in-Picture (Helium)
+// Browser Picture-in-Picture (Zen & Helium)
 window-rule {
+    match app-id=r#"^zen"# title=r#"(?i)picture[- ]in[- ]picture"#
     match app-id=r#"^helium"# title=r#"(?i)picture[- ]in[- ]picture"#
     open-floating true
     default-column-width { fixed 480; }
@@ -151,10 +152,26 @@ window-rule {
     opacity 1.0
 }
 
-// Browser extension popups (Helium)
+// Browser extension popups & password managers (Zen & Helium)
 window-rule {
+    match app-id=r#"^zen"# title="^Extension: "
+    match app-id=r#"^zen"# title=r#"^(Bitwarden|1Password|Proton Pass)"#
     match app-id=r#"^helium"# title="^Extension: "
     open-floating true
+}
+
+// Zen Browser utility dialogs
+window-rule {
+    match app-id=r#"^zen"# title="^Library$"
+    match app-id=r#"^zen"# title="^About Zen Browser$"
+    open-floating true
+}
+
+// Zen Browser Default Column Width (comfortably fits vertical tabs + content)
+window-rule {
+    match app-id=r#"^zen"#
+    exclude title=r#"(?i)picture[- ]in[- ]picture"#
+    default-column-width { proportion 0.66667; }
 }
 
 debug {
@@ -187,6 +204,9 @@ binds {
     // Terminal
     Mod+Return hotkey-overlay-title="Open Terminal" { spawn "alacritty"; }
     Mod+T hotkey-overlay-title="Open Terminal" { spawn "alacritty"; }
+
+    // Browser
+    Mod+B hotkey-overlay-title="Open Browser" { spawn "zen-beta"; }
 
     // Fastfetch
     Mod+Shift+Return hotkey-overlay-title="Fastfetch" { spawn "alacritty" "--class" "fastfetch" "-e" "fish" "/home/yada/.config/fastfetch/launch.fish"; }
