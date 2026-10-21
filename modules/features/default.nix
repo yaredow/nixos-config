@@ -12,6 +12,7 @@
       self.homeModules.herdr
       self.homeModules.theme
       self.homeModules.zen
+      self.homeModules.i18n
     ];
   };
 }

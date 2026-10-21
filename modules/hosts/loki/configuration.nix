@@ -9,6 +9,7 @@
       self.nixosModules.keyd
       self.nixosModules.theme
       self.nixosModules.programs
+      self.nixosModules.i18n
     ];
 
     networking.hostName = "loki";

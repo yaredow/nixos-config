@@ -13,6 +13,7 @@ environment {
 }
 
 spawn-at-startup "noctalia"
+spawn-at-startup "fcitx5" "-d"
 
 output "eDP-1" {
     mode "2880x1800@90.001"
@@ -89,6 +90,13 @@ window-rule {
     match title="^Open File$"
     match title="^Save File$"
     match title="^Confirm to replace files$"
+    open-floating true
+}
+
+// Floating Fcitx5 dialogs & popup windows
+window-rule {
+    match app-id=r#"^org\.fcitx\."#
+    match app-id="fcitx"
     open-floating true
 }
 
@@ -281,6 +289,9 @@ binds {
     Mod+Shift+S { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
+
+    // Input Method (Amharic / English toggle)
+    Ctrl+Space hotkey-overlay-title="Toggle Input Method" { spawn "fcitx5-remote" "-t"; }
 
     // Noctalia Shell Binds
     Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
